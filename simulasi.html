@@ -69,7 +69,7 @@ ul.nl{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--mu)}ul.nl li{m
 </div>
 <ul class="nl">
 <li>Latar peta: citra satelit Sentinel-2 Pulau Baai tahun 2025.</li>
-<li>Jika alur tertutup endapan, kapal yang hendak masuk antre di luar mulut alur, kapal yang hendak keluar tertahan di kolam, peringatan muncul, lalu simulasi berhenti. Klik tombol <b>Keruk alur sekarang</b> yang muncul tepat di bawah peta untuk melanjutkan dan menonton pengerukan dari awal.</li>
+<li>Jika kedalaman alur mencapai ambang kritis, peringatan merah muncul dengan tanggal pertama kali kritis. Kapal yang hendak masuk antre di luar mulut alur dan kapal yang hendak keluar tertahan di kolam, sementara pasir terus mengendap supaya penumpukannya bisa diamati. Klik tombol <b>Keruk alur sekarang</b> yang muncul tepat di bawah peta untuk melanjutkan dan menonton pengerukan dari awal.</li>
 <li>Label di kiri bawah peta menunjukkan fase pasang atau surut (skema, bukan waktu nyata).</li>
 <li>Lalu lintas kapal hanya ilustrasi: jadwalnya fiktif dan tidak memengaruhi perhitungan pendangkalan.</li>
 </ul><p hidden></p></div>
@@ -125,8 +125,8 @@ const RIV=(()=>{let b=null,bd=1e9;for(let y=40;y<H;y++)for(let x=80;x<W;x++){con
 const water=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&WATER[(y|0)*W+(x|0)]===1;
 const land=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&!WATER[(y|0)*W+(x|0)];
 const inCh=(x,y)=>CH[y*W+x]===1;
-let D,D0,Wt,P,day,hist,dred,dstart,run=true,acc=0,lastRec=-1;
-function reset(){D=new Float32Array(W*H);Wt=new Float32Array(W*H);P=[];day=0;hist=[];dred=[];dstart=0;lastRec=-1;dr=null;seed=12345;tide=0;flood=true;acc=0;resetFleet();
+let D,D0,Wt,P,day,hist,dred,dstart,run=true,acc=0,lastRec=-1,critDay=null;
+function reset(){critDay=null;D=new Float32Array(W*H);Wt=new Float32Array(W*H);P=[];day=0;hist=[];dred=[];dstart=0;lastRec=-1;dr=null;seed=12345;tide=0;flood=true;acc=0;resetFleet();
 for(let i=0;i<W*H;i++){let d=0;if(WATER[i]){d=BAY[i]?Math.min(9,2+DIST[i]*.7):Math.min(14,2.5+DIST[i]*.9);if(CH[i])d=12}D[i]=d}
 D0=D.slice();rec()}
 function gauge(){let s=0,n=0;for(let i=0;i<W*H;i++)if(GA[i]){s+=D[i];n++}return s/n}
@@ -201,12 +201,12 @@ else{s.textContent='Status: AMAN. '+(fc!==null?'Rentang perkiraan sampai ambang:
 chart(R,p,fc)}
 function chart(R,p,fc){const w=840,h=230,pl=44,pr=12,pt=12,pb=26;gx.clearRect(0,0,w,h);
 const st=getComputedStyle(document.documentElement),tx=st.getPropertyValue('--tx'),mu=st.getPropertyValue('--mu'),ac=st.getPropertyValue('--ac'),rd=st.getPropertyValue('--rd');
-const xm=Math.max(120,day+(fc&&isFinite(fc)?Math.min(fc,300):0)+15),y0=5,y1=13;
+const xm=Math.max(120,day+(fc&&isFinite(fc)?Math.min(fc,300):0)+15),y1=13,mn=hist.reduce((m,q)=>Math.min(m,q.g),13),y0=Math.max(0,Math.min(5,Math.floor(mn)-1)),ys=y1-y0>9?2:1;
 const X=d=>pl+d/xm*(w-pl-pr),Y=v=>pt+(y1-v)/(y1-y0)*(h-pt-pb);
 gx.font='13px Trebuchet MS,sans-serif';gx.fillStyle=mu;gx.strokeStyle=mu;gx.globalAlpha=.35;gx.lineWidth=1;
-for(let v=5;v<=13;v++){gx.beginPath();gx.moveTo(pl,Y(v));gx.lineTo(w-pr,Y(v));gx.stroke()}gx.globalAlpha=1;
+for(let v=y0;v<=13;v+=ys){gx.beginPath();gx.moveTo(pl,Y(v));gx.lineTo(w-pr,Y(v));gx.stroke()}gx.globalAlpha=1;
 for(let d=0;d<xm;d+=3){if(clim(dateAt(d)).raw>=45){gx.fillStyle='rgba(76,160,220,.12)';gx.fillRect(X(d),pt,X(d+3)-X(d),h-pt-pb)}}
-for(let v=5;v<=13;v+=1)gx.fillText(v+' m',6,Y(v)+4);
+for(let v=y0;v<=13;v+=ys)gx.fillText(v+' m',6,Y(v)+4);
 const stp=xm>300?100:xm>150?50:20;for(let d=0;d<=xm;d+=stp)gx.fillText(fmt(d,1),X(d)-18,h-8);
 gx.setLineDash([6,4]);gx.strokeStyle=rd;gx.lineWidth=1.6;gx.beginPath();gx.moveTo(pl,Y(p.t));gx.lineTo(w-pr,Y(p.t));gx.stroke();
 gx.fillStyle=rd;gx.fillText('ambang kritis',pl+6,Y(p.t)-5);gx.setLineDash([]);
@@ -219,7 +219,7 @@ const DUMP={x:47.6,y:38.2};let PLUME=[];
 function dredge(){if(!dr)dr={s:-3}}
 function dredgeStep(){dr.s+=.3;
 for(let i=0;i<W*H;i++)if(CH[i]&&SPOS[i]<=dr.s&&SPOS[i]>=dr.s-8)D[i]=Math.min(12,D[i]+.3);
-if(dr.s>PL+3){for(let i=0;i<W*H;i++)if(CH[i]){D[i]=12;Wt[i]=0}dred.push(Math.floor(day));rec();dstart=hist.length-1;dr=null;info()}}
+if(dr.s>PL+3){for(let i=0;i<W*H;i++)if(CH[i]){D[i]=12;Wt[i]=0}dred.push(Math.floor(day));rec();dstart=hist.length-1;dr=null;critDay=null;info()}}
 let dr=null,crit=false,FR=0;
 
 /* ---------- Lalu lintas pelabuhan: kapal besar memakai alur, perahu nelayan di kolam dan pesisir ---------- */
@@ -268,7 +268,7 @@ function drawDredger(){if(!dr)return;const p=at(dr.s),x=p.x*S,y=p.y*S;
  L('Kapal keruk',x+20,y-14,'#5a3b00');if(PLUME.length)L('Penimbunan pasir',DUMP.x*S-40,DUMP.y*S+24,'#5a3b00','bold 13px Trebuchet MS,sans-serif')}
 function drawTraffic(){const n=qn(),act=FLEET.filter(f=>f.st!=='sea').length,x=2*S,y=73*S;
  cx.fillStyle='rgba(10,25,35,.78)';cx.fillRect(x,y,262,46);cx.fillStyle='#cfe3ee';cx.font='12px Trebuchet MS,sans-serif';cx.fillText('LALU LINTAS PELABUHAN',x+10,y+16);
- cx.font='bold 15px Trebuchet MS,sans-serif';cx.fillStyle=n?'#ff8a7a':'#7be0a8';cx.fillText(n?n+' kapal besar tertahan':act+' kapal besar beroperasi, lancar',x+10,y+36)}
+ const kr=gauge()<=par().t;cx.font='bold 15px Trebuchet MS,sans-serif';cx.fillStyle=(n||kr)?'#ff8a7a':'#7be0a8';cx.fillText(n?n+' kapal besar tertahan':kr?'Alur kritis: kapal besar tak bisa lewat':act+' kapal besar beroperasi, lancar',x+10,y+36)}
 function sd(){const v=$('sd').value;return v?new Date(v+'T00:00:00'):new Date()}
 function fmt(d,short){const t=new Date(sd().getTime()+d*864e5);return t.toLocaleDateString('id-ID',short?{day:'numeric',month:'short',year:'2-digit'}:{day:'numeric',month:'long',year:'numeric'})}
 function drawDate(){const n=Math.floor(day),q=clim(dateAt(n)),h=q.raw>=45,k=q.raw<=25,s=h?'Musim hujan':k?'Musim kemarau':'Peralihan',col=h?'#3d9be9':k?'#e1a100':'#95a5a6',x=W*S-262,y=12;
@@ -279,7 +279,7 @@ cx.fillStyle=col;cx.beginPath();cx.arc(x+19,y+77,7,0,7);cx.fill();
 cx.fillStyle='#fff';cx.font='bold 16px Trebuchet MS,sans-serif';cx.fillText(s,x+34,y+83)}
 function banner(){const b=$('ban'),t=$('bant'),q=$('bdq');
 if(dr){b.style.display='flex';b.className='dig';t.textContent='Pengerukan berlangsung: kapal keruk membersihkan alur dari laut lepas menuju dermaga...';q.style.display='none'}
-else if(crit){b.style.display='flex';b.className='bad';t.textContent='SIMULASI DIHENTIKAN pada '+fmt(Math.floor(day))+': kedalaman alur mencapai ambang kritis. Kapal besar tidak dapat melewati mulut alur'+(qn()?' ('+qn()+' kapal tertahan)':'')+'.';q.style.display='inline-block'}
+else if(crit){b.style.display='flex';b.className='bad';const cd=critDay===null?Math.floor(day):critDay;t.textContent='ALUR KRITIS sejak '+fmt(cd)+' (hari ke-'+cd+'): kedalaman di bawah ambang. Kapal besar tidak dapat melewati mulut alur'+(qn()?' ('+qn()+' kapal tertahan)':'')+', dan pasir terus mengendap.';q.style.display='inline-block'}
 else{b.style.display='none';q.style.display='none'}}
 $('bdq').onclick=()=>{dredge();const r=cv.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)cv.scrollIntoView({block:'center',behavior:'smooth'})};
 const MR=[70,65,55,45,30,18,10,10,20,38,55,68];
@@ -292,7 +292,7 @@ if(auto){$('w').value=q.w;$('c').value=q.c;$('r').value=q.r;$('vw').textContent=
 const s=q.raw>=45?'Musim hujan':q.raw<=25?'Musim kemarau':'Peralihan';
 $('sea').textContent='Kalender Bengkulu pada tanggal simulasi: '+s+'. Mode: '+(auto?'otomatis (parameter mengikuti musim)':'manual (parameter diatur sendiri)')+'.'}
 function loop(){applySeason();crit=gauge()<=par().t;
-if(run){if(dr)dredgeStep();else if(!crit){acc+=+$('s').value*.5;while(acc>=1&&gauge()>par().t){applySeason();step();acc--}}moveShip()}
+if(run){if(dr)dredgeStep();else{acc+=+$('s').value*.5;while(acc>=1){applySeason();step();acc--;if(critDay===null&&gauge()<=par().t)critDay=Math.floor(day)}}moveShip()}
 banner();draw();if(run)info();requestAnimationFrame(loop)}
 [['w','vw',1],['c','vc',2],['r','vr',0],['t','vt',1],['s','vs',0]].forEach(([i,o,f])=>$(i).addEventListener('input',()=>{$(o).textContent=(+$(i).value).toFixed(f);info()}));
 function setP(w,c,r){[['w',w],['c',c],['r',r]].forEach(([i,v])=>{$(i).value=v;$(i).dispatchEvent(new Event('input'))})}
