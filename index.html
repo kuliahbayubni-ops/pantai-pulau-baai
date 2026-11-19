@@ -31,9 +31,20 @@ section.tab{display:none}section.tab.on{display:block}
 .mini p{font-size:14px;color:var(--mu);margin:0}
 .nwbar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;margin-bottom:14px}
 .nwg{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
-.nw{display:flex;flex-direction:column;border:1px solid var(--bd);border-left:4px solid var(--c,var(--ac));border-radius:10px;padding:14px;background:var(--card)}
+.nw{display:flex;flex-direction:column;border:1px solid var(--bd);border-top:4px solid var(--c,var(--ac));border-radius:10px;overflow:hidden;background:var(--card)}
+.nwb{display:flex;flex-direction:column;flex:1;padding:12px 14px 14px}
+.nwt{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;border-radius:0;background:#0d1b20;cursor:pointer;overflow:hidden;color:#fff}
+.nwt img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
+.nwt:hover img{transform:scale(1.04)}
+.nwt .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:44px;border-radius:12px;background:rgba(200,0,0,.9);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.nwt:hover .play{background:#e00}
+.nwk{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.65);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:6px}
+.nwph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:700 20px Georgia,serif;color:#fff;background:linear-gradient(135deg,#0b6e8a,#14262e);text-align:center;padding:16px}
+.nwt:has(.play) .nwph{justify-content:flex-end;padding-bottom:16px;font-size:16px}
+.igph{background:linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 55%,#962fbf 78%,#4f5bd5)}
+.igph svg{width:44px;height:44px}.igph b{font:700 17px "Trebuchet MS",sans-serif}.igph small{font:13px "Trebuchet MS",sans-serif;opacity:.9}
+.nwv{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}.nwv.igv{aspect-ratio:auto;height:560px;background:#fff}
 .nw .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12.5px;color:var(--mu);margin-bottom:6px}
-.nw .tag{font-weight:700;color:var(--c,var(--ac));text-transform:uppercase;letter-spacing:.03em;font-size:11.5px}
 .nw .src{font-weight:700;color:var(--tx)}
 .nw h3{font-size:16.5px;margin:0 0 6px}
 .nw p{font-size:14px;color:var(--mu);margin:0 0 10px;flex:1}
@@ -139,7 +150,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <li class="o"><b>2025</b>Instruksi Presiden Nomor 12 Tahun 2025 tentang normalisasi alur Pelabuhan Pulau Baai.</li>
 <li class="o"><b>2026</b>BRIN mendorong peta jalan penanganan pendangkalan berbasis riset.</li>
 </ol>
-<p style="margin:8px 0 0"><a href="#berita">Lihat liputan media dan dokumen resmi →</a></p>
+<p style="margin:8px 0 0"><a href="#berita">Lihat liputan media tentang isu ini →</a></p>
 </div>
 </div>
 
@@ -156,13 +167,13 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <section class="tab" id="t-berita">
 <div class="card hero">
 <h2>Isu ini dalam pemberitaan</h2>
-<p class="lead">Pendangkalan alur Pulau Baai bukan sekadar persoalan teknis pelabuhan. Liputan media dan dokumen resmi berikut menunjukkan dampaknya pada masyarakat Pulau Enggano, pasokan BBM, dan perekonomian Bengkulu, serta langkah penanganan yang diambil pemerintah.</p>
+<p class="lead">Pendangkalan alur Pulau Baai bukan sekadar persoalan teknis pelabuhan. Artikel, liputan video, dan unggahan berikut menunjukkan dampaknya pada masyarakat Pulau Enggano, pasokan BBM, dan perekonomian Bengkulu, serta dorongan untuk penanganan jangka panjang.</p>
 <div class="kpis" id="nw-stat"></div>
 </div>
 <div class="card">
 <div class="nwbar"><div class="btns" id="nw-cat" style="margin:0"></div><div class="btns" id="nw-ord" style="margin:0"><button data-o="asc" class="on">Terlama dulu</button><button data-o="desc">Terbaru dulu</button></div></div>
 <div class="nwg" id="nw-list"></div>
-<p class="note" style="margin-top:12px">Ringkasan ditulis ulang dengan kata-kata sendiri dan bukan kutipan artikel. Klik "Baca di sumber" untuk membaca artikel atau dokumen aslinya.</p>
+<p class="note" style="margin-top:12px">Ringkasan ditulis ulang dengan kata-kata sendiri dan bukan kutipan artikel. Gambar pratinjau dan video ditampilkan langsung dari situs sumbernya. Klik tautan di setiap kartu untuk membuka sumber aslinya.</p>
 </div>
 </section>
 
