@@ -29,6 +29,11 @@ section.tab{display:none}section.tab.on{display:block}
 .grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .mini{background:var(--bg);border-radius:10px;padding:12px}.mini b{display:block;margin-bottom:3px}
 .mini p{font-size:14px;color:var(--mu);margin:0}
+.dlg{margin-left:auto;display:flex;flex-wrap:wrap;gap:6px}
+.dl{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:8px;border:1px dashed var(--ac);background:var(--ac2);color:var(--tx);text-decoration:none;font-size:14px;font-weight:600;line-height:1.4}
+.dl svg{width:16px;height:16px;flex:none;color:var(--ac)}
+.dl:hover{border-style:solid;background:var(--card)}.dl:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media(max-width:640px){.dlg{margin-left:0}}
 .go{display:inline-block;margin-top:6px;padding:8px 14px;border-radius:8px;background:var(--ac);color:var(--bg);text-decoration:none;font-weight:700}
 ol.tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--bd)}
 ol.tl li{position:relative;padding:0 0 12px 12px}ol.tl li:before{content:"";position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--ac);border:2px solid var(--card)}
@@ -236,7 +241,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <div class="card">
 <h2>Basis data</h2>
 <p class="note">Isi lengkap kedua CSV. Baris yang tidak dipakai dalam analisis dicetak miring.</p>
-<div class="btns" id="dbtn"><button data-d="zona" class="on">Per zona, per kuartal</button><button data-d="bulanan">Bulanan, seluruh area</button><a class="go" style="margin:0" href="data/pulau_baai_zona_kuartalan.csv" download>Unduh CSV zona</a><a class="go" style="margin:0" href="data/pulau_baai_bulanan.csv" download>Unduh CSV bulanan</a></div>
+<div class="btns" id="dbtn"><button data-d="zona" class="on">Per zona, per kuartal</button><button data-d="bulanan">Bulanan, seluruh area</button><span class="dlg"><a class="dl" href="data/pulau_baai_zona_kuartalan.csv" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Unduh CSV zona</a><a class="dl" href="data/pulau_baai_bulanan.csv" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Unduh CSV bulanan</a></span></div>
 <div class="tw"><table id="tbl"></table></div>
 <p class="note" style="margin-top:8px">Keterangan kolom: <span id="colnote"></span></p>
 </div>
