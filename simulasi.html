@@ -24,7 +24,7 @@ button.p{background:var(--ac);color:var(--bg)}button:focus-visible,input:focus-v
 #st{font-weight:700}
 .note{font-size:13px;color:var(--mu)}
 input[type=date]{width:100%;font:inherit;padding:5px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
-#ban{display:none;padding:8px 10px;border-radius:8px;font-weight:700;margin:8px 0 0;color:#fff}.bad{background:var(--rd)}.dig{background:var(--wn)}
+#ban{display:none;padding:10px 12px;border-radius:8px;font-weight:700;margin:8px 0 0;color:#fff;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap}#ban span{flex:1 1 320px}#bdq{display:none;background:#fff;color:#c0392b;border:0;font-weight:700;font-size:15px;padding:10px 18px;border-radius:8px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}#bdq:hover{background:#ffecea}.bad{background:var(--rd)}.dig{background:var(--wn)}
 .vt{display:none;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;font-size:14px;color:var(--mu)}
 .vt button.on{background:var(--ac);color:var(--bg)}
 @media(min-width:1000px){.vt{display:flex}
@@ -39,7 +39,7 @@ main.side>div:nth-of-type(4){grid-column:1/-1;grid-row:6}}
 <p class="sub">Demonstrasi konseptual di atas peta asli Pulau Baai (citra Sentinel-2): pasir dari Samudra Hindia terbawa gelombang dan arus menyusuri pantai, lalu mengendap di sekitar ujung semenanjung (pier barat) dan mulut alur. Arus pasang membawa pasir masuk lebih kuat daripada arus surut membawanya keluar.</p>
 <section class="vt" aria-label="Pilihan tampilan"><span>Tampilan:</span><button id="tv1">Terpisah (simulasi dan grafik bergantian)</button><button id="tv2" class="on">Sejajar (simulasi dan grafik bersamaan)</button></section>
 
-<div class="card"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="ban" role="alert"></div>
+<div class="card"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="ban" role="alert"><span id="bant"></span><button id="bdq" type="button">⛏ Keruk alur sekarang</button></div>
 <style>
 .lgh{font-size:13px;font-weight:700;margin:10px 0 4px;color:var(--tx)}
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:5px 14px;font-size:13px;color:var(--tx)}
@@ -69,7 +69,7 @@ ul.nl{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--mu)}ul.nl li{m
 </div>
 <ul class="nl">
 <li>Latar peta: citra satelit Sentinel-2 Pulau Baai tahun 2025.</li>
-<li>Jika alur tertutup endapan, kapal yang hendak masuk antre di luar mulut alur, kapal yang hendak keluar tertahan di kolam, peringatan muncul, lalu simulasi berhenti. Klik <b>Keruk alur</b> untuk melanjutkan.</li>
+<li>Jika alur tertutup endapan, kapal yang hendak masuk antre di luar mulut alur, kapal yang hendak keluar tertahan di kolam, peringatan muncul, lalu simulasi berhenti. Klik tombol <b>Keruk alur sekarang</b> yang muncul tepat di bawah peta untuk melanjutkan dan menonton pengerukan dari awal.</li>
 <li>Label di kiri bawah peta menunjukkan fase pasang atau surut (skema, bukan waktu nyata).</li>
 <li>Lalu lintas kapal hanya ilustrasi: jadwalnya fiktif dan tidak memengaruhi perhitungan pendangkalan.</li>
 </ul><p hidden></p></div>
@@ -265,7 +265,7 @@ function drawDredger(){if(!dr)return;const p=at(dr.s),x=p.x*S,y=p.y*S;
  for(const q of PLUME){const t=q.t,mx=(q.sx+DUMP.x)/2+q.o,my=Math.min(q.sy,DUMP.y)-5,bx=(1-t)*(1-t)*q.sx+2*(1-t)*t*mx+t*t*DUMP.x,by=(1-t)*(1-t)*q.sy+2*(1-t)*t*my+t*t*DUMP.y;cx.fillStyle='rgba(232,184,104,'+(1-t*.6).toFixed(2)+')';cx.beginPath();cx.arc(bx*S,by*S,2.2,0,7);cx.fill()}
  cx.save();cx.translate(x,y);cx.rotate(p.ang);cx.fillStyle='#e8a317';cx.strokeStyle='#5a3b00';cx.lineWidth=1.5;cx.fillRect(-16,-10,32,20);cx.strokeRect(-16,-10,32,20);cx.fillStyle='#fff';cx.fillRect(-12,-7,11,9);
  cx.strokeStyle='#333';cx.lineWidth=3;cx.beginPath();cx.moveTo(6,0);cx.lineTo(24,0);cx.stroke();cx.fillStyle='#444';cx.beginPath();cx.moveTo(24,-7);cx.lineTo(32,0);cx.lineTo(24,7);cx.closePath();cx.fill();cx.restore();
- L('Kapal keruk',x+20,y-14,'#5a3b00');if(PLUME.length)L('Penimbunan pasir',DUMP.x*S-150,DUMP.y*S-10,'#5a3b00','bold 13px Trebuchet MS,sans-serif')}
+ L('Kapal keruk',x+20,y-14,'#5a3b00');if(PLUME.length)L('Penimbunan pasir',DUMP.x*S-40,DUMP.y*S+24,'#5a3b00','bold 13px Trebuchet MS,sans-serif')}
 function drawTraffic(){const n=qn(),act=FLEET.filter(f=>f.st!=='sea').length,x=2*S,y=73*S;
  cx.fillStyle='rgba(10,25,35,.78)';cx.fillRect(x,y,262,46);cx.fillStyle='#cfe3ee';cx.font='12px Trebuchet MS,sans-serif';cx.fillText('LALU LINTAS PELABUHAN',x+10,y+16);
  cx.font='bold 15px Trebuchet MS,sans-serif';cx.fillStyle=n?'#ff8a7a':'#7be0a8';cx.fillText(n?n+' kapal besar tertahan':act+' kapal besar beroperasi, lancar',x+10,y+36)}
@@ -277,10 +277,11 @@ cx.fillStyle='#cfe3ee';cx.font='13px Trebuchet MS,sans-serif';cx.fillText('TANGG
 cx.fillStyle='#fff';cx.font='bold 22px Trebuchet MS,sans-serif';cx.fillText(fmt(n),x+12,y+50);
 cx.fillStyle=col;cx.beginPath();cx.arc(x+19,y+77,7,0,7);cx.fill();
 cx.fillStyle='#fff';cx.font='bold 16px Trebuchet MS,sans-serif';cx.fillText(s,x+34,y+83)}
-function banner(){const b=$('ban');
-if(dr){b.style.display='block';b.className='dig';b.textContent='Pengerukan berlangsung: kapal keruk membersihkan alur masuk...'}
-else if(crit){b.style.display='block';b.className='bad';b.textContent='SIMULASI DIHENTIKAN pada '+fmt(Math.floor(day))+': kedalaman alur mencapai ambang kritis. Kapal besar tidak dapat melewati mulut alur'+(qn()?' ('+qn()+' kapal tertahan)':'')+'. Klik Keruk alur untuk melanjutkan.'}
-else b.style.display='none'}
+function banner(){const b=$('ban'),t=$('bant'),q=$('bdq');
+if(dr){b.style.display='flex';b.className='dig';t.textContent='Pengerukan berlangsung: kapal keruk membersihkan alur dari laut lepas menuju dermaga...';q.style.display='none'}
+else if(crit){b.style.display='flex';b.className='bad';t.textContent='SIMULASI DIHENTIKAN pada '+fmt(Math.floor(day))+': kedalaman alur mencapai ambang kritis. Kapal besar tidak dapat melewati mulut alur'+(qn()?' ('+qn()+' kapal tertahan)':'')+'.';q.style.display='inline-block'}
+else{b.style.display='none';q.style.display='none'}}
+$('bdq').onclick=()=>{dredge();const r=cv.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)cv.scrollIntoView({block:'center',behavior:'smooth'})};
 const MR=[70,65,55,45,30,18,10,10,20,38,55,68];
 let auto=true;
 function dateAt(d){return new Date(sd().getTime()+d*864e5)}
