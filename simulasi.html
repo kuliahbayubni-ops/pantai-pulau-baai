@@ -40,7 +40,39 @@ main.side>div:nth-of-type(4){grid-column:1/-1;grid-row:6}}
 <section class="vt" aria-label="Pilihan tampilan"><span>Tampilan:</span><button id="tv1">Terpisah (simulasi dan grafik bergantian)</button><button id="tv2" class="on">Sejajar (simulasi dan grafik bersamaan)</button></section>
 
 <div class="card"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="ban" role="alert"></div>
-<p class="note">Latar = citra satelit Sentinel-2 Pulau Baai (2025). Titik krem = butir pasir dari laut, titik cokelat tua = sedimen sungai. Warna krem di atas air = area yang makin dangkal. Jalur biru = alur pelayaran dari laut lepas lewat mulut alur ke dermaga; kotak putus-putus = bagian alur di mulut yang kedalamannya dipantau. Kapal besar (KMP ke Enggano, tanker BBM, tongkang batubara) keluar-masuk lewat alur sesuai jadwal; jika alur tertutup endapan, kapal antre di luar mulut alur atau tertahan di dalam kolam, muncul peringatan, lalu simulasi dihentikan. Perahu nelayan bergerak di kolam dan pesisir. Kapal oranye = alat keruk, yang menyemburkan pasir hasil kerukan ke tempat penimbunan di samping alur. Lalu lintas kapal hanya ilustrasi dan tidak memengaruhi perhitungan pendangkalan. Label kiri-bawah = fase pasang atau surut (skema, bukan waktu nyata).</p></div>
+<style>
+.lgh{font-size:13px;font-weight:700;margin:10px 0 4px;color:var(--tx)}
+.lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:5px 14px;font-size:13px;color:var(--tx)}
+.lg div{display:flex;align-items:center;gap:8px;line-height:1.3}
+.lg svg{flex:none;width:34px;height:20px;border-radius:4px;background:#2f5b66}
+ul.nl{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--mu)}ul.nl li{margin-bottom:3px}
+</style>
+<p class="lgh">Legenda: yang bergerak di peta</p>
+<div class="lg">
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><line x1="8" y1="13" x2="18" y2="9" stroke="rgb(232,184,104)" stroke-opacity=".5" stroke-width="1.6"/><rect x="17" y="7.5" width="3.5" height="3.5" fill="rgb(232,184,104)"/></svg>Butir pasir dari laut (dengan jejak gerak)</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><rect x="12" y="8" width="3.5" height="3.5" fill="rgb(70,35,10)"/><rect x="18" y="10" width="3.5" height="3.5" fill="rgb(70,35,10)"/></svg>Sedimen dari sungai</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M4 7 L1 5 L1 15 L4 13Z" fill="#fff" fill-opacity=".35"/><path d="M28 10 L22 6 L5 6 L5 14 L22 14Z" fill="#f4f6f8" stroke="#1b2630"/><rect x="7" y="8" width="6" height="4" fill="#1f6fb2"/></svg>KMP ke Enggano (kapal penyeberangan)</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M31 10 L25 5.5 L3 5.5 L3 14.5 L25 14.5Z" fill="#b83227" stroke="#1b2630"/><rect x="5" y="7.5" width="6" height="5" fill="#e8e8e8"/></svg>Tanker BBM</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M24 10 L20 5 L2 5 L2 15 L20 15Z" fill="#4a4a4a" stroke="#1b2630"/><rect x="4" y="7" width="13" height="6" fill="#141414"/><path d="M33 10 L29 6.5 L24.5 6.5 L24.5 13.5 L29 13.5Z" fill="#c0392b" stroke="#1b2630"/></svg>Tongkang batubara dan kapal tunda</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M13 8 L6 6 M13 12 L6 14" stroke="#fff" stroke-opacity=".6"/><path d="M25 10 L13 7.4 L13 12.6Z" fill="#8b5a2b"/><rect x="16" y="8.8" width="3" height="2.4" fill="#f2c14e"/></svg>Perahu nelayan</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><rect x="2" y="4" width="20" height="12" fill="#e8a317" stroke="#5a3b00"/><rect x="4" y="6" width="7" height="6" fill="#fff"/><line x1="16" y1="10" x2="27" y2="10" stroke="#333" stroke-width="2.5"/><path d="M27 6 L32 10 L27 14Z" fill="#444"/></svg>Kapal keruk</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><circle cx="6" cy="15" r="2" fill="rgb(232,184,104)"/><circle cx="12" cy="9" r="2" fill="rgb(232,184,104)"/><circle cx="19" cy="6" r="2" fill="rgb(232,184,104)" fill-opacity=".8"/><circle cx="27" cy="8" r="2" fill="rgb(232,184,104)" fill-opacity=".6"/></svg>Semburan pasir kerukan ke tempat penimbunan</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M7 13 Q13 6 19 11" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M16 9 Q22 3 28 8" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.3"/></svg>Riak gelombang laut</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M17 2 L27 18 L7 18Z" fill="#c0392b"/><text x="15" y="16" fill="#fff" font-size="10" font-weight="700" font-family="Trebuchet MS,sans-serif">!</text></svg>Kapal tertahan karena alur dangkal</div>
+</div>
+<p class="lgh">Legenda: tanda tetap di peta</p>
+<div class="lg">
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><rect x="4" y="3" width="26" height="14" fill="rgb(214,186,122)" fill-opacity=".7"/></svg>Area yang makin dangkal (makin pekat, makin dangkal)</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M3 15 L31 5" stroke="rgb(20,60,120)" stroke-opacity=".75" stroke-width="7"/></svg>Alur pelayaran ke dermaga</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M3 15 L31 5" stroke="rgb(20,60,120)" stroke-opacity=".75" stroke-width="7"/><path d="M3 11 L29 1.5 M5 18.5 L31 9" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 2.5"/></svg>Bagian alur di mulut yang kedalamannya dipantau</div>
+<div><svg viewBox="0 0 34 20" aria-hidden="true"><line x1="4" y1="6" x2="24" y2="14" stroke="#fff" stroke-width="2.2"/><path d="M30 16.5 L21 17 L24.5 9Z" fill="#fff"/></svg>Arah umum angkutan pasir</div>
+</div>
+<ul class="nl">
+<li>Latar peta: citra satelit Sentinel-2 Pulau Baai tahun 2025.</li>
+<li>Jika alur tertutup endapan, kapal yang hendak masuk antre di luar mulut alur, kapal yang hendak keluar tertahan di kolam, peringatan muncul, lalu simulasi berhenti. Klik <b>Keruk alur</b> untuk melanjutkan.</li>
+<li>Label di kiri bawah peta menunjukkan fase pasang atau surut (skema, bukan waktu nyata).</li>
+<li>Lalu lintas kapal hanya ilustrasi: jadwalnya fiktif dan tidak memengaruhi perhitungan pendangkalan.</li>
+</ul><p hidden></p></div>
 
 <div class="card"><div class="ctl">
 <label>Tinggi gelombang: <b id="vw">2.0</b> m<input type="range" id="w" min="0.5" max="4" step="0.1" value="2"></label>
@@ -59,7 +91,7 @@ main.side>div:nth-of-type(4){grid-column:1/-1;grid-row:6}}
 <div><span>Perkiraan pengerukan berikutnya</span><strong id="kf">-</strong></div></div>
 <p id="st"></p>
 <canvas id="ch" width="840" height="230" aria-label="Grafik kedalaman dan ramalan"></canvas>
-<p class="note">Ramalan memakai regresi linear dari kedalaman simulasi (garis putus-putus = proyeksi, merah = ambang kritis). Latar biru muda pada grafik = periode musim hujan. Ini masih ilustrasi: deret waktu ini nanti diganti indikator dari citra satelit. Kedalaman 12 m = rencana pendalaman alur; ambang 8 m = kedalaman alur yang dilaporkan BRIN pada September 2026.</p></div><div class="card"><b>Dasar ilmiah simulasi</b><ul style="margin:6px 0 8px;padding-left:20px;font-size:14px"><li>Sedimen hampir seluruhnya pasir halus dari laut lepas, terbawa arus sepanjang pantai (Hutari dkk., 2018).</li><li>Endapan terbesar ada di mulut alur sisi luar dekat pier barat, yang berperan sebagai penangkap sedimen; endapan meluas ke timur (Arifin dkk., 2003; Hutari dkk., 2018).</li><li>Bentuk pantai, semenanjung, pulau kecil, dan tanggul pasir timur diambil dari citra Sentinel-2 tahun 2025; arah angkutan pasir disederhanakan menjadi satu arah umum dari laut lepas ke pantai.</li><li>Arus pasang masuk kolam jauh lebih kuat daripada arus surut, sehingga pasir yang masuk tidak seluruhnya keluar lagi (Arifin dkk., 2003).</li><li>Angkutan sedimen sepanjang pantai diperkirakan sekitar 0,4 juta m³ per tahun, dan alur dikeruk rutin (Arifin dkk., 2003).</li></ul><p class="note">Geometri dan laju di demo disederhanakan: ini simulasi konseptual, bukan model rekayasa.</p></div>
+<ul class="nl"><li>Garis biru: kedalaman alur hasil simulasi dari hari ke hari.</li><li>Garis hitam putus-putus: proyeksi dengan regresi linear; garis merah putus-putus: ambang kritis.</li><li>Latar biru muda: periode musim hujan.</li><li>Kedalaman 12 m adalah rencana pendalaman alur; ambang 8 m adalah kedalaman alur yang dilaporkan BRIN pada September 2026.</li><li>Ramalan ini ilustrasi dari kedalaman simulasi, bukan hasil pengukuran.</li></ul></div><div class="card"><b>Dasar ilmiah simulasi</b><ul style="margin:6px 0 8px;padding-left:20px;font-size:14px"><li>Sedimen hampir seluruhnya pasir halus dari laut lepas, terbawa arus sepanjang pantai (Hutari dkk., 2018).</li><li>Endapan terbesar ada di mulut alur sisi luar dekat pier barat, yang berperan sebagai penangkap sedimen; endapan meluas ke timur (Arifin dkk., 2003; Hutari dkk., 2018).</li><li>Bentuk pantai, semenanjung, pulau kecil, dan tanggul pasir timur diambil dari citra Sentinel-2 tahun 2025; arah angkutan pasir disederhanakan menjadi satu arah umum dari laut lepas ke pantai.</li><li>Arus pasang masuk kolam jauh lebih kuat daripada arus surut, sehingga pasir yang masuk tidak seluruhnya keluar lagi (Arifin dkk., 2003).</li><li>Angkutan sedimen sepanjang pantai diperkirakan sekitar 0,4 juta m³ per tahun, dan alur dikeruk rutin (Arifin dkk., 2003).</li></ul><p class="note">Geometri dan laju di demo disederhanakan: ini simulasi konseptual, bukan model rekayasa.</p></div>
 <div class="card"><style>.tb.on{background:var(--ac);color:var(--bg)}@media(min-width:1000px){main.side>div:nth-of-type(5){grid-column:1/-1;grid-row:7}}</style>
 <b>Data nyata dari satelit: indeks peringatan dini (Sentinel-2, 2019-2026)</b>
 <p class="note" style="margin:4px 0 8px">Selisih luas air tetap tiap zona terhadap pantai pembanding, per kuartal, pola musiman sudah dikoreksi. Nilai negatif = area air menyempit. Geser kuartal atau tekan Putar waktu untuk melihat perjalanannya.</p>
@@ -67,7 +99,7 @@ main.side>div:nth-of-type(4){grid-column:1/-1;grid-row:6}}
 <canvas id="dcv" width="840" height="300" aria-label="Indeks peringatan dini dari citra satelit"></canvas>
 <label>Kuartal<input type="range" id="dsl" min="0" max="30" value="30"></label>
 <p id="dtx" style="font-weight:700;margin:6px 0 0"></p>
-<p class="note">Pita abu-abu = kisaran normal 2019-2022 (sekitar dua simpangan baku). Titik jingga = siaga, merah = kritis. Belah ketupat abu-abu (Kuartal IV 2020) = data tidak wajar, di luar skala; ditampilkan demi transparansi dan tidak dipakai dalam analisis. Indikator ini mengukur luas permukaan air, bukan kedalaman alur; zona pembanding hanya satu; data per kuartal. Zona timur: citra menunjukkan daratan pasir bertambah sejak 2025. Penyebabnya bisa proses alami atau pemanfaatan pasir hasil pengerukan (Inpres 12/2025) dan belum dapat dipisahkan.</p></div>
+<ul class="nl"><li>Pita abu-abu: kisaran normal 2019–2022 (sekitar dua simpangan baku).</li><li>Titik jingga: siaga; titik merah: kritis.</li><li>Belah ketupat abu-abu (Kuartal IV 2020): data tidak wajar dan di luar skala; ditampilkan demi transparansi, tidak dipakai dalam analisis.</li><li>Batasan: indikator mengukur luas permukaan air, bukan kedalaman alur; zona pembanding hanya satu; data dirangkum per kuartal.</li><li>Zona timur: citra menunjukkan daratan pasir bertambah sejak 2025. Penyebabnya bisa proses alami atau pemanfaatan pasir hasil pengerukan (Inpres 12/2025) dan belum dapat dipisahkan.</li></ul></div>
 
 <script>const W=120,H=89,S=7,$=id=>document.getElementById(id);
 const cv=$('cv'),cx=cv.getContext('2d'),ch=$('ch'),gx=ch.getContext('2d');
