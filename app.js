@@ -158,7 +158,7 @@ function renderGal(){const L1=GAL.concat(ST.extra.map(x=>({...x,x:true})));
  $('#gal').innerHTML=L1.map(fig).join('')+(ED?`<figure class="add"><div class="ph"><span>Tambah gambar baru<br><button data-a="add" style="margin-top:8px">+ Tambah kotak</button></span></div><figcaption class="note">Untuk citra lain dari GEE yang ingin ditampilkan.</figcaption></figure>`:'');
  $('#gal2').innerHTML=GAL2.map(fig).join('');
  ['#gal','#gal2'].forEach(s=>{const has=$(s).querySelector('figure');$(s).style.display=has?'':'none';const nx=$(s).nextElementSibling;if(nx&&nx.classList.contains('empty'))nx.remove();if(!has)$(s).insertAdjacentHTML('afterend','<p class="note empty">'+(GSTATE==='loading'?'Memuat gambar…':GSTATE==='offline'?'Gambar galeri hanya tampil pada versi online website. Buka tautan website saat terhubung ke internet dan masuk ke akun Claude.':GSTATE==='error'?'Gambar tidak dapat dimuat saat ini. Coba muat ulang halaman.':'Gambar belum ditambahkan.')+'</p>')});
- $$('#gal img,#gal2 img').forEach(im=>im.onclick=()=>{const f=im.closest('figure');$('#lb img').src=im.src;$('#lb p').textContent=f.querySelector('b').textContent+': '+f.querySelector('.cp').textContent;$('#lb').style.display='flex'});
+ $$('#gal img,#gal2 img').forEach(im=>im.onclick=()=>lbOpen(im));
  $$('#gal img,#gal2 img').forEach(im=>im.onerror=()=>{im.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'Gambar tidak dapat dimuat'}))})}
 function allG(){return GAL.concat(GAL2,ST.extra.map(x=>({...x,x:true})))}
 function save(){saving=saving.then(()=>DBREF.set(JSON.parse(JSON.stringify(ST)))).catch(e=>{throw e});return saving}
@@ -194,7 +194,19 @@ function applySnap(sn,ed,tm){const d=sn&&sn.exists?sn.data():{};ST={img:{...(d.i
  DBREF=db.doc('galeri/data');const tm=setTimeout(()=>{if(ed)$('#gal-ed').textContent='Penyimpanan gambar belum terhubung. Muat ulang halaman nanti.'},10000);
  DBREF.get().then(sn=>{if(GSTATE!=='ready')applySnap(sn,ed,tm)}).catch(()=>{});
  DBREF.onSnapshot(sn=>applySnap(sn,ed,tm),e=>{clearTimeout(tm);GSTATE='error';renderGal();if(ed)$('#gal-ed').textContent='Penyimpanan gambar tidak tersedia saat ini.'})})();
-$('#lb').onclick=()=>$('#lb').style.display='none';addEventListener('keydown',e=>{if(e.key==='Escape')$('#lb').style.display='none'});
+/* Lightbox: judul, keterangan, dan navigasi sebelumnya/berikutnya */
+let LB=[],LI=0;
+function lbShow(){const x=LB[LI];if(!x)return;const im=$('#lb img');im.src=x.src;im.alt=x.t;$('#lb h3').textContent=x.t;$('#lb p').textContent=x.c;$('#lb .lbk').textContent=x.g+' · '+(LI+1)+' dari '+LB.length;
+ const one=LB.length<2;$('#lb-prev').style.visibility=one?'hidden':'';$('#lb-next').style.visibility=one?'hidden':''}
+function lbOpen(im){const all=$$('#gal img,#gal2 img');LB=all.map(m=>{const f=m.closest('figure');return{src:m.src,t:f.querySelector('b').textContent,c:f.querySelector('.cp').textContent,g:m.closest('#gal')?'Galeri citra':'Grafik'}});
+ LI=Math.max(0,all.indexOf(im));lbShow();$('#lb').style.display='flex';document.body.style.overflow='hidden';$('#lb-close').focus()}
+function lbClose(){$('#lb').style.display='none';document.body.style.overflow=''}
+function lbGo(d){if(!LB.length)return;LI=(LI+d+LB.length)%LB.length;lbShow()}
+$('#lb-prev').onclick=e=>{e.stopPropagation();lbGo(-1)};$('#lb-next').onclick=e=>{e.stopPropagation();lbGo(1)};$('#lb-close').onclick=lbClose;
+$('#lb').addEventListener('click',e=>{if(e.target===$('#lb'))lbClose()});
+addEventListener('keydown',e=>{if($('#lb').style.display!=='flex')return;if(e.key==='Escape')lbClose();else if(e.key==='ArrowLeft')lbGo(-1);else if(e.key==='ArrowRight')lbGo(1)});
+let tx=null;$('#lb').addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+$('#lb').addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>50)lbGo(dx<0?1:-1)});
 
 function drawAll(){drawEWS();drawRaw();drawMon();drawTbl()}
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(location.hash==='#data-satelit')drawAll()});

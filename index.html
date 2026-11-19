@@ -57,8 +57,19 @@ figcaption label{display:block;margin-bottom:6px}figcaption input,figcaption tex
 .ph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;color:var(--mu);font-size:13.5px;border-bottom:2px dashed var(--bd)}
 figcaption{padding:9px 11px;font-size:13.5px}figcaption b{display:block;font-size:14.5px}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;flex-direction:column;color:#fff;cursor:zoom-out}
-#lb img{max-width:100%;max-height:85vh}#lb p{margin-top:8px;font-size:14px;text-align:center;max-width:900px}
+#lb{position:fixed;inset:0;background:#081114;display:none;align-items:center;justify-content:center;gap:14px;z-index:50;padding:56px 20px 20px;color:#fff}
+#lb .lbf{margin:0;background:none;border:0;border-radius:0;overflow:visible;max-width:min(1100px,100%);display:flex;flex-direction:column;align-items:center;min-width:0}
+#lb .lbf img{width:auto;height:auto;max-width:100%;max-height:68vh;aspect-ratio:auto;object-fit:contain;background:transparent;cursor:default;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+#lb figcaption{padding:12px 4px 0;max-width:900px;text-align:center}
+#lb .lbk{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:#9fb6bd}
+#lb h3{color:#fff;font-size:21px;margin:4px 0 6px}
+#lb p{margin:0;font-size:14.5px;line-height:1.6;color:#d9e4e7}
+#lb .lbn{flex:none;width:52px;height:72px;border:0;border-radius:12px;background:rgba(255,255,255,.12);color:#fff;font-size:38px;line-height:1;cursor:pointer;padding:0}
+#lb .lbn:hover{background:rgba(255,255,255,.25)}
+#lb .lbx{position:absolute;top:12px;right:16px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;padding:0;line-height:1}
+#lb .lbx:hover{background:rgba(255,255,255,.25)}
+#lb .lbh{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:12px;color:#7f969c}
+@media(max-width:700px){#lb{padding:56px 10px 34px}#lb .lbn{position:absolute;top:38%;width:40px;height:56px;font-size:30px;background:rgba(0,0,0,.45)}#lb-prev{left:6px}#lb-next{right:6px}#lb h3{font-size:18px}#lb p{font-size:13.5px}#lb .lbh{display:none}#lb figcaption{overflow:auto;max-height:34vh}}
 .tw{overflow:auto;max-height:420px;border:1px solid var(--bd);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
 th,td{padding:5px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}th{position:sticky;top:0;background:var(--card);text-align:right}
@@ -275,7 +286,13 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 </section>
 </main>
 <footer>Simulasi bersifat konseptual dan indikator satelit merupakan indikator awal, bukan pengukuran kedalaman.</footer>
-<div id="lb" role="dialog" aria-label="Gambar diperbesar"><img alt=""><p></p></div>
+<div id="lb" role="dialog" aria-modal="true" aria-label="Gambar diperbesar">
+<button class="lbx" id="lb-close" aria-label="Tutup">×</button>
+<button class="lbn" id="lb-prev" aria-label="Gambar sebelumnya">‹</button>
+<figure class="lbf"><img alt=""><figcaption><div class="lbk"></div><h3></h3><p></p></figcaption></figure>
+<button class="lbn" id="lb-next" aria-label="Gambar berikutnya">›</button>
+<div class="lbh">Gunakan tombol ‹ › atau panah kiri/kanan pada keyboard · Esc untuk menutup</div>
+</div>
 
 <script type="text/csv" id="csv-zona">zona,kuartal,jumlah_citra,frek_air,luas_air_tetap_ha,stumpf
 BARAT_PIER,2019-01,19,0.6641893702880746,120.14122735076461,1.0108307501540945
