@@ -24,7 +24,7 @@ button.p{background:var(--ac);color:var(--bg)}button:focus-visible,input:focus-v
 #st{font-weight:700}
 .note{font-size:13px;color:var(--mu)}
 input[type=date]{width:100%;font:inherit;padding:5px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
-#ban{display:none;padding:10px 12px;border-radius:8px;font-weight:700;margin:8px 0 0;color:#fff;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap}#ban span{flex:1 1 320px}#bdq{display:none;background:#fff;color:#c0392b;border:0;font-weight:700;font-size:15px;padding:10px 18px;border-radius:8px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}#bdq:hover{background:#ffecea}.bad{background:var(--rd)}.dig{background:var(--wn)}
+#cvw{position:relative}#bstart{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 30px;border:0;border-radius:16px;background:rgba(10,25,35,.82);color:#fff;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.45)}#bstart span{width:64px;height:64px;border-radius:50%;background:#0b6e8a;display:flex;align-items:center;justify-content:center;font-size:28px;padding-left:5px}#bstart b{font-size:19px}#bstart small{font-size:12.5px;opacity:.85}#bstart:hover span{background:#118bad}#bstart:focus-visible{outline:3px solid #fff}#ban{display:none;padding:10px 12px;border-radius:8px;font-weight:700;margin:8px 0 0;color:#fff;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap}#ban span{flex:1 1 320px}#bdq{display:none;background:#fff;color:#c0392b;border:0;font-weight:700;font-size:15px;padding:10px 18px;border-radius:8px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}#bdq:hover{background:#ffecea}.bad{background:var(--rd)}.dig{background:var(--wn)}
 .vt{display:none;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;font-size:14px;color:var(--mu)}
 .vt button.on{background:var(--ac);color:var(--bg)}
 @media(min-width:1000px){.vt{display:flex}
@@ -39,7 +39,7 @@ main.side>div:nth-of-type(4){grid-column:1/-1;grid-row:6}}
 <p class="sub">Demonstrasi konseptual di atas peta asli Pulau Baai (citra Sentinel-2): pasir dari Samudra Hindia terbawa gelombang dan arus menyusuri pantai, lalu mengendap di sekitar ujung semenanjung (pier barat) dan mulut alur. Arus pasang membawa pasir masuk lebih kuat daripada arus surut membawanya keluar.</p>
 <section class="vt" aria-label="Pilihan tampilan"><span>Tampilan:</span><button id="tv1">Terpisah (simulasi dan grafik bergantian)</button><button id="tv2" class="on">Sejajar (simulasi dan grafik bersamaan)</button></section>
 
-<div class="card"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="ban" role="alert"><span id="bant"></span><button id="bdq" type="button">⛏ Keruk alur sekarang</button></div>
+<div class="card"><div id="cvw"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><button id="bstart" type="button"><span aria-hidden="true">▶</span><b>Mulai simulasi</b><small>Tanggal awal dapat diatur di panel kontrol</small></button></div><div id="ban" role="alert"><span id="bant"></span><button id="bdq" type="button">⛏ Keruk alur sekarang</button></div>
 <style>
 .lgh{font-size:13px;font-weight:700;margin:10px 0 4px;color:var(--tx)}
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:5px 14px;font-size:13px;color:var(--tx)}
@@ -82,7 +82,7 @@ ul.nl{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--mu)}ul.nl li{m
 <label>Tanggal awal (alur dianggap ideal, 12 m)<input type="date" id="sd"></label>
 <label>Kecepatan simulasi: <b id="vs">2</b>x<input type="range" id="s" min="1" max="6" step="1" value="2"></label>
 </div>
-<p id="sea" class="note" style="margin:10px 0 0"></p><div class="btns"><button class="p" id="bp">Jeda</button><button id="br">Ulangi dari awal</button><button id="bd">Keruk alur</button><button id="b1">Musim kering</button><button id="b2">Musim hujan</button><button id="b3" class="p">Otomatis (ikuti kalender)</button></div></div>
+<p id="sea" class="note" style="margin:10px 0 0"></p><div class="btns"><button class="p" id="bp">Mulai</button><button id="br">Ulangi dari awal</button><button id="bd">Keruk alur</button><button id="b1">Musim kering</button><button id="b2">Musim hujan</button><button id="b3" class="p">Otomatis (ikuti kalender)</button></div></div>
 
 <div class="card"><div class="kpi">
 <div><span>Tanggal simulasi</span><strong id="kd" style="font-size:15px">-</strong></div>
@@ -125,7 +125,7 @@ const RIV=(()=>{let b=null,bd=1e9;for(let y=40;y<H;y++)for(let x=80;x<W;x++){con
 const water=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&WATER[(y|0)*W+(x|0)]===1;
 const land=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&!WATER[(y|0)*W+(x|0)];
 const inCh=(x,y)=>CH[y*W+x]===1;
-let D,D0,Wt,P,day,hist,dred,dstart,run=true,acc=0,lastRec=-1,critDay=null;
+let D,D0,Wt,P,day,hist,dred,dstart,run=false,acc=0,lastRec=-1,critDay=null;
 function reset(){critDay=null;D=new Float32Array(W*H);Wt=new Float32Array(W*H);P=[];day=0;hist=[];dred=[];dstart=0;lastRec=-1;dr=null;seed=12345;tide=0;flood=true;acc=0;resetFleet();
 for(let i=0;i<W*H;i++){let d=0;if(WATER[i]){d=BAY[i]?Math.min(9,2+DIST[i]*.7):Math.min(14,2.5+DIST[i]*.9);if(CH[i])d=12}D[i]=d}
 D0=D.slice();rec()}
@@ -216,7 +216,7 @@ if(R&&R.m<-1e-4){gx.strokeStyle=tx;gx.setLineDash([5,4]);gx.lineWidth=1.5;const 
 gx.beginPath();gx.moveTo(X(d0),Y(v0));gx.lineTo(X(d1),Y(Math.max(y0,v1)));gx.stroke();gx.setLineDash([])}}
 /* ---------- Pengerukan (dengan semburan pasir ke tempat penimbunan di samping alur) ---------- */
 const DUMP={x:47.6,y:38.2};let PLUME=[];
-function dredge(){if(!dr)dr={s:-3}}
+function dredge(){if(!dr)dr={s:-3};if(!run&&typeof setRun==='function')setRun(true)}
 function dredgeStep(){dr.s+=.3;
 for(let i=0;i<W*H;i++)if(CH[i]&&SPOS[i]<=dr.s&&SPOS[i]>=dr.s-8)D[i]=Math.min(12,D[i]+.3);
 if(dr.s>PL+3){for(let i=0;i<W*H;i++)if(CH[i]){D[i]=12;Wt[i]=0}dred.push(Math.floor(day));rec();dstart=hist.length-1;dr=null;critDay=null;info()}}
@@ -259,7 +259,7 @@ function drawShip(){
   if(f.st==='queue'||f.st==='hold'){cx.fillStyle='#c0392b';cx.beginPath();cx.moveTo(x+12,y-24);cx.lineTo(x+24,y-4);cx.lineTo(x,y-4);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.font='bold 13px Trebuchet MS,sans-serif';cx.fillText('!',x+10,y-7);L(f.n+' tertahan',x+28,y-8,'#c0392b')}
   else if(f.st!=='dock')L(f.n,x+16,y-12,'#0b2a3b','bold 13px Trebuchet MS,sans-serif')}}
 let SEA=null;
-function drawSea(){FR++;if(!SEA){SEA=[];let n=0;while(SEA.length<55&&n<5000){n++;const x=Math.random()*W,y=Math.random()*H,i=(y|0)*W+(x|0);if(WATER[i]&&!BAY[i]&&DIST[i]>2)SEA.push({x,y,p:Math.random()*6.28,l:6+Math.random()*10})}}
+function drawSea(){if(run)FR++;if(!SEA){SEA=[];let n=0;while(SEA.length<55&&n<5000){n++;const x=Math.random()*W,y=Math.random()*H,i=(y|0)*W+(x|0);if(WATER[i]&&!BAY[i]&&DIST[i]>2)SEA.push({x,y,p:Math.random()*6.28,l:6+Math.random()*10})}}
  cx.lineWidth=1.3;cx.lineCap='round';for(const w of SEA){const a=.06+.1*(1+Math.sin(FR*.04+w.p)),dx=Math.sin(FR*.01+w.p)*4;cx.strokeStyle='rgba(255,255,255,'+a.toFixed(2)+')';cx.beginPath();cx.arc(w.x*S+dx,w.y*S,w.l,3.6,5.8);cx.stroke()}}
 function drawDredger(){if(!dr)return;const p=at(dr.s),x=p.x*S,y=p.y*S;
  for(const q of PLUME){const t=q.t,mx=(q.sx+DUMP.x)/2+q.o,my=Math.min(q.sy,DUMP.y)-5,bx=(1-t)*(1-t)*q.sx+2*(1-t)*t*mx+t*t*DUMP.x,by=(1-t)*(1-t)*q.sy+2*(1-t)*t*my+t*t*DUMP.y;cx.fillStyle='rgba(232,184,104,'+(1-t*.6).toFixed(2)+')';cx.beginPath();cx.arc(bx*S,by*S,2.2,0,7);cx.fill()}
@@ -268,7 +268,7 @@ function drawDredger(){if(!dr)return;const p=at(dr.s),x=p.x*S,y=p.y*S;
  L('Kapal keruk',x+20,y-14,'#5a3b00');if(PLUME.length)L('Penimbunan pasir',DUMP.x*S-40,DUMP.y*S+24,'#5a3b00','bold 13px Trebuchet MS,sans-serif')}
 function drawTraffic(){const n=qn(),act=FLEET.filter(f=>f.st!=='sea').length,x=2*S,y=73*S;
  cx.fillStyle='rgba(10,25,35,.78)';cx.fillRect(x,y,262,46);cx.fillStyle='#cfe3ee';cx.font='12px Trebuchet MS,sans-serif';cx.fillText('LALU LINTAS PELABUHAN',x+10,y+16);
- const kr=gauge()<=par().t;cx.font='bold 15px Trebuchet MS,sans-serif';cx.fillStyle=(n||kr)?'#ff8a7a':'#7be0a8';cx.fillText(n?n+' kapal besar tertahan':kr?'Alur kritis: kapal besar tak bisa lewat':act+' kapal besar beroperasi, lancar',x+10,y+36)}
+ const kr=gauge()<=par().t;cx.font='bold 15px Trebuchet MS,sans-serif';cx.fillStyle=(n||kr)?'#ff8a7a':'#7be0a8';cx.fillText(n?n+' kapal besar tertahan':kr?'Alur kritis: kapal besar tak bisa lewat':act?act+' kapal besar beroperasi, lancar':'Alur lancar, belum ada kapal',x+10,y+36)}
 function sd(){const v=$('sd').value;return v?new Date(v+'T00:00:00'):new Date()}
 function fmt(d,short){const t=new Date(sd().getTime()+d*864e5);return t.toLocaleDateString('id-ID',short?{day:'numeric',month:'short',year:'2-digit'}:{day:'numeric',month:'long',year:'numeric'})}
 function drawDate(){const n=Math.floor(day),q=clim(dateAt(n)),h=q.raw>=45,k=q.raw<=25,s=h?'Musim hujan':k?'Musim kemarau':'Peralihan',col=h?'#3d9be9':k?'#e1a100':'#95a5a6',x=W*S-262,y=12;
@@ -296,11 +296,12 @@ if(run){if(dr)dredgeStep();else{acc+=+$('s').value*.5;while(acc>=1){applySeason(
 banner();draw();if(run)info();requestAnimationFrame(loop)}
 [['w','vw',1],['c','vc',2],['r','vr',0],['t','vt',1],['s','vs',0]].forEach(([i,o,f])=>$(i).addEventListener('input',()=>{$(o).textContent=(+$(i).value).toFixed(f);info()}));
 function setP(w,c,r){[['w',w],['c',c],['r',r]].forEach(([i,v])=>{$(i).value=v;$(i).dispatchEvent(new Event('input'))})}
-$('bp').onclick=()=>{run=!run;$('bp').textContent=run?'Jeda':'Lanjutkan'};
-$('br').onclick=()=>{reset();info()};$('bd').onclick=dredge;
+let started=false;function setRun(v){run=v;if(v)started=true;$('bp').textContent=run?'Jeda':(started?'Lanjutkan':'Mulai');const o=$('bstart');o.style.display=run?'none':'flex';o.querySelector('b').textContent=started?'Lanjutkan simulasi':'Mulai simulasi';o.querySelector('small').textContent=started?'Simulasi sedang dijeda':'Tanggal awal dapat diatur di panel kontrol'}
+$('bp').onclick=()=>setRun(!run);$('bstart').onclick=()=>setRun(true);
+$('br').onclick=()=>{reset();started=false;setRun(false);info()};$('bd').onclick=dredge;
 $('b1').onclick=()=>{auto=false;setP(1,.3,10)};$('b2').onclick=()=>{auto=false;setP(3.2,.75,70)};$('b3').onclick=()=>{auto=true};
 ['w','c','r'].forEach(i=>$(i).addEventListener('input',e=>{if(e.isTrusted)auto=false}));
-$('sd').value=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);$('sd').addEventListener('change',()=>{reset();info()});const DD={mulut:[-1.0,-1.2,-1.4,-1.7,-1.0,-1.4,-1.4,-78.5,0.4,0.1,0.8,0.4,1.6,2.5,2.1,1.3,2.9,1.9,-0.2,-0.9,-0.5,1.2,0.9,-0.3,-2.0,-3.8,-4.4,-9.0,-8.4,-4.2,-3.8],
+$('sd').value=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);$('sd').addEventListener('change',()=>{reset();started=false;setRun(false);info()});const DD={mulut:[-1.0,-1.2,-1.4,-1.7,-1.0,-1.4,-1.4,-78.5,0.4,0.1,0.8,0.4,1.6,2.5,2.1,1.3,2.9,1.9,-0.2,-0.9,-0.5,1.2,0.9,-0.3,-2.0,-3.8,-4.4,-9.0,-8.4,-4.2,-3.8],
 timur:[-3.1,-2.7,-4.1,-3.7,-1.7,-0.4,-1.2,-18.8,1.1,0.4,0.7,-0.7,3.8,2.7,4.7,4.4,9.2,6.5,7.9,8.6,9.9,5.2,6.8,7.7,7.1,5.5,3.4,-4.1,-9.8,-9.5,-11.2],
 barat:[1.0,0.9,0.7,0.0,-0.4,0.2,-0.7,-85.1,0.0,-0.2,0.8,-0.5,-0.7,-0.9,-0.8,0.6,0.8,-0.9,-0.1,2.5,0.5,-1.9,-0.5,0.2,-1.9,-2.5,-1.7,-1.7,-0.6,-0.8,0.1]};
 const TH={mulut:{sg:-3,kr:-6},timur:{sg:-5.8,kr:-11.6},barat:{sg:-1.4,kr:-2.8}};
@@ -327,5 +328,5 @@ $('dpl').onclick=()=>{if(dtm){clearInterval(dtm);dtm=null;$('dpl').textContent='
 dshow();
 function setView(s){document.querySelector('main').classList.toggle('side',s);$('tv1').classList.toggle('on',!s);$('tv2').classList.toggle('on',s)}
 $('tv1').onclick=()=>setView(false);$('tv2').onclick=()=>setView(true);setView(innerWidth>=1000);
-reset();info();loop();
+reset();setRun(false);info();loop();
 </script></main><script>(function(){function s(){try{parent.postMessage({simH:Math.ceil(document.body.scrollHeight)},'*')}catch(e){}}new ResizeObserver(s).observe(document.body);addEventListener('load',s);setTimeout(s,300)})();</script></body></html>
