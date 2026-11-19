@@ -1,11 +1,12 @@
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const fmt=(v,d=1)=>v==null||isNaN(v)?'–':v.toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d});
 const sg=v=>(v>0?'+':'')+fmt(v)+'%';
 
 /* ---------- Tabs (hash) ---------- */
-const TABS=['beranda','berita','simulasi','data-satelit','tentang'];let simLoaded=false;
-function route(){let t=location.hash.slice(1);if(!TABS.includes(t))t='beranda';
+const TABS=['beranda','referensi','simulasi','data-satelit','tentang'];let simLoaded=false;
+function route(){let t=location.hash.slice(1);if(t==='berita'){t='referensi';history.replaceState(null,'','#referensi')}if(!TABS.includes(t))t='beranda';
 $$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
 $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));
 if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit')drawAll();window.scrollTo(0,0)}
@@ -133,6 +134,7 @@ if($('#copy'))$('#copy').onclick=async()=>{try{await navigator.clipboard.writeTe
 const NCAT={artikel:{n:'Artikel',c:'--z1'},video:{n:'Video',c:'--rd'},instagram:{n:'Instagram',c:'--z3'}};
 const BERITA=[
  {d:'2025-04-30',src:'Pemprov Bengkulu',k:'artikel',t:'Wagub Mian Paparkan Masalah Pendangkalan Alur Pulau Baai ke Komisi II DPR RI: Ekonomi Bengkulu Tersendat, Pelindo Tak Serius Tangani Pendangkalan Alur',r:'Dalam rapat dengar pendapat dengan Komisi II DPR RI, Wakil Gubernur Bengkulu memaparkan pendangkalan alur dan meminta dukungan pemerintah pusat. Ia menyebut aktivitas pelabuhan terhenti sekitar tiga bulan, distribusi barang terganggu, dan antrean terjadi di SPBU karena kapal BBM tidak bisa bersandar.',u:'https://bengkuluprov.go.id/wagub-mian-paparkan-masalah-pendangkalan-alur-pulau-baai-ke-komisi-ii-dpr-ri-ekonomi-bengkulu-tersendat-pelindo-tak-serius-tangani-pendangkalan-alur/',img:'https://bengkuluprov.go.id/wp-content/uploads/2025/05/494424503_2382240762159075_3282316176394448400_n.jpg'},
+ {d:'2025-06-23',src:'Kompas',k:'artikel',t:'Sudah Status Darurat, tapi Sedimentasi Alur Pelabuhan Pulau Baai Tetap Berlarut',r:'Pengerukan dipercepat dengan kapal penyedot pasir dan tambahan alat berat. Alur yang tertutup total sejak akhir Maret 2025 sempat tertutup lagi setelah gempa 23 Mei 2025, dan 15 kapal kandas di sekitar pelabuhan. Target awal alur 60 m × 4 m, sedangkan kondisi normal 150 m × 12 m.',u:'https://www.kompas.id/artikel/sudah-status-darurat-tapi-sedimentasi-alur-pelabuhan-pulau-baai-tetap-berlarut',img:''},
  {d:'2025-07-04',src:'TVR Parlemen',k:'video',t:'Komisi V DPR RI: Segera Atasi Pendangkalan Pelabuhan Pulau Baai',r:'Liputan tentang desakan Komisi V DPR RI agar pendangkalan segera ditangani, karena sekitar 4.000 warga Pulau Enggano terisolasi dan ekonomi pulau terganggu selama berbulan-bulan.',u:'https://www.youtube.com/watch?v=wjliExn6JfQ',yt:'wjliExn6JfQ'},
  {d:'2025-07-16',src:'KOMPASTV',k:'video',t:'Warga Pulau Enggano Masih Terdampak Pendangkalan Alur Pelabuhan Pulau Baai',r:'Meski alur pelayaran mulai normal, harga pisang, kakao, emping melinjo, dan hasil tangkapan nelayan Enggano masih rendah. Ekonomi pulau belum pulih sepenuhnya.',u:'https://www.youtube.com/watch?v=UQwpXApBcbw',yt:'UQwpXApBcbw'},
  {d:'2026-09-30',src:'BRIN',k:'artikel',t:'Pendangkalan Pelabuhan Pulau Baai Puluhan Tahun, BRIN Dorong Peta Jalan Berbasis Riset',r:'BRIN meminta Pemprov Bengkulu menyusun peta jalan penanganan lintas sektor hingga 2045. Kedalaman alur disebut sekitar minus 8 meter, sehingga sebagian komoditas Bengkulu masih diekspor lewat Lampung.',u:'https://brin.go.id/news/130613/pendangkalan-pelabuhan-pulau-baai-puluhan-tahun-brin-dorong-peta-jalan-berbasis-riset',img:'gambar/berita/brin.jpg'},
@@ -147,9 +149,9 @@ $('#nw-cat').innerHTML=`<button data-k="semua">Semua (${BERITA.length})</button>
 $$('#nw-cat button').forEach(b=>b.onclick=()=>{NK=b.dataset.k;drawNews()});
 $$('#nw-ord button').forEach(b=>b.onclick=()=>{NO=b.dataset.o;drawNews()});
 const DT=BERITA.filter(b=>b.d).map(b=>b.d).sort();
-$('#nw-stat').innerHTML=`<div class="kpi"><strong>${BERITA.filter(b=>b.k==='artikel').length} artikel</strong><span>dari pemerintah daerah, media, dan lembaga riset</span></div><div class="kpi r"><strong>${BERITA.filter(b=>b.k==='video').length} video</strong><span>liputan televisi di YouTube</span></div><div class="kpi"><strong>${BERITA.filter(b=>b.k==='instagram').length} unggahan</strong><span>di Instagram</span></div><div class="kpi w"><strong>${tgl(DT[0]).replace(/^\d+ /,'')} – ${tgl(DT[DT.length-1]).replace(/^\d+ /,'')}</strong><span>rentang waktu liputan</span></div>`;
+/*stat lama*/void `<div class="kpi"><strong>${BERITA.filter(b=>b.k==='artikel').length} artikel</strong><span>dari pemerintah daerah, media, dan lembaga riset</span></div><div class="kpi r"><strong>${BERITA.filter(b=>b.k==='video').length} video</strong><span>liputan televisi di YouTube</span></div><div class="kpi"><strong>${BERITA.filter(b=>b.k==='instagram').length} unggahan</strong><span>di Instagram</span></div><div class="kpi w"><strong>${tgl(DT[0]).replace(/^\d+ /,'')} – ${tgl(DT[DT.length-1]).replace(/^\d+ /,'')}</strong><span>rentang waktu liputan</span></div>`;
 const IGI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg>';
-function thumb(b,i){const lbl=`<span class="nwk">${NCAT[b.k].n}</span>`;
+function thumb(b,i){if(!b.yt&&!b.ig&&!b.img)return`<a class="nwt" href="${esc(b.u)}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="nwph">${esc(b.src)}</span><span class="nwk">${NCAT[b.k].n}</span></a>`;const lbl=`<span class="nwk">${NCAT[b.k].n}</span>`;
  if(b.yt)return`<button class="nwt" data-i="${i}" aria-label="Putar video: ${esc(b.t)}"><img src="https://i.ytimg.com/vi/${b.yt}/hqdefault.jpg" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'nwph',textContent:'${esc(b.src)}'}))"><span class="play" aria-hidden="true">▶</span>${lbl}</button>`;
  if(b.ig)return`<button class="nwt ig" data-i="${i}" aria-label="Tampilkan pratinjau Instagram"><span class="nwph igph">${IGI}<b>${b.ig.startsWith('reel')?'Reel':'Unggahan'} Instagram</b><small>${CAN_EMBED?'Klik untuk menampilkan pratinjau':'Klik untuk membuka di Instagram'}</small></span>${lbl}</button>`;
  return`<a class="nwt" href="${esc(b.u)}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><img src="${esc(b.img)}" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'nwph',textContent:'${esc(b.src)}'}))">${lbl}</a>`}
@@ -160,6 +162,31 @@ function drawNews(){$$('#nw-cat button').forEach(b=>b.classList.toggle('on',b.da
   if(!CAN_EMBED){window.open(b.u,'_blank','noopener');return}
   const f=document.createElement('iframe');f.className=b.yt?'nwv':'nwv igv';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=b.t;
   f.src=b.yt?`https://www.youtube-nocookie.com/embed/${b.yt}?autoplay=1&rel=0`:`https://www.instagram.com/${b.ig}/embed`;t.replaceWith(f)})}
+
+/* ---------- Referensi ilmiah dan dokumen ---------- */
+const SCI=[
+ {a:'Arifin, L., Hutagaol, J. P., & Hanafi, M.',y:'2003',t:'Pendangkalan alur pelayaran di Pelabuhan Pulau Baai Bengkulu',j:'Jurnal Geologi Kelautan',v:'1(3), 29–37',doi:'10.32693/jgk.1.3.2003.101',u:'https://doi.org/10.32693/jgk.1.3.2003.101',lk:'Buka artikel (DOI)',
+  f:'Survei pemeruman, arus, dan pasang surut menunjukkan kedalaman kolam dan alur sekitar 12 m. Arus saat pasang lebih kuat sehingga pengendapan lebih besar saat air pasang, diperkuat arus sepanjang pantai yang membawa sedimen ke alur. Tipe pasang surutnya campuran ganda dengan beda tinggi muka air 1,53 m.',
+  p:'Mekanisme simulasi: arus pasang lebih kuat dari surut, arus sepanjang pantai, dan skala kedalaman alur 12 m.'},
+ {a:'Hutari, P. Z., Johan, Y., & Negara, B. F. S. P.',y:'2018',t:'Analisis sedimentasi di Pelabuhan Pulau Baai Kota Bengkulu',j:'Jurnal Enggano',v:'3(1), 129–143',u:'https://scholar.google.com/scholar?q=%22Analisis+sedimentasi+di+Pelabuhan+Pulau+Baai+Kota+Bengkulu%22',lk:'Cari di Google Scholar',
+  f:'Sampel sedimen dari enam lokasi (Februari–Maret 2016) seluruhnya bertekstur pasir. Laju sedimentasi tertinggi tercatat di alur pelayaran dan terendah di muara sungai.',
+  p:'Jenis sedimen (pasir) dalam simulasi dan penentuan lokasi zona pengamatan citra satelit di sekitar pier dan mulut alur.'},
+ {a:'Mawardi',y:'2016',t:'Inovasi mengatasi pendangkalan pada Pelabuhan Tapak Paderi Kota Bengkulu',j:'Inersia: Jurnal Teknik Sipil',v:'8(1)',u:'https://garuda.kemdiktisaintek.go.id/documents/detail/1225880',lk:'Buka di Garuda',x:'Pelabuhan lain di Kota Bengkulu',
+  f:'Di Pelabuhan Tapak Paderi, sedimen di pintu masuk pelabuhan berasal dari Sungai Air Bengkulu akibat erosi dan penambangan di hulu, dengan arus dominan dari utara ke selatan. Penelitian ini mengusulkan bangunan groin untuk menahan sedimen sebelum masuk ke pelabuhan.',
+  p:'Konteks bahwa pendangkalan pelabuhan adalah masalah berulang di pesisir Kota Bengkulu, serta contoh solusi struktural sebagai bahan tindak lanjut.'}];
+function citeText(r){return `${r.a} (${r.y}). ${r.t}. ${r.j}, ${r.v}.${r.doi?' https://doi.org/'+r.doi:''}`}
+$('#ref-sci').innerHTML=SCI.map((r,i)=>`<article class="ref"><span class="no">${i+1}</span><div><p class="cit">${esc(r.a)} (${r.y}). ${esc(r.t)}. <i>${esc(r.j)}</i>, ${esc(r.v)}.${r.x?`<span class="tagx">${esc(r.x)}</span>`:''}</p>
+<dl><dt>Temuan utama</dt><dd>${esc(r.f)}</dd><dt>Dipakai untuk</dt><dd>${esc(r.p)}</dd></dl>
+<div class="acts"><a href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${esc(r.lk)} ↗</a><button data-ci="${i}">Salin sitasi</button><span class="ok"></span></div></div></article>`).join('');
+$$('#ref-sci button[data-ci]').forEach(b=>b.onclick=async()=>{const ok=b.nextElementSibling;try{await navigator.clipboard.writeText(citeText(SCI[+b.dataset.ci]));ok.textContent='Sitasi tersalin.'}catch(e){ok.textContent='Gagal menyalin. Pilih teks sitasi lalu salin manual.'}});
+const DOCS=[
+ {t:'Instruksi Presiden Nomor 12 Tahun 2025',d:'Upaya penanganan keadaan tertentu untuk normalisasi alur pelayaran Pelabuhan Pulau Baai, transportasi dan logistik, serta percepatan pembangunan Pulau Enggano. Ditetapkan 24 Juni 2025.',u:'https://peraturan.bpk.go.id/Details/329086/inpres-no-12-tahun-2025',lk:'JDIH BPK'},
+ {t:'Citra satelit Sentinel-2 (program Copernicus)',d:'Citra optik resolusi 10 m periode 2019–2026, sumber indikator kekeruhan dan luas air tetap pada tab Data Satelit.'},
+ {t:'Curah hujan CHIRPS',d:'Data curah hujan bulanan untuk area studi pada tab Data Satelit.',u:'https://www.chc.ucsb.edu/data/chirps',lk:'Climate Hazards Center'},
+ {t:'Google Earth Engine',d:'Platform pengolahan citra satelit yang dipakai untuk mengambil dan merangkum data per bulan dan per kuartal.',u:'https://earthengine.google.com',lk:'earthengine.google.com'}];
+$('#ref-doc').innerHTML=DOCS.map((r,i)=>`<article class="ref"><span class="no">${String.fromCharCode(65+i)}</span><div><p class="cit"><b>${esc(r.t)}</b></p><p class="note" style="margin:0 0 6px">${esc(r.d)}</p>${r.u?`<div class="acts"><a href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${esc(r.lk)} ↗</a></div>`:''}</div></article>`).join('');
+const nMedia=BERITA.length;
+$('#ref-stat').innerHTML=`<div class="kpi"><strong>${SCI.length} artikel ilmiah</strong><span>tentang sedimentasi pelabuhan di Bengkulu</span></div><div class="kpi r"><strong>${nMedia} liputan media</strong><span>artikel, video, dan unggahan</span></div><div class="kpi w"><strong>${DOCS.length} data dan dokumen</strong><span>peraturan, citra satelit, dan curah hujan</span></div>`;
 
 /* ---------- Galeri ---------- */
 const GAL=[
@@ -179,7 +206,6 @@ const GAL2=[
 let IMG={};try{IMG=JSON.parse($('#img-data').textContent)}catch(e){}
 /* Galeri: gambar bawaan + gambar yang diunggah pemilik lewat penyimpanan artifact (db + assets) */
 let ST={img:{},cap:{},title:{},extra:[]},ED=null,DBREF=null,DBOK=false,saving=Promise.resolve();
-const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const srcOf=id=>IMG[id]||null;
 const ttl=g=>ST.title[g.id]||g.t,cap=g=>ST.cap[g.id]??g.c;
 function fig(g){const src=srcOf(g.id);if(!src&&!ED)return'';

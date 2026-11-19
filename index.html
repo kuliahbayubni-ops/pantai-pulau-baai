@@ -29,6 +29,18 @@ section.tab{display:none}section.tab.on{display:block}
 .grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .mini{background:var(--bg);border-radius:10px;padding:12px}.mini b{display:block;margin-bottom:3px}
 .mini p{font-size:14px;color:var(--mu);margin:0}
+.ref{display:grid;grid-template-columns:44px 1fr;gap:4px 14px;padding:14px 0;border-top:1px solid var(--bd)}
+.ref:first-child{border-top:0;padding-top:4px}
+.ref .no{width:36px;height:36px;border-radius:50%;background:var(--ac2);color:var(--ac);font:700 16px Georgia,serif;display:flex;align-items:center;justify-content:center}
+.ref .cit{font-size:15px;line-height:1.55;margin:4px 0 8px}.ref .cit i{color:var(--tx)}
+.ref dl{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;margin:0 0 10px;font-size:14px}
+.ref dt{color:var(--mu);font-weight:700}.ref dd{margin:0;color:var(--tx)}
+.ref .tagx{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--wn);margin-left:6px}
+.ref .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ref .acts a,.ref .acts button{font-size:13.5px;font-weight:700}
+.ref .acts a{text-decoration:none}.ref .acts a:hover{text-decoration:underline}
+.ref .ok{font-size:12.5px;color:var(--ok)}
+@media(max-width:640px){.ref{grid-template-columns:1fr}.ref dl{grid-template-columns:1fr}}
 .nwbar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;margin-bottom:14px}
 .nwg{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .nw{display:flex;flex-direction:column;border:1px solid var(--bd);border-top:4px solid var(--c,var(--ac));border-radius:10px;overflow:hidden;background:var(--card)}
@@ -109,7 +121,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 </style></head><body>
 <header><div class="hd">
 <div class="brand">Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai<small>Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
-<nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#berita" data-t="berita">Berita</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
+<nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#referensi" data-t="referensi">Referensi</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
 </div></header>
 <main>
 
@@ -150,7 +162,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <li class="o"><b>2025</b>Instruksi Presiden Nomor 12 Tahun 2025 tentang normalisasi alur Pelabuhan Pulau Baai.</li>
 <li class="o"><b>2026</b>BRIN mendorong peta jalan penanganan pendangkalan berbasis riset.</li>
 </ol>
-<p style="margin:8px 0 0"><a href="#berita">Lihat liputan media tentang isu ini →</a></p>
+<p style="margin:8px 0 0"><a href="#referensi">Lihat referensi ilmiah dan liputan media →</a></p>
 </div>
 </div>
 
@@ -163,17 +175,31 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 </div>
 </section>
 
-<!-- ================= BERITA ================= -->
-<section class="tab" id="t-berita">
+<!-- ================= REFERENSI ================= -->
+<section class="tab" id="t-referensi">
 <div class="card hero">
-<h2>Isu ini dalam pemberitaan</h2>
-<p class="lead">Pendangkalan alur Pulau Baai bukan sekadar persoalan teknis pelabuhan. Artikel, liputan video, dan unggahan berikut menunjukkan dampaknya pada masyarakat Pulau Enggano, pasokan BBM, dan perekonomian Bengkulu, serta dorongan untuk penanganan jangka panjang.</p>
-<div class="kpis" id="nw-stat"></div>
+<h2>Referensi</h2>
+<p class="lead">Inovasi ini disusun dari penelitian ilmiah tentang sedimentasi di pesisir Bengkulu, liputan media tentang dampaknya bagi masyarakat, serta data dan dokumen resmi. Setiap referensi dilengkapi tautan ke sumber aslinya.</p>
+<div class="kpis" id="ref-stat"></div>
 </div>
+
 <div class="card">
+<h2>Artikel ilmiah</h2>
+<p class="note">Penelitian yang menjadi dasar mekanisme dalam simulasi dan penempatan zona pengamatan satelit.</p>
+<div id="ref-sci"></div>
+</div>
+
+<div class="card">
+<h2>Berita dan liputan media</h2>
+<p class="note" style="margin-bottom:12px">Liputan yang menunjukkan bahwa pendangkalan alur Pulau Baai berdampak langsung pada masyarakat Pulau Enggano, pasokan BBM, dan perekonomian Bengkulu.</p>
 <div class="nwbar"><div class="btns" id="nw-cat" style="margin:0"></div><div class="btns" id="nw-ord" style="margin:0"><button data-o="asc" class="on">Terlama dulu</button><button data-o="desc">Terbaru dulu</button></div></div>
 <div class="nwg" id="nw-list"></div>
-<p class="note" style="margin-top:12px">Ringkasan ditulis ulang dengan kata-kata sendiri dan bukan kutipan artikel. Gambar pratinjau dan video ditampilkan langsung dari situs sumbernya. Klik tautan di setiap kartu untuk membuka sumber aslinya.</p>
+<p class="note" style="margin-top:12px">Ringkasan ditulis ulang dengan kata-kata sendiri dan bukan kutipan artikel. Gambar pratinjau dan video ditampilkan langsung dari situs sumbernya.</p>
+</div>
+
+<div class="card">
+<h2>Data dan dokumen resmi</h2>
+<div id="ref-doc"></div>
 </div>
 </section>
 
@@ -315,14 +341,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 </div>
 <div class="card">
 <h3>Sumber</h3>
-<ul class="src">
-<li>Hutari, P.Z., Johan, Y., Negara, B.F.S.P. (2018). Analisis Sedimentasi di Pelabuhan Pulau Baai Kota Bengkulu. <i>Jurnal Enggano</i> 3(1): 129–143.</li>
-<li>Arifin, L., Hutagaol, J.P., Hanafi, M. (2003). Pendangkalan Alur Pelayaran di Pelabuhan Pulau Baai Bengkulu. <i>Jurnal Geologi Kelautan</i> 1(3): 29–37.</li>
-<li>Kompas, berita pengerukan alur Pelabuhan Pulau Baai, 23 Juni 2025: <a href="https://www.kompas.id/artikel/sudah-status-darurat-tapi-sedimentasi-alur-pelabuhan-pulau-baai-tetap-berlarut">kompas.id</a></li>
-<li>BRIN, Pendangkalan Pelabuhan Pulau Baai Puluhan Tahun, BRIN Dorong Peta Jalan Berbasis Riset: <a href="https://brin.go.id/news/130613/pendangkalan-pelabuhan-pulau-baai-puluhan-tahun-brin-dorong-peta-jalan-berbasis-riset">brin.go.id</a></li>
-<li>Instruksi Presiden Nomor 12 Tahun 2025 tentang normalisasi alur Pelabuhan Pulau Baai.</li>
-<li>Citra Sentinel-2 (Copernicus) dan curah hujan CHIRPS, diolah di Google Earth Engine.</li>
-</ul>
+<p>Daftar lengkap artikel ilmiah, liputan media, serta data dan dokumen resmi yang dipakai ada di tab <a href="#referensi">Referensi</a>.</p>
 </div>
 </section>
 </main>
@@ -561,5 +580,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=64aa96ce';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=a46498d9';document.body.appendChild(s)})();
 </script></body></html>
