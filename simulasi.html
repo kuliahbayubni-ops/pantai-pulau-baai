@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulasi Pendangkalan Alur Pelabuhan Pulau Baai</title>
+<style>
+:root{--bg:#eef3f4;--card:#fff;--tx:#14262e;--mu:#56696f;--ac:#0b6e8a;--bd:#cfdadd;--rd:#c0392b;--ok:#1f8a5b;--wn:#b9770e;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a1f;--card:#16262d;--tx:#e6eff2;--mu:#94a9b0;--ac:#4cc0e0;--bd:#2a3e46;--rd:#ff7b6b;--ok:#4cd39a;--wn:#f0b050;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1a1f;--card:#16262d;--tx:#e6eff2;--mu:#94a9b0;--ac:#4cc0e0;--bd:#2a3e46;--rd:#ff7b6b;--ok:#4cd39a;--wn:#f0b050;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
+main{max-width:980px;margin:0 auto;padding:16px}
+h1{font:700 22px/1.25 Georgia,"Times New Roman",serif;margin:4px 0 2px}
+.sub{color:var(--mu);margin:0 0 14px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:12px}
+canvas{width:100%;height:auto;display:block;border-radius:6px}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px 18px}
+label{display:block;font-size:13px;color:var(--mu)}label b{color:var(--tx)}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{font:inherit;font-size:14px;padding:7px 12px;border-radius:8px;border:1px solid var(--ac);background:transparent;color:var(--ac);cursor:pointer}
+button.p{background:var(--ac);color:var(--bg)}button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi div{border-left:3px solid var(--ac);padding-left:10px}.kpi span{display:block;font-size:12px;color:var(--mu)}.kpi strong{font-size:20px}
+#st{font-weight:700}
+.note{font-size:13px;color:var(--mu)}
+input[type=date]{width:100%;font:inherit;padding:5px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
+#ban{display:none;padding:8px 10px;border-radius:8px;font-weight:700;margin:8px 0 0;color:#fff}.bad{background:var(--rd)}.dig{background:var(--wn)}
+.vt{display:none;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;font-size:14px;color:var(--mu)}
+.vt button.on{background:var(--ac);color:var(--bg)}
+@media(min-width:1000px){.vt{display:flex}
+main.side{max-width:1500px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:14px;align-items:start}
+main.side>h1,main.side>.sub,main.side>.vt{grid-column:1/-1}
+main.side>div:nth-of-type(1){grid-column:1;grid-row:4}
+main.side>div:nth-of-type(3){grid-column:2;grid-row:4}
+main.side>div:nth-of-type(2){grid-column:1/-1;grid-row:5}
+main.side>div:nth-of-type(4){grid-column:1/-1;grid-row:6}}
+</style></head><body><main>
+<h1>Simulasi Pendangkalan Alur Pelabuhan Pulau Baai</h1>
+<p class="sub">Demonstrasi konseptual: pasir dari laut lepas terbawa arus sepanjang pantai dan mengendap di mulut alur, terutama di sisi pier barat. Arus pasang membawa pasir masuk lebih kuat daripada arus surut membawanya keluar.</p>
+<section class="vt" aria-label="Pilihan tampilan"><span>Tampilan:</span><button id="tv1">Terpisah (simulasi dan grafik bergantian)</button><button id="tv2" class="on">Sejajar (simulasi dan grafik bersamaan)</button></section>
+
+<div class="card"><canvas id="cv" width="840" height="490" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="ban" role="alert"></div>
+<p class="note">Titik cokelat = butir pasir. Warna air makin cokelat-pasir = makin dangkal. Kotak putus-putus = alur masuk yang dipantau. Label di kiri-bawah menunjukkan fase pasang atau surut (skema, bukan waktu nyata). Hijau-krem = daratan, biru keabuan berkelok = sungai. Kapal putih keluar-masuk selama alur cukup dalam; jika alur tertutup endapan, kapal berhenti dan muncul peringatan, lalu simulasi dihentikan. Kapal oranye = alat keruk.</p></div>
+
+<div class="card"><div class="ctl">
+<label>Tinggi gelombang: <b id="vw">2.0</b> m<input type="range" id="w" min="0.5" max="4" step="0.1" value="2"></label>
+<label>Kecepatan arus sepanjang pantai: <b id="vc">0.5</b> m/s<input type="range" id="c" min="0" max="1" step="0.05" value="0.5"></label>
+<label>Curah hujan (pasokan sungai): <b id="vr">30</b> mm/hari<input type="range" id="r" min="0" max="100" step="5" value="30"></label>
+<label>Ambang kedalaman kritis: <b id="vt">8.0</b> m<input type="range" id="t" min="6" max="11" step="0.1" value="8"></label>
+<label>Tanggal awal (alur dianggap ideal, 12 m)<input type="date" id="sd"></label>
+<label>Kecepatan simulasi: <b id="vs">2</b>x<input type="range" id="s" min="1" max="6" step="1" value="2"></label>
+</div>
+<p id="sea" class="note" style="margin:10px 0 0"></p><div class="btns"><button class="p" id="bp">Jeda</button><button id="br">Ulangi dari awal</button><button id="bd">Keruk alur</button><button id="b1">Musim kering</button><button id="b2">Musim hujan</button><button id="b3" class="p">Otomatis (ikuti kalender)</button></div></div>
+
+<div class="card"><div class="kpi">
+<div><span>Tanggal simulasi</span><strong id="kd" style="font-size:15px">-</strong></div>
+<div><span>Kedalaman alur rata-rata</span><strong id="kg">10.0 m</strong></div>
+<div><span>Laju pendangkalan</span><strong id="kr">-</strong></div>
+<div><span>Perkiraan pengerukan berikutnya</span><strong id="kf">-</strong></div></div>
+<p id="st"></p>
+<canvas id="ch" width="840" height="230" aria-label="Grafik kedalaman dan ramalan"></canvas>
+<p class="note">Ramalan memakai regresi linear dari kedalaman simulasi (garis putus-putus = proyeksi, merah = ambang kritis). Latar biru muda pada grafik = periode musim hujan. Ini masih ilustrasi: deret waktu ini nanti diganti indikator dari citra satelit. Kedalaman 12 m = rencana pendalaman alur; ambang 8 m = kedalaman alur yang dilaporkan BRIN pada September 2026.</p></div><div class="card"><b>Dasar ilmiah simulasi</b><ul style="margin:6px 0 8px;padding-left:20px;font-size:14px"><li>Sedimen hampir seluruhnya pasir halus dari laut lepas, terbawa arus sepanjang pantai (Hutari dkk., 2018).</li><li>Endapan terbesar ada di mulut alur sisi luar dekat pier barat, yang berperan sebagai penangkap sedimen; endapan meluas ke timur (Arifin dkk., 2003; Hutari dkk., 2018).</li><li>Arus pasang masuk kolam jauh lebih kuat daripada arus surut, sehingga pasir yang masuk tidak seluruhnya keluar lagi (Arifin dkk., 2003).</li><li>Angkutan sedimen sepanjang pantai diperkirakan sekitar 0,4 juta m³ per tahun, dan alur dikeruk rutin (Arifin dkk., 2003).</li></ul><p class="note">Geometri dan laju di demo disederhanakan: ini simulasi konseptual, bukan model rekayasa.</p></div>
+<div class="card"><style>.tb.on{background:var(--ac);color:var(--bg)}@media(min-width:1000px){main.side>div:nth-of-type(5){grid-column:1/-1;grid-row:7}}</style>
+<b>Data nyata dari satelit: indeks peringatan dini (Sentinel-2, 2019-2026)</b>
+<p class="note" style="margin:4px 0 8px">Selisih luas air tetap tiap zona terhadap pantai pembanding, per kuartal, pola musiman sudah dikoreksi. Nilai negatif = area air menyempit. Geser kuartal atau tekan Putar waktu untuk melihat perjalanannya.</p>
+<div class="btns" style="margin:0 0 8px"><button class="tb on" id="dz1">Mulut alur</button><button class="tb" id="dz2">Sisi timur pier</button><button class="tb" id="dz3">Sisi barat pier</button><button id="dpl">Putar waktu</button></div>
+<canvas id="dcv" width="840" height="300" aria-label="Indeks peringatan dini dari citra satelit"></canvas>
+<label>Kuartal<input type="range" id="dsl" min="0" max="30" value="30"></label>
+<p id="dtx" style="font-weight:700;margin:6px 0 0"></p>
+<p class="note">Pita abu-abu = kisaran normal 2019-2022 (sekitar dua simpangan baku). Titik jingga = siaga, merah = kritis. Belah ketupat abu-abu (Kuartal IV 2020) = data tidak wajar, di luar skala; ditampilkan demi transparansi dan tidak dipakai dalam analisis. Indikator ini mengukur luas permukaan air, bukan kedalaman alur; zona pembanding hanya satu; data per kuartal. Zona timur: citra menunjukkan daratan pasir bertambah sejak 2025. Penyebabnya bisa proses alami atau pemanfaatan pasir hasil pengerukan (Inpres 12/2025) dan belum dapat dipisahkan.</p></div>
+
+<script>
+const W=120,H=70,S=7,$=id=>document.getElementById(id);
+const cv=$('cv'),cx=cv.getContext('2d'),ch=$('ch'),gx=ch.getContext('2d');
+const off=document.createElement('canvas');off.width=W;off.height=H;const ox=off.getContext('2d');
+const rv=(x,y)=>y>=44&&Math.abs(x-(10.5+2.2*Math.sin(y/5)))<=1.7;
+function land(x,y){if(rv(x,y))return false;if(y<36)return false;if(y<44)return(x>=52&&x<=56)||(x>=64&&x<=68);if(y<52)return!(x>=57&&x<=63);if(y<62)return!(x>=46&&x<=74);return true}
+const inCh=(x,y)=>x>=57&&x<=63&&y>=30&&y<=50;
+let D,Wt,P,day,hist,dred,dstart,run=true,acc=0,lastRec=-1;
+function reset(){D=new Float32Array(W*H);Wt=new Float32Array(W*H);P=[];day=0;hist=[];dred=[];dstart=0;lastRec=-1;dr=null;seed=12345;tide=0;flood=true;acc=0;ship.st='wait';ship.c=60;ship.y=0;ship.blocked=false;
+for(let y=0;y<H;y++)for(let x=0;x<W;x++){let d=0;if(!land(x,y)){d=y<44?3+(44-y)/44*11:(rv(x,y)?2:9);if(x>=57&&x<=63&&y>=24&&y<=51)d=12}D[y*W+x]=d}
+rec()}
+function gauge(){let s=0,n=0;for(let y=30;y<=50;y++)for(let x=57;x<=63;x++){s+=D[y*W+x];n++}return s/n}
+function rec(){hist.push({d:Math.floor(day),g:gauge()});lastRec=Math.floor(day)}
+let seed=12345;
+function rnd(){seed=(seed+0x6D2B79F5)|0;let t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}
+const g=()=>(rnd()+rnd()+rnd()-1.5)*1.6;
+function par(){return{w:+$('w').value,c:+$('c').value,r:+$('r').value,t:+$('t').value}}
+let tide=0,flood=true;
+function step(){tide+=.9;flood=Math.sin(tide)>0;const p=par(),wN=(p.w-.5)/3.5,cN=p.c,rN=p.r/100;
+const n=Math.round(7+12*cN),m=Math.round(rN*5);
+for(let i=0;i<n;i++)P.push({x:0,y:24+rnd()*18,r:0});
+for(let i=0;i<m;i++)P.push({x:11,y:43.4,r:1});
+const q=[];
+for(const a of P){const px=a.x|0,py=a.y|0;let s=1;
+if(a.x>=56&&a.x<=65){if(a.y>=36)s=.25;else if(a.y>=28)s=.55}else if(a.x>=69&&a.x<=85&&a.y>=30&&a.y<44)s=.4;
+const u=(.25+.9*cN)*s,k=.25*(.5+wN)*(.6+.4*s);
+const tc=a.x>=56&&a.x<=65&&a.y>=30&&a.y<52;
+let nx=a.x+u+g()*k,ny=a.y+(.05+.12*wN)+(tc?(flood?.35:-.03):0)+g()*k,blocked=false;
+if(nx>=W||ny<0||nx<0)continue;
+if(ny>=H)ny=H-1;
+if(land(nx|0,ny|0)){blocked=true;if(!land(nx|0,a.y|0))ny=a.y;else if(!land(a.x|0,ny|0))nx=a.x;else{nx=a.x;ny=a.y}}
+a.x=nx;a.y=ny;
+const cxx=a.x|0,cyy=a.y|0;
+let pd=s<1?.01+.1*(1-s):.0015;if(cyy>=52)pd=.05;if(blocked)pd=.1;
+if(rnd()<pd){Wt[cyy*W+cxx]+=inCh(cxx,cyy)?3:1;continue}
+q.push(a)}
+P=q;
+const M=3.2*(.25+.5*wN+.5*cN+.5*rN)/4;let sum=0;for(let i=0;i<Wt.length;i++)sum+=Wt[i];
+if(sum>0)for(let i=0;i<Wt.length;i++){if(Wt[i]>.001){D[i]=Math.max(1,D[i]-M*Wt[i]/sum);Wt[i]*=.99}}
+day+=.25;if(Math.floor(day)>lastRec)rec()}
+function draw(){const im=ox.createImageData(W,H);
+for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x,o=i*4;let r,gg,b;
+if(rv(x,y)){r=105;gg=150;b=175}else if(land(x,y)){const j=y>=36&&y<44;r=j?118:178;gg=j?120:196;b=j?126:146}
+else{const t=Math.min(1,Math.max(0,(D[i]-1)/13));
+if(t<.5){const k=t/.5;r=215-k*125;gg=185-k*20;b=120+k*85}else{const k=(t-.5)/.5;r=90-k*70;gg=165-k*85;b=205-k*55}}
+im.data[o]=r;im.data[o+1]=gg;im.data[o+2]=b;im.data[o+3]=255}
+ox.putImageData(im,0,0);cx.imageSmoothingEnabled=false;cx.drawImage(off,0,0,W*S,H*S);
+for(const a of P){cx.fillStyle=a.r?'rgba(80,40,10,.95)':'rgba(125,75,25,.85)';cx.fillRect(a.x*S-1,a.y*S-1,3,3)}
+cx.setLineDash([5,4]);cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(57*S,30*S,7*S,21*S);cx.setLineDash([]);drawShip();drawDredger();drawDate();
+cx.font='bold 12px Trebuchet MS,sans-serif';cx.lineWidth=3;cx.strokeStyle='rgba(255,255,255,.85)';cx.fillStyle='#0b2a3b';
+const L=(t,x,y)=>{cx.strokeText(t,x,y);cx.fillText(t,x,y)};
+L('Laut lepas',12*S,5*S);L('Arus sepanjang pantai \u2192',6*S,20*S);L('Sungai (sumber sedimen)',14*S,52*S);L('Alur masuk',66*S,28*S);L('Pier barat (penangkap pasir)',30*S,41*S);L('Pier timur',70*S,41*S);L('Kolam pelabuhan',50*S,58*S);L('Daratan',92*S,55*S);L(flood?'PASANG: arus masuk kuat':'SURUT: arus keluar lemah',4*S,67*S)}
+function reg(){const a=hist.slice(Math.max(dstart,hist.length-40));if(a.length<8)return null;
+const n=a.length;let mx=0,my=0;a.forEach(p=>{mx+=p.d;my+=p.g});mx/=n;my/=n;let sxx=0,sxy=0;a.forEach(p=>{sxx+=(p.d-mx)**2;sxy+=(p.d-mx)*(p.g-my)});
+const m=sxy/sxx,b=my-m*mx;let ss=0;a.forEach(p=>{ss+=(p.g-(b+m*p.d))**2});const se=Math.sqrt(ss/Math.max(1,n-2)/sxx);
+return{m,b,se,last:a[n-1]}}
+function info(){const p=par(),cur=hist[hist.length-1].g,R=reg();
+$('kd').textContent=fmt(Math.floor(day))+' (hari ke-'+Math.floor(day)+')';$('kg').textContent=cur.toFixed(2)+' m';
+let fc=null,lo=null,hi=null;
+if(R&&R.m<-1e-4){$('kr').textContent=(-R.m*100).toFixed(2)+' cm/hari';
+const f=(m)=>m<-1e-5?Math.max(0,(R.last.g-p.t)/-m):Infinity;fc=f(R.m);lo=f(R.m-1.96*R.se);hi=f(R.m+1.96*R.se);
+$('kf').textContent=cur<=p.t?'Sekarang':'\u00b1'+Math.round(fc)+' hari lagi ('+fmt(Math.floor(day)+Math.round(fc),1)+')'}
+else{$('kr').textContent=R?'stabil':'menghitung...';$('kf').textContent=R?'belum perlu':'-'}
+const s=$('st');
+if(cur<=p.t){s.textContent='Status: KRITIS. Kedalaman di bawah ambang, alur perlu dikeruk sekarang.';s.style.color='var(--rd)'}
+else if(fc!==null&&fc<30){s.textContent='Status: WASPADA. Ambang kritis diperkirakan tercapai dalam kurang dari 30 hari'+(isFinite(hi)?' (rentang '+Math.round(lo)+'-'+Math.round(hi)+' hari).':'.');s.style.color='var(--wn)'}
+else{s.textContent='Status: AMAN. '+(fc!==null?'Rentang perkiraan sampai ambang: '+Math.round(lo)+(isFinite(hi)?'-'+Math.round(hi):'+')+' hari.':'Belum ada tren pendangkalan yang jelas.');s.style.color='var(--ok)'}
+chart(R,p,fc)}
+function chart(R,p,fc){const w=840,h=230,pl=44,pr=12,pt=12,pb=26;gx.clearRect(0,0,w,h);
+const st=getComputedStyle(document.documentElement),tx=st.getPropertyValue('--tx'),mu=st.getPropertyValue('--mu'),ac=st.getPropertyValue('--ac'),rd=st.getPropertyValue('--rd');
+const xm=Math.max(120,day+(fc&&isFinite(fc)?Math.min(fc,300):0)+15),y0=5,y1=13;
+const X=d=>pl+d/xm*(w-pl-pr),Y=v=>pt+(y1-v)/(y1-y0)*(h-pt-pb);
+gx.font='13px Trebuchet MS,sans-serif';gx.fillStyle=mu;gx.strokeStyle=mu;gx.globalAlpha=.35;gx.lineWidth=1;
+for(let v=5;v<=13;v++){gx.beginPath();gx.moveTo(pl,Y(v));gx.lineTo(w-pr,Y(v));gx.stroke()}gx.globalAlpha=1;
+for(let d=0;d<xm;d+=3){if(clim(dateAt(d)).raw>=45){gx.fillStyle='rgba(76,160,220,.12)';gx.fillRect(X(d),pt,X(d+3)-X(d),h-pt-pb)}}
+for(let v=5;v<=13;v+=1)gx.fillText(v+' m',6,Y(v)+4);
+const stp=xm>300?100:xm>150?50:20;for(let d=0;d<=xm;d+=stp)gx.fillText(fmt(d,1),X(d)-18,h-8);
+gx.setLineDash([6,4]);gx.strokeStyle=rd;gx.lineWidth=1.6;gx.beginPath();gx.moveTo(pl,Y(p.t));gx.lineTo(w-pr,Y(p.t));gx.stroke();
+gx.fillStyle=rd;gx.fillText('ambang kritis',pl+6,Y(p.t)-5);gx.setLineDash([]);
+gx.strokeStyle=mu;gx.lineWidth=1;dred.forEach(d=>{gx.setLineDash([2,3]);gx.beginPath();gx.moveTo(X(d),pt);gx.lineTo(X(d),h-pb);gx.stroke();gx.fillStyle=mu;gx.fillText('keruk',X(d)+3,pt+10)});gx.setLineDash([]);
+gx.strokeStyle=ac;gx.lineWidth=2.2;gx.beginPath();hist.forEach((q,i)=>{const yy=Y(Math.min(y1,Math.max(y0,q.g)));i?gx.lineTo(X(q.d),yy):gx.moveTo(X(q.d),yy)});gx.stroke();
+if(R&&R.m<-1e-4){gx.strokeStyle=tx;gx.setLineDash([5,4]);gx.lineWidth=1.5;const d0=R.last.d,v0=R.last.g,d1=Math.min(xm,d0+(isFinite(fc)?fc:xm)),v1=v0+R.m*(d1-d0);
+gx.beginPath();gx.moveTo(X(d0),Y(v0));gx.lineTo(X(d1),Y(Math.max(y0,v1)));gx.stroke();gx.setLineDash([])}}
+function dredge(){if(!dr)dr={y:22}}
+function dredgeStep(){dr.y+=.25;
+for(let y=24;y<=51;y++)if(y<=dr.y&&y>=dr.y-8)for(let x=57;x<=63;x++)D[y*W+x]=Math.min(12,D[y*W+x]+.3);
+if(dr.y>56){for(let y=24;y<=51;y++)for(let x=57;x<=63;x++)D[y*W+x]=12;Wt.fill(0);dred.push(Math.floor(day));rec();dstart=hist.length-1;dr=null;info()}}
+let dr=null,crit=false;
+const ship={st:'wait',y:0,c:60,blocked:false};
+function sd(){const v=$('sd').value;return v?new Date(v+'T00:00:00'):new Date()}
+function fmt(d,short){const t=new Date(sd().getTime()+d*864e5);return t.toLocaleDateString('id-ID',short?{day:'numeric',month:'short',year:'2-digit'}:{day:'numeric',month:'long',year:'numeric'})}
+function moveShip(){const ok=gauge()>par().t;
+if(ship.st==='wait'){ship.blocked=false;if(--ship.c<=0){ship.st='in';ship.y=0}return}
+if(ship.st==='in'){if(ship.y>=24&&ship.y<26&&!ok){ship.blocked=true;return}ship.blocked=false;ship.y+=.4;if(ship.y>=56){ship.st='dock';ship.c=90}return}
+if(ship.st==='dock'){ship.blocked=false;if(--ship.c<=0)ship.st='out';return}
+if(ship.y<=30&&ship.y>28&&!ok){ship.blocked=true;return}ship.blocked=false;ship.y-=.4;if(ship.y<=0){ship.st='wait';ship.c=80}}
+function drawDate(){const n=Math.floor(day),q=clim(dateAt(n)),h=q.raw>=45,k=q.raw<=25,s=h?'Musim hujan':k?'Musim kemarau':'Peralihan',col=h?'#3d9be9':k?'#e1a100':'#95a5a6',x=W*S-232,y=12;
+cx.fillStyle='rgba(10,25,35,.75)';cx.fillRect(x,y,220,86);
+cx.fillStyle='#cfe3ee';cx.font='11px Trebuchet MS,sans-serif';cx.fillText('TANGGAL SIMULASI (hari ke-'+n+')',x+10,y+18);
+cx.fillStyle='#fff';cx.font='bold 18px Trebuchet MS,sans-serif';cx.fillText(fmt(n),x+10,y+44);
+cx.fillStyle=col;cx.beginPath();cx.arc(x+16,y+66,6,0,7);cx.fill();
+cx.fillStyle='#fff';cx.font='bold 14px Trebuchet MS,sans-serif';cx.fillText(s,x+30,y+71)}
+function drawShip(){if(ship.st==='wait')return;const x=60.5*S,y=(ship.st==='dock'?57:ship.y)*S,d=ship.st==='out'?-1:1;
+cx.fillStyle='#fff';cx.strokeStyle='#223';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(x-9,y-10*d);cx.lineTo(x+9,y-10*d);cx.lineTo(x+5,y+13*d);cx.lineTo(x-5,y+13*d);cx.closePath();cx.fill();cx.stroke();
+cx.fillStyle='#c0392b';cx.fillRect(x-5,y-4,10,8);
+cx.font='bold 12px Trebuchet MS,sans-serif';cx.lineWidth=3;cx.strokeStyle='rgba(255,255,255,.9)';
+if(ship.blocked){cx.fillStyle='#c0392b';cx.beginPath();cx.moveTo(x+22,y-18);cx.lineTo(x+34,y+4);cx.lineTo(x+10,y+4);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.fillText('!',x+20,y+2);cx.fillStyle='#c0392b';cx.strokeText('ALUR TERTUTUP ENDAPAN!',x+40,y-2);cx.fillText('ALUR TERTUTUP ENDAPAN!',x+40,y-2)}
+else{cx.fillStyle='#0b2a3b';cx.strokeText('Kapal',x+14,y);cx.fillText('Kapal',x+14,y)}}
+function drawDredger(){if(!dr)return;const x=60.5*S,y=dr.y*S;
+cx.fillStyle='#e8a317';cx.strokeStyle='#5a3b00';cx.lineWidth=1.5;cx.fillRect(x-16,y-11,32,22);cx.strokeRect(x-16,y-11,32,22);
+cx.fillStyle='#fff';cx.fillRect(x-12,y-8,12,10);
+cx.strokeStyle='#333';cx.lineWidth=3;cx.beginPath();cx.moveTo(x+4,y);cx.lineTo(x+10,y+22);cx.stroke();
+cx.fillStyle='#444';cx.beginPath();cx.moveTo(x+4,y+30);cx.lineTo(x+16,y+30);cx.lineTo(x+10,y+22);cx.closePath();cx.fill();
+for(let i=0;i<8;i++){cx.fillStyle='rgba(125,75,25,.8)';cx.fillRect(x+6+Math.random()*14,y+16+Math.random()*16,2,2)}
+cx.font='bold 12px Trebuchet MS,sans-serif';cx.lineWidth=3;cx.strokeStyle='rgba(255,255,255,.9)';cx.fillStyle='#5a3b00';cx.strokeText('Kapal keruk',x+22,y-4);cx.fillText('Kapal keruk',x+22,y-4)}
+function banner(){const b=$('ban');
+if(dr){b.style.display='block';b.className='dig';b.textContent='Pengerukan berlangsung: kapal keruk membersihkan alur masuk...'}
+else if(crit){b.style.display='block';b.className='bad';b.textContent='SIMULASI DIHENTIKAN pada '+fmt(Math.floor(day))+': kedalaman alur mencapai ambang kritis. Kapal tidak dapat masuk kolam. Klik Keruk alur untuk melanjutkan.'}
+else b.style.display='none'}
+const MR=[70,65,55,45,30,18,10,10,20,38,55,68];
+let auto=true;
+function dateAt(d){return new Date(sd().getTime()+d*864e5)}
+function clim(dt){const m=dt.getMonth(),dim=new Date(dt.getFullYear(),m+1,0).getDate(),f=m+(dt.getDate()-.5)/dim-.5,i0=Math.floor(f),k=f-i0,a=MR[(i0+12)%12],b=MR[(i0+13)%12],r=a+(b-a)*k;
+return{raw:r,r:Math.round(r/5)*5,w:Math.round((.9+2.3*r/70)*10)/10,c:Math.round((.25+.5*r/70)*20)/20}}
+function applySeason(){const q=clim(dateAt(Math.floor(day)));
+if(auto){$('w').value=q.w;$('c').value=q.c;$('r').value=q.r;$('vw').textContent=q.w.toFixed(1);$('vc').textContent=q.c.toFixed(2);$('vr').textContent=q.r}
+const s=q.raw>=45?'Musim hujan':q.raw<=25?'Musim kemarau':'Peralihan';
+$('sea').textContent='Kalender Bengkulu pada tanggal simulasi: '+s+'. Mode: '+(auto?'otomatis (parameter mengikuti musim)':'manual (parameter diatur sendiri)')+'.'}
+function loop(){applySeason();crit=gauge()<=par().t;
+if(run){if(dr)dredgeStep();else if(!crit){acc+=+$('s').value*.5;while(acc>=1&&gauge()>par().t){applySeason();step();acc--}}moveShip()}
+banner();draw();if(run)info();requestAnimationFrame(loop)}
+[['w','vw',1],['c','vc',2],['r','vr',0],['t','vt',1],['s','vs',0]].forEach(([i,o,f])=>$(i).addEventListener('input',()=>{$(o).textContent=(+$(i).value).toFixed(f);info()}));
+function setP(w,c,r){[['w',w],['c',c],['r',r]].forEach(([i,v])=>{$(i).value=v;$(i).dispatchEvent(new Event('input'))})}
+$('bp').onclick=()=>{run=!run;$('bp').textContent=run?'Jeda':'Lanjutkan'};
+$('br').onclick=()=>{reset();info()};$('bd').onclick=dredge;
+$('b1').onclick=()=>{auto=false;setP(1,.3,10)};$('b2').onclick=()=>{auto=false;setP(3.2,.75,70)};$('b3').onclick=()=>{auto=true};
+['w','c','r'].forEach(i=>$(i).addEventListener('input',e=>{if(e.isTrusted)auto=false}));
+$('sd').value=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);$('sd').addEventListener('change',()=>{reset();info()});const DD={mulut:[-1.0,-1.2,-1.4,-1.7,-1.0,-1.4,-1.4,-78.5,0.4,0.1,0.8,0.4,1.6,2.5,2.1,1.3,2.9,1.9,-0.2,-0.9,-0.5,1.2,0.9,-0.3,-2.0,-3.8,-4.4,-9.0,-8.4,-4.2,-3.8],
+timur:[-3.1,-2.7,-4.1,-3.7,-1.7,-0.4,-1.2,-18.8,1.1,0.4,0.7,-0.7,3.8,2.7,4.7,4.4,9.2,6.5,7.9,8.6,9.9,5.2,6.8,7.7,7.1,5.5,3.4,-4.1,-9.8,-9.5,-11.2],
+barat:[1.0,0.9,0.7,0.0,-0.4,0.2,-0.7,-85.1,0.0,-0.2,0.8,-0.5,-0.7,-0.9,-0.8,0.6,0.8,-0.9,-0.1,2.5,0.5,-1.9,-0.5,0.2,-1.9,-2.5,-1.7,-1.7,-0.6,-0.8,0.1]};
+const TH={mulut:{sg:-3,kr:-6},timur:{sg:-5.8,kr:-11.6},barat:{sg:-1.4,kr:-2.8}};
+let dz='mulut',dq=30,dtm=null;
+function ql(i){return 'Kuartal '+['I','II','III','IV'][i%4]+' '+(2019+Math.floor(i/4))}
+function dstat(v,t){if(v===null)return['data kuartal ini dibuang (tidak wajar)','var(--mu)'];if(v<=t.kr)return['KRITIS (di bawah '+t.kr+'%)','var(--rd)'];if(v<=t.sg)return['SIAGA (di bawah '+t.sg+'%)','var(--wn)'];if(v>-t.sg)return['di atas kisaran normal (area air lebih luas)','var(--ac)'];return['normal','var(--ok)']}
+const OUT=[7];
+function dshow(){const v=DD[dz][dq],s=OUT.includes(dq)?['TIDAK WAJAR: di luar skala grafik. Diduga sebagian besar piksel zona tertutup filter awan pada kuartal ini (dugaan, belum diverifikasi). Tidak dipakai dalam analisis.','var(--mu)']:dstat(v,TH[dz]),e=$('dtx');e.textContent=ql(dq)+': '+(v===null?'-':'selisih '+v.toFixed(1)+'% terhadap pantai pembanding')+'. Status: '+s[0]+'.';e.style.color=s[1];$('dsl').value=dq;drawDC()}
+function drawDC(){const g=$('dcv').getContext('2d'),w=840,h=300,pl=46,pr=12,pt=26,pb=30,t=TH[dz],v=DD[dz],s=getComputedStyle(document.documentElement),tx=s.getPropertyValue('--tx'),mu=s.getPropertyValue('--mu'),ac=s.getPropertyValue('--ac'),rd=s.getPropertyValue('--rd'),wn=s.getPropertyValue('--wn');
+const y0=-14,y1=12,X=i=>pl+i/31*(w-pl-pr),Y=a=>pt+(y1-a)/(y1-y0)*(h-pt-pb);
+g.clearRect(0,0,w,h);g.font='12px Trebuchet MS,sans-serif';
+g.fillStyle='rgba(128,128,128,.16)';g.fillRect(pl,Y(-t.sg),w-pl-pr,Y(t.sg)-Y(-t.sg));
+g.strokeStyle=mu;g.globalAlpha=.3;g.lineWidth=1;for(let a=-12;a<=12;a+=4){g.beginPath();g.moveTo(pl,Y(a));g.lineTo(w-pr,Y(a));g.stroke()}g.globalAlpha=1;
+g.fillStyle=mu;for(let a=-12;a<=12;a+=4)g.fillText(a+'%',8,Y(a)+4);for(let i=0;i<31;i+=4)g.fillText(2019+i/4,X(i)-10,h-8);
+g.setLineDash([6,4]);g.lineWidth=1.5;g.strokeStyle=wn;g.beginPath();g.moveTo(pl,Y(t.sg));g.lineTo(w-pr,Y(t.sg));g.stroke();g.fillStyle=wn;g.fillText('siaga',pl+4,Y(t.sg)-4);
+g.strokeStyle=rd;g.beginPath();g.moveTo(pl,Y(t.kr));g.lineTo(w-pr,Y(t.kr));g.stroke();g.fillStyle=rd;g.fillText('kritis',pl+4,Y(t.kr)-4);
+g.strokeStyle=mu;g.lineWidth=1;g.setLineDash([2,3]);g.fillStyle=mu;[[24+2.5/3,'Mar 2025: masalah dilaporkan',1],[24+6.5/3,'Jul 2025: berangsur normal',0]].forEach(e=>{g.beginPath();g.moveTo(X(e[0]),pt-4);g.lineTo(X(e[0]),h-pb);g.stroke();g.textAlign=e[2]?'right':'left';g.fillText(e[1],X(e[0])+(e[2]?-4:4),pt-8)});g.textAlign='left';
+g.setLineDash([]);g.strokeStyle=tx;g.globalAlpha=.5;g.lineWidth=1.8;g.beginPath();let on=false;v.forEach((a,i)=>{if(a===null||OUT.includes(i)){on=false;return}on?g.lineTo(X(i+.5),Y(a)):g.moveTo(X(i+.5),Y(a));on=true});g.stroke();g.globalAlpha=1;
+v.forEach((a,i)=>{if(a===null)return;if(OUT.includes(i)){const px=X(i+.5),py=Y(y0+1.5);g.strokeStyle=mu;g.lineWidth=2;g.setLineDash([]);g.beginPath();g.moveTo(px,py-7);g.lineTo(px+7,py);g.lineTo(px,py+7);g.lineTo(px-7,py);g.closePath();g.stroke();g.fillStyle=mu;g.fillText('Kuartal IV 2020: '+a.toFixed(1)+'% (tidak wajar, di luar skala)',px+12,py-8);return}g.fillStyle=a<=t.kr?rd:a<=t.sg?wn:ac;g.beginPath();g.arc(X(i+.5),Y(a),i===dq?6:3.5,0,7);g.fill()});
+g.strokeStyle=tx;g.lineWidth=1;g.globalAlpha=.6;g.beginPath();g.moveTo(X(dq+.5),pt);g.lineTo(X(dq+.5),h-pb);g.stroke();g.globalAlpha=1}
+['dz1','dz2','dz3'].forEach((id,k)=>$(id).onclick=()=>{dz=['mulut','timur','barat'][k];['dz1','dz2','dz3'].forEach((j,m)=>$(j).classList.toggle('on',m===k));dshow()});
+$('dsl').addEventListener('input',e=>{dq=+e.target.value;dshow()});
+$('dpl').onclick=()=>{if(dtm){clearInterval(dtm);dtm=null;$('dpl').textContent='Putar waktu';return}if(dq>=30)dq=0;$('dpl').textContent='Jeda';dshow();dtm=setInterval(()=>{if(dq>=30){clearInterval(dtm);dtm=null;$('dpl').textContent='Putar waktu';return}dq++;dshow()},600)};
+dshow();
+function setView(s){document.querySelector('main').classList.toggle('side',s);$('tv1').classList.toggle('on',!s);$('tv2').classList.toggle('on',s)}
+$('tv1').onclick=()=>setView(false);$('tv2').onclick=()=>setView(true);setView(innerWidth>=1000);
+reset();info();loop();
+</script></main><script>(function(){function s(){try{parent.postMessage({simH:Math.ceil(document.body.scrollHeight)},'*')}catch(e){}}new ResizeObserver(s).observe(document.body);addEventListener('load',s);setTimeout(s,300)})();</script></body></html>

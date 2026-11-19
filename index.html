@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai</title>
+<style>
+:root{--bg:#eef3f4;--card:#fff;--tx:#14262e;--mu:#56696f;--ac:#0b6e8a;--ac2:#e3f0f3;--bd:#cfdadd;--rd:#c0392b;--ok:#1f8a5b;--wn:#b9770e;--sand:#c9a46a;
+--z1:#0b6e8a;--z2:#c0392b;--z3:#7a5aa6;--z4:#6b7d83;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1a1f;--card:#16262d;--tx:#e6eff2;--mu:#94a9b0;--ac:#4cc0e0;--ac2:#1b333b;--bd:#2a3e46;--rd:#ff7b6b;--ok:#4cd39a;--wn:#f0b050;--sand:#d8b77f;--z1:#4cc0e0;--z2:#ff7b6b;--z3:#b79be0;--z4:#94a9b0;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15.5px/1.6 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.25;margin:0 0 8px}
+h1{font-size:30px}h2{font-size:22px;margin-top:6px}h3{font-size:17px}
+p{margin:0 0 10px}a{color:var(--ac)}
+header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--bd)}
+.hd{max-width:1240px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+.brand{font:700 16px/1.2 Georgia,serif;margin-right:auto}.brand small{display:block;font:12px "Trebuchet MS",sans-serif;color:var(--mu)}
+nav{display:flex;flex-wrap:wrap;gap:4px}
+nav a{padding:7px 13px;border-radius:8px;text-decoration:none;color:var(--mu);font-weight:600;font-size:14.5px}
+nav a:hover{background:var(--ac2);color:var(--tx)}nav a.on{background:var(--ac);color:var(--bg)}
+main{max-width:1240px;margin:0 auto;padding:18px 16px 40px}
+section.tab{display:none}section.tab.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px}
+.lead{font-size:17px;color:var(--mu);max-width:820px}
+.hero{padding:26px 22px;background:linear-gradient(135deg,var(--ac2),var(--card));}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:14px}
+.kpi{border-left:4px solid var(--ac);padding:4px 0 4px 12px}.kpi strong{display:block;font-size:24px;font-family:Georgia,serif}.kpi span{font-size:13px;color:var(--mu)}
+.kpi.r{border-color:var(--rd)}.kpi.w{border-color:var(--wn)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.mini{background:var(--bg);border-radius:10px;padding:12px}.mini b{display:block;margin-bottom:3px}
+.mini p{font-size:14px;color:var(--mu);margin:0}
+.go{display:inline-block;margin-top:6px;padding:8px 14px;border-radius:8px;background:var(--ac);color:var(--bg);text-decoration:none;font-weight:700}
+ol.tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--bd)}
+ol.tl li{position:relative;padding:0 0 12px 12px}ol.tl li:before{content:"";position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--ac);border:2px solid var(--card)}
+ol.tl li.r:before{background:var(--rd)}ol.tl li.o:before{background:var(--ok)}
+ol.tl b{display:block;font-size:13.5px;color:var(--mu)}
+.note{font-size:13.5px;color:var(--mu)}
+.warn{border-left:4px solid var(--wn);background:var(--ac2);padding:10px 12px;border-radius:6px;font-size:14px}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+button{font:inherit;font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid var(--ac);background:transparent;color:var(--ac);cursor:pointer}
+button.on{background:var(--ac);color:var(--bg)}button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.ch{position:relative}.ch svg{width:100%;height:auto;display:block;font-family:"Trebuchet MS",sans-serif}
+.tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 10px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.15);display:none;max-width:260px;z-index:3}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--mu);margin-top:4px}.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.status{font-weight:700;padding:8px 10px;border-radius:8px;background:var(--bg);margin-top:8px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.chip{border:1px solid var(--bd);border-radius:10px;padding:10px}.chip strong{font-size:22px;display:block;font-family:Georgia,serif}.chip span{font-size:13px;color:var(--mu)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+figure{margin:0;background:var(--bg);border-radius:10px;overflow:hidden;border:1px solid var(--bd)}
+figure img{width:100%;display:block;cursor:zoom-in;aspect-ratio:1/1;object-fit:cover;background:#000}
+.g2{grid-template-columns:repeat(auto-fill,minmax(420px,1fr))}.g2 figure img{aspect-ratio:auto;object-fit:contain;background:#fff;max-height:420px}
+@media(max-width:640px){.g2{grid-template-columns:1fr}}
+.ebar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ebar button{font-size:13px;padding:4px 9px}
+figcaption label{display:block;margin-bottom:6px}figcaption input,figcaption textarea{width:100%;font:inherit;font-size:14px;padding:5px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
+#gal-ed:empty{display:none!important}
+.ph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;color:var(--mu);font-size:13.5px;border-bottom:2px dashed var(--bd)}
+figcaption{padding:9px 11px;font-size:13.5px}figcaption b{display:block;font-size:14.5px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;flex-direction:column;color:#fff;cursor:zoom-out}
+#lb img{max-width:100%;max-height:85vh}#lb p{margin-top:8px;font-size:14px;text-align:center;max-width:900px}
+.tw{overflow:auto;max-height:420px;border:1px solid var(--bd);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:5px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}th{position:sticky;top:0;background:var(--card);text-align:right}
+td:first-child,th:first-child,td:nth-child(2),th:nth-child(2){text-align:left}
+tr.bad td{color:var(--mu);font-style:italic}
+#simf{width:100%;border:0;display:block;min-height:900px;background:var(--bg)}
+ul{margin:0 0 10px;padding-left:20px}li{margin-bottom:4px}
+.src li{font-size:14px}
+footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:var(--mu)}
+@media(max-width:640px){h1{font-size:24px}.pair{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="hd">
+<div class="brand">Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai<small>Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
+<nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
+</div></header>
+<main>
+
+<!-- ================= BERANDA ================= -->
+<section class="tab" id="t-beranda">
+<div class="card hero">
+<h1>Ketika pasir menutup gerbang laut Bengkulu</h1>
+<p class="lead">Pelabuhan Pulau Baai adalah pelabuhan utama Provinsi Bengkulu. Pada akhir Maret 2025, alur masuknya tertutup total oleh endapan pasir. Inovasi ini memadukan <b>simulasi konseptual</b> untuk menjelaskan proses pengendapan dan <b>pemantauan citra satelit</b> untuk melihat jejak perubahannya dari luar angkasa.</p>
+<div class="kpis">
+<div class="kpi r"><strong>27 Mar 2025</strong><span>alur terputus, tertutup total oleh pasir</span></div>
+<div class="kpi r"><strong>15 kapal</strong><span>kandas atau terjebak di sekitar pelabuhan</span></div>
+<div class="kpi w"><strong>± Rp 2 miliar/bulan</strong><span>kerugian petani Enggano karena hasil bumi tak terangkut</span></div>
+<div class="kpi"><strong>150 m × 12 m</strong><span>lebar dan kedalaman alur dalam kondisi normal</span></div>
+<div class="kpi"><strong>−4 s.d. −9%</strong><span>penyempitan perairan mulut alur sejak 2025 (citra satelit, relatif terhadap pantai pembanding)</span></div>
+</div>
+<p class="note" style="margin-top:12px">Sumber angka: Kompas (23 Juni 2025) dan analisis citra Sentinel-2 pada tab Data Satelit.</p>
+</div>
+
+<div class="grid2">
+<div class="card">
+<h2>Mengapa alur mendangkal?</h2>
+<p class="note">Ringkasan dari penelitian Arifin dkk. (2003) dan Hutari dkk. (2018).</p>
+<div class="grid4" style="grid-template-columns:1fr 1fr">
+<div class="mini"><b>1. Sedimennya pasir</b><p>Hampir seluruh endapan (87–99%) berupa pasir, dominan pasir halus dari laut lepas.</p></div>
+<div class="mini"><b>2. Terbawa arus sepanjang pantai</b><p>Gelombang Samudra Hindia menggerakkan pasir menyusuri pantai menuju mulut alur.</p></div>
+<div class="mini"><b>3. Pasang lebih kuat dari surut</b><p>Arus pasang masuk ke kolam jauh lebih kuat daripada arus surut keluar, sehingga pasir terperangkap.</p></div>
+<div class="mini"><b>4. Pier sebagai penangkap pasir</b><p>Pengendapan terbesar terjadi di mulut alur sisi luar dekat pier, lalu meluas.</p></div>
+</div>
+</div>
+<div class="card">
+<h2>Linimasa kejadian</h2>
+<ol class="tl">
+<li><b>± 2023</b>Sedimentasi alur mulai terasa, terutama akibat empasan ombak besar Samudra Hindia.</li>
+<li class="r"><b>27 Maret 2025</b>Alur terputus. 15 kapal kandas, pelayaran ke Enggano terganggu.</li>
+<li><b>Awal April 2025</b>Pelindo mulai normalisasi alur dengan peralatan yang tersedia di Bengkulu.</li>
+<li class="r"><b>23 Mei 2025</b>Alur yang sempat terbuka tertutup kembali setelah gempa M6,3.</li>
+<li><b>6 Juni 2025</b>Pengerukan resmi dengan kapal keruk CSD Costa Fortuna 3. Target awal: lebar ±60 m, dalam ±4 m.</li>
+<li class="o"><b>2025</b>Instruksi Presiden Nomor 12 Tahun 2025 tentang normalisasi alur Pelabuhan Pulau Baai.</li>
+<li class="o"><b>2026</b>BRIN mendorong peta jalan penanganan pendangkalan berbasis riset.</li>
+</ol>
+</div>
+</div>
+
+<div class="card">
+<h2>Inovasi kami: dua bagian yang saling melengkapi</h2>
+<div class="grid2">
+<div class="mini"><b>Simulasi konseptual</b><p>Butir pasir bergerak mengikuti arus, pasang surut, dan kalender musim Bengkulu. Kapal keluar masuk selama alur cukup dalam, tertahan saat alur kritis, lalu kapal keruk membuka kembali alur.</p><a class="go" href="#simulasi">Coba simulasi →</a></div>
+<div class="mini"><b>Pemantauan citra satelit</b><p>Citra Sentinel-2 periode 2019–2026 diolah di Google Earth Engine. Luas perairan di tiga zona sekitar mulut alur dibandingkan dengan pantai pembanding, setelah pola musimannya dikoreksi.</p><a class="go" href="#data-satelit">Lihat data →</a></div>
+</div>
+</div>
+</section>
+
+<!-- ================= SIMULASI ================= -->
+<section class="tab" id="t-simulasi">
+<div class="card">
+<h2>Simulasi pengendapan pasir</h2>
+<p>Simulasi ini menjelaskan <b>mekanisme</b> pendangkalan, bukan angka kedalaman yang sebenarnya. Cara membacanya: bagian atas peta adalah laut, bagian bawah daratan. Titik cokelat adalah butir pasir, warna air yang makin cokelat berarti alur makin dangkal, dan kotak putus-putus putih adalah area alur yang kedalamannya dipantau.</p>
+<div class="grid4">
+<div class="mini"><b>1. Amati</b><p>Biarkan berjalan 15–20 detik dan perhatikan pasir menumpuk di sisi pier dan mulut alur.</p></div>
+<div class="mini"><b>2. Pasang dan surut</b><p>Label PASANG/SURUT berganti. Arus masuk lebih kuat, sehingga pasir terperangkap.</p></div>
+<div class="mini"><b>3. Musim</b><p>Musim mengikuti kalender Bengkulu secara otomatis. Tombol musim tetap bisa dipakai.</p></div>
+<div class="mini"><b>4. Kritis lalu keruk</b><p>Saat ambang tercapai, simulasi berhenti dan kapal tertahan. Klik <i>Keruk alur</i> untuk membuka kembali.</p></div>
+</div>
+<p class="note" style="margin-top:10px">Untuk presentasi: isi tanggal awal yang tetap supaya hasilnya selalu sama di setiap percobaan. Di layar lebar, pilih tampilan Sejajar agar simulasi dan grafik terlihat bersamaan.</p>
+</div>
+<iframe id="simf" title="Simulasi pendangkalan alur Pelabuhan Pulau Baai" loading="eager"></iframe>
+</section>
+
+<!-- ================= DATA SATELIT ================= -->
+<section class="tab" id="t-data-satelit">
+<div class="card">
+<h2>Data citra satelit Sentinel-2 (2019–2026)</h2>
+<p>Semua grafik dan tabel di halaman ini dibaca langsung dari dua berkas CSV hasil Google Earth Engine: <b>pulau_baai_zona_kuartalan.csv</b> (per zona, per kuartal) dan <b>pulau_baai_bulanan.csv</b> (seluruh area studi, per bulan).</p>
+<div class="grid4">
+<div class="mini"><b>Sumber</b><p>Citra Sentinel-2 (resolusi 10 m) dan curah hujan CHIRPS, diolah di Google Earth Engine.</p></div>
+<div class="mini"><b>Zona</b><p>Sisi barat pier, mulut alur, sisi timur pier, dan satu pantai pembanding ±5 km dari pelabuhan.</p></div>
+<div class="mini"><b>Indikator</b><p>Luas air tetap (ha): area yang hampir selalu terlihat sebagai air. Kalau mengecil, ada bagian yang berubah menjadi pasir atau dangkal.</p></div>
+<div class="mini"><b>Koreksi</b><p>Tiap zona dibandingkan dengan pola musimannya sendiri (2019–2022), lalu dikurangi perubahan pantai pembanding.</p></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Indeks peringatan dini</h2>
+<p class="note">Selisih perubahan luas air tetap tiap zona terhadap pantai pembanding (%). Nilai negatif berarti perairan di zona itu menyempit dibanding pantai yang tidak terpengaruh pelabuhan. Pita abu-abu adalah kisaran normal 2019–2022.</p>
+<div class="btns" id="zbtn"></div>
+<div class="ch" id="ch-ews"></div>
+<div class="legend" id="lg-ews"></div>
+<label class="note" for="qs" style="display:block;margin-top:10px">Geser kuartal:</label>
+<input type="range" id="qs" min="0" max="0" value="0">
+<div class="btns"><button id="play">▶ Putar waktu</button></div>
+<div class="status" id="qst"></div>
+<div class="chips" id="chips"></div>
+</div>
+
+<div class="card">
+<h2>Luas air tetap per zona (data mentah)</h2>
+<p class="note">Nilai asli dari CSV, dalam hektare, sebelum koreksi musiman dan pembanding. Klik nama zona untuk menyembunyikan atau menampilkannya.</p>
+<div class="btns" id="rbtn"></div>
+<div class="ch" id="ch-raw"></div>
+<p class="note">Kuartal IV 2020 ditampilkan sebagai belah ketupat abu-abu: nilainya tidak wajar (luas air zona barat dan mulut alur anjlok ke ±16–17 ha, padahal normalnya 70–120 ha) sementara pantai pembanding normal. Dugaan kami, sebagian besar piksel zona tidak terhitung karena awan pada kuartal itu. Titik ini ditampilkan demi transparansi dan tidak dipakai dalam analisis.</p>
+</div>
+
+<div class="card">
+<h2>Kekeruhan, fraksi air, dan curah hujan bulanan</h2>
+<p class="note">Seluruh area studi, Januari 2019–Oktober 2026. Bulan dengan 3 citra atau kurang (akibat awan) ditampilkan sebagai titik kosong dan tidak disambung garis, karena hasilnya kurang bisa dipercaya.</p>
+<div class="btns" id="mbtn"></div>
+<div class="ch" id="ch-mon"></div>
+<h3 style="margin-top:14px">Pola musiman (rata-rata per bulan kalender)</h3>
+<div class="ch" id="ch-sea"></div>
+<p class="note" id="mon-note"></p>
+</div>
+
+<div class="card">
+<h2>Galeri citra</h2>
+<p class="note">Tangkapan layar dari Google Earth Engine. Klik gambar untuk memperbesar.</p>
+<p class="note" id="gal-ed"></p>
+<div class="gal" id="gal"></div>
+</div>
+
+<div class="card">
+<h2>Grafik dari Google Earth Engine dan analisis</h2>
+<p class="note">Grafik asli hasil ekspor Google Earth Engine dan grafik analisis yang dibuat dari CSV yang sama. Versi interaktifnya ada di bagian atas halaman ini. Klik gambar untuk memperbesar.</p>
+<div class="gal g2" id="gal2"></div>
+</div>
+
+<div class="card">
+<h2>Temuan dan batasan</h2>
+<div class="grid2">
+<div>
+<h3>Temuan</h3>
+<ul>
+<li><b>Mulut alur: sinyal paling jelas.</b> Selisih mulai turun pada awal 2025, memuncak sekitar −9% pada akhir 2025 sampai awal 2026, lalu membaik ke sekitar −4% pada pertengahan 2026. Waktunya sejalan dengan laporan pendangkalan dan pengerukan.</li>
+<li><b>Sisi timur pier:</b> sempat lebih tinggi dari pembanding pada 2022–2025, lalu berbalik tajam ke sekitar −10% sejak akhir 2025. Citra menunjukkan daratan pasir bertambah. Penyebabnya bisa proses alami atau pasir hasil pengerukan yang ditumpuk di samping alur; keduanya belum dapat dipisahkan.</li>
+<li><b>Sisi barat pier:</b> tidak menunjukkan sinyal. Pasir yang menumpuk di bawah air tidak mengubah luas permukaan air, jadi indikator ini mungkin tidak peka di sana.</li>
+<li><b>Kekeruhan bulanan</b> berpola musiman kuat (tertinggi September–Oktober) tetapi tidak menunjukkan lonjakan saat kejadian 2025, karena sedimennya pasir yang bergerak dekat dasar.</li>
+</ul>
+</div>
+<div>
+<h3>Batasan</h3>
+<ul>
+<li>Indikator mengukur <b>luas permukaan air</b>, bukan kedalaman alur.</li>
+<li>Hanya ada satu pantai pembanding, dan data dirangkum per kuartal.</li>
+<li>Indeks memberi peringatan setelah kuartal berakhir; sifatnya pemantauan, bukan ramalan tanggal pengerukan.</li>
+<li>Belum dikalibrasi dengan data survei batimetri.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Basis data</h2>
+<p class="note">Isi lengkap kedua CSV. Baris yang tidak dipakai dalam analisis dicetak miring.</p>
+<div class="btns" id="dbtn"><button data-d="zona" class="on">Per zona, per kuartal</button><button data-d="bulanan">Bulanan, seluruh area</button><a class="go" style="margin:0" href="data/pulau_baai_zona_kuartalan.csv" download>Unduh CSV zona</a><a class="go" style="margin:0" href="data/pulau_baai_bulanan.csv" download>Unduh CSV bulanan</a></div>
+<div class="tw"><table id="tbl"></table></div>
+<p class="note" style="margin-top:8px">Keterangan kolom: <span id="colnote"></span></p>
+</div>
+</section>
+
+<!-- ================= TENTANG ================= -->
+<section class="tab" id="t-tentang">
+<div class="card">
+<h2>Tentang inovasi ini</h2>
+<p>Inovasi ini dibuat untuk kegiatan Putra dan Putri Daerah Politeknik Statistika STIS, mewakili Provinsi Bengkulu. Tujuannya menunjukkan bahwa data terbuka (citra satelit gratis) dan pemodelan sederhana bisa membantu daerah <b>memahami dan memantau</b> pendangkalan pelabuhan lebih awal, dengan biaya yang sangat rendah dan bisa diulang setiap kuartal.</p>
+</div>
+<div class="grid2">
+<div class="card">
+<h3>Cara kerja</h3>
+<ol>
+<li>Menyusun simulasi konseptual berdasarkan temuan penelitian terdahulu tentang Pulau Baai.</li>
+<li>Mengambil citra Sentinel-2 2019–2026 di Google Earth Engine dan menghitung luas air tetap di tiap zona.</li>
+<li>Mengoreksi pola musiman dan membandingkan dengan pantai pembanding.</li>
+<li>Mencocokkan hasilnya dengan linimasa kejadian dari berita.</li>
+</ol>
+<h3>Perangkat</h3>
+<p>Google Earth Engine, Sentinel-2 (Copernicus), CHIRPS, serta halaman web HTML, CSS, dan JavaScript tanpa pustaka tambahan, sehingga bisa dibuka tanpa internet.</p>
+</div>
+<div class="card">
+<h3>Yang tidak kami klaim</h3>
+<ul>
+<li>Satelit tidak mengukur kedalaman alur.</li>
+<li>Model tidak meramalkan tanggal pengerukan; tanggal di simulasi adalah ilustrasi.</li>
+<li>Pasir di sisi timur belum tentu hasil sedimentasi alami.</li>
+<li>Tidak adanya sinyal di sisi barat tidak membuktikan pasir tidak menumpuk di sana.</li>
+</ul>
+<h3>Tindak lanjut</h3>
+<p>Kalibrasi dengan data survei batimetri, menambah data gelombang dan arus nyata, menambah zona pembanding, dan memperluas ke pelabuhan lain.</p>
+</div>
+</div>
+<div class="card">
+<h3>Sumber</h3>
+<ul class="src">
+<li>Hutari, P.Z., Johan, Y., Negara, B.F.S.P. (2018). Analisis Sedimentasi di Pelabuhan Pulau Baai Kota Bengkulu. <i>Jurnal Enggano</i> 3(1): 129–143.</li>
+<li>Arifin, L., Hutagaol, J.P., Hanafi, M. (2003). Pendangkalan Alur Pelayaran di Pelabuhan Pulau Baai Bengkulu. <i>Jurnal Geologi Kelautan</i> 1(3): 29–37.</li>
+<li>Kompas, berita pengerukan alur Pelabuhan Pulau Baai, 23 Juni 2025: <a href="https://www.kompas.id/artikel/sudah-status-darurat-tapi-sedimentasi-alur-pelabuhan-pulau-baai-tetap-berlarut">kompas.id</a></li>
+<li>BRIN, Pendangkalan Pelabuhan Pulau Baai Puluhan Tahun, BRIN Dorong Peta Jalan Berbasis Riset: <a href="https://brin.go.id/news/130613/pendangkalan-pelabuhan-pulau-baai-puluhan-tahun-brin-dorong-peta-jalan-berbasis-riset">brin.go.id</a></li>
+<li>Instruksi Presiden Nomor 12 Tahun 2025 tentang normalisasi alur Pelabuhan Pulau Baai.</li>
+<li>Citra Sentinel-2 (Copernicus) dan curah hujan CHIRPS, diolah di Google Earth Engine.</li>
+</ul>
+</div>
+</section>
+</main>
+<footer>Simulasi bersifat konseptual dan indikator satelit merupakan indikator awal, bukan pengukuran kedalaman.</footer>
+<div id="lb" role="dialog" aria-label="Gambar diperbesar"><img alt=""><p></p></div>
+
+<script type="text/csv" id="csv-zona">zona,kuartal,jumlah_citra,frek_air,luas_air_tetap_ha,stumpf
+BARAT_PIER,2019-01,19,0.6641893702880746,120.14122735076461,1.0108307501540945
+MULUT_ALUR,2019-01,19,0.5502415569369176,73.32693353292795,0.9913105260368694
+TIMUR_PIER,2019-01,19,0.7753084385321989,116.78846519445423,0.9928100547978714
+KONTROL,2019-01,19,0.7257447591684377,179.53212525313845,1.0035331036410025
+BARAT_PIER,2019-04,29,0.7000945444823103,121.57328960165755,1.0057671323139696
+MULUT_ALUR,2019-04,29,0.6238043353223606,74.16933752767933,0.9925510815046015
+TIMUR_PIER,2019-04,29,0.8350961518394654,119.70779871219855,0.9865328924736174
+KONTROL,2019-04,29,0.7418396795725616,180.92830093717993,0.994843162494263
+BARAT_PIER,2019-07,32,0.6966147458360458,120.64258570414394,0.9819886207270336
+MULUT_ALUR,2019-07,32,0.6148586794351397,74.33711946471372,0.9868511475834564
+TIMUR_PIER,2019-07,32,0.8286499298299362,118.30934408147826,0.9863555678684611
+KONTROL,2019-07,32,0.748359661114338,181.3401754211456,0.9816013639500889
+BARAT_PIER,2019-10,16,0.6527947839553224,114.43404080979468,0.9845155226117436
+MULUT_ALUR,2019-10,16,0.5866361929328097,71.28596304035251,0.977724312516373
+TIMUR_PIER,2019-10,16,0.8044951041985225,115.64508822096914,0.9779484754049492
+KONTROL,2019-10,16,0.7158739152246408,173.8342442543999,0.984753297407788
+BARAT_PIER,2020-01,27,0.6637098951642374,117.28515208119256,0.9951883062126502
+MULUT_ALUR,2020-01,27,0.5853424415124624,72.5942848059623,0.9732521385293529
+TIMUR_PIER,2020-01,27,0.8009184471329386,117.22990077178392,0.9714211274276556
+KONTROL,2020-01,27,0.7002647303166329,177.69609282138418,0.9731020386233367
+BARAT_PIER,2020-04,25,0.6878915446406237,121.40664792091387,1.0055641473101269
+MULUT_ALUR,2020-04,25,0.592046355095304,74.39040347525595,0.9768429280479505
+TIMUR_PIER,2020-04,25,0.8400198429229234,123.18108216839394,0.9815023158636569
+KONTROL,2020-04,25,0.7475639033906636,181.95904915113806,0.9779162038862964
+BARAT_PIER,2020-07,26,0.683242476748686,119.07423794241352,0.9995502784164503
+MULUT_ALUR,2020-07,26,0.6133810192684581,74.36929987373006,0.9880714560369603
+TIMUR_PIER,2020-07,26,0.8512275891656219,121.88360050511442,0.9853643307859198
+KONTROL,2020-07,26,0.7455875218266204,181.37678304010646,0.9752311853728356
+BARAT_PIER,2020-10,13,0.9576135809238449,17.240764680394108,1.0051307989096963
+MULUT_ALUR,2020-10,13,0.49055010483560024,15.861209275291309,0.9954784830957463
+TIMUR_PIER,2020-10,13,0.8390033713972187,99.4294123220578,0.9969115448415821
+KONTROL,2020-10,13,0.7320580799042914,177.18565099552347,0.9950927318991664
+BARAT_PIER,2021-01,18,0.6763528995801448,120.06196456084751,0.9925032796386698
+MULUT_ALUR,2021-01,18,0.5959466593589793,75.0447805621733,0.9720171940438534
+TIMUR_PIER,2021-01,18,0.8035529014878028,123.01625873265029,0.9644654053468764
+KONTROL,2021-01,18,0.6940439014817703,181.20829613062193,0.9683982620926548
+BARAT_PIER,2021-04,27,0.6920599641566606,120.88130774516523,0.9991849044277963
+MULUT_ALUR,2021-04,27,0.6153902789794642,75.56055971838565,0.980882715615917
+TIMUR_PIER,2021-04,27,0.8633201619166073,124.18035423031115,0.9788431036089008
+KONTROL,2021-04,27,0.7550024196409983,181.95710565419157,0.9771688120986894
+BARAT_PIER,2021-07,30,0.6849971286315629,119.91504169842426,0.9897646323935505
+MULUT_ALUR,2021-07,30,0.6214966288258381,75.40696496475836,0.9870709013650029
+TIMUR_PIER,2021-07,30,0.8576422013439344,123.32162295134646,0.9826436681950056
+KONTROL,2021-07,30,0.7370713283675616,179.9768385867168,0.9811606426107625
+BARAT_PIER,2021-10,21,0.6756881076507769,117.67159095023506,0.9917963694809859
+MULUT_ALUR,2021-10,21,0.6236930111977006,75.24722835013333,0.9827010143543883
+TIMUR_PIER,2021-10,21,0.8634211560298303,123.33153441620817,0.9731065080375388
+KONTROL,2021-10,21,0.7450104311438093,179.61110294769088,0.9649979417261929
+BARAT_PIER,2022-01,17,0.6658370504170091,115.69090405876165,1.0058866457994702
+MULUT_ALUR,2022-01,17,0.6124267283587685,73.7386334421655,0.9722328835688674
+TIMUR_PIER,2022-01,17,0.8428671223966057,122.66573476534174,0.9680742667931306
+KONTROL,2022-01,17,0.7160719530313664,175.9047940786458,0.9806526630705868
+BARAT_PIER,2022-04,25,0.6883679944265907,119.03735173939565,0.9901830439539419
+MULUT_ALUR,2022-04,25,0.6322409496526035,76.67451591555705,0.9912036304162604
+TIMUR_PIER,2022-04,25,0.8700106262553451,125.92478713459437,0.9929288479648404
+KONTROL,2022-04,25,0.7501223320224442,180.39558990045884,0.9792898999634461
+BARAT_PIER,2022-07,23,0.6759376691904821,118.1921171896676,1.0045953540792945
+MULUT_ALUR,2022-07,23,0.622811068973329,76.56600513140494,0.9926593560886242
+TIMUR_PIER,2022-07,23,0.8917300253777403,128.4924657616808,0.9897907879944622
+KONTROL,2022-07,23,0.7395961857406829,180.36407007260834,0.99535732255363
+BARAT_PIER,2022-10,12,0.6751114412197525,118.24516054258,0.9966410324170231
+MULUT_ALUR,2022-10,12,0.6226076442751576,75.45784205217578,0.9843222150694296
+TIMUR_PIER,2022-10,12,0.8957819289502644,128.88255961774985,0.971810500247863
+KONTROL,2022-10,12,0.7287995608557579,178.5788752113591,0.9718250156653835
+BARAT_PIER,2023-01,16,0.6777203874605399,117.63214039179327,1.005777494383204
+MULUT_ALUR,2023-01,16,0.6199609693580366,74.82014213798743,0.9980423572718194
+TIMUR_PIER,2023-01,16,0.9000022040108135,129.2405870759375,0.9930380538043702
+KONTROL,2023-01,16,0.721240455133086,176.09994632412315,0.9969453497475226
+BARAT_PIER,2023-04,25,0.6643868631849867,117.39145073073001,1.0067527032208816
+MULUT_ALUR,2023-04,25,0.6150739954211455,75.2728433010212,1.0098219555295713
+TIMUR_PIER,2023-04,25,0.8956769187488431,128.9928206991491,0.9958733663125019
+KONTROL,2023-04,25,0.7409072160296071,177.97484509069213,0.9879408419142898
+BARAT_PIER,2023-07,29,0.6635193103842315,115.48192011521131,0.9891980988533845
+MULUT_ALUR,2023-07,29,0.6101285609331751,72.5664587749618,0.994937945467111
+TIMUR_PIER,2023-07,29,0.8899552150017829,128.74054635974716,0.9869209212827704
+KONTROL,2023-07,29,0.7200240601798519,174.89624052035396,0.9862704503103364
+BARAT_PIER,2023-10,27,0.6273793099724737,112.32642471588687,0.9875090181845428
+MULUT_ALUR,2023-10,27,0.5648877108161106,68.64165258388438,0.98765254095555
+TIMUR_PIER,2023-10,27,0.8651852925991412,125.32316562436282,0.9834016023376052
+KONTROL,2023-10,27,0.6759037404974894,166.08698500766863,0.9868937801861344
+BARAT_PIER,2024-01,22,0.6496110969173301,114.50419994373611,1.0167107927031835
+MULUT_ALUR,2024-01,22,0.5374144281882504,70.56415910354004,0.9971458450437681
+TIMUR_PIER,2024-01,22,0.8198167949976459,127.40521035211643,0.9910752289788707
+KONTROL,2024-01,22,0.6610298894461651,171.9707276916989,0.9872263361978677
+BARAT_PIER,2024-04,28,0.6717425713537802,117.56549857599452,1.007562049987304
+MULUT_ALUR,2024-04,28,0.6203859271968505,75.57482682045767,0.9952311737704731
+TIMUR_PIER,2024-04,28,0.8956780013109373,128.8288495455818,0.9897304595916415
+KONTROL,2024-04,28,0.7565166188624519,180.0821281256946,1.0093515786119627
+BARAT_PIER,2024-07,35,0.6664240784435611,115.53382074167483,0.9882307054880014
+MULUT_ALUR,2024-07,35,0.6106913783897178,73.75783804175076,0.9875953512179325
+TIMUR_PIER,2024-07,35,0.8871425846204356,128.00716038551832,0.9844145725633509
+KONTROL,2024-07,35,0.730881739209846,175.74859314791712,0.9798079428080547
+BARAT_PIER,2024-10,18,0.6675366485920464,113.09654468739774,0.9980159613295239
+MULUT_ALUR,2024-10,18,0.5905202602554958,71.30127835734332,0.9926749795575118
+TIMUR_PIER,2024-10,18,0.8872692369128609,127.86930470716037,0.9905784137385999
+KONTROL,2024-10,18,0.6671466366849206,171.34105117700454,0.9982639834272914
+BARAT_PIER,2025-01,9,0.6582927769825996,115.34419596107197,1.009494893033367
+MULUT_ALUR,2025-01,9,0.5775205648732653,71.78285651519465,0.9967348485069311
+TIMUR_PIER,2025-01,9,0.7936094354574971,127.65255437460239,0.9967208217833151
+KONTROL,2025-01,9,0.7337032332890081,177.4861733887359,1.0016028823202785
+BARAT_PIER,2025-04,30,0.6627816087285066,116.08931619892334,0.9910881847698103
+MULUT_ALUR,2025-04,30,0.5853045302596649,71.30644414151037,0.9814427868936506
+TIMUR_PIER,2025-04,30,0.8927263369938687,128.40809416440854,0.977748298593218
+KONTROL,2025-04,30,0.7374719603481081,178.8546722798196,0.9759415881446023
+BARAT_PIER,2025-07,32,0.660144558123625,116.12320368005952,0.9910819563072221
+MULUT_ALUR,2025-07,32,0.5705556890016673,71.03108174828,0.9848247130168316
+TIMUR_PIER,2025-07,32,0.8670393956668622,125.85382683199164,0.9836279931106136
+KONTROL,2025-07,32,0.7338655318972329,178.83531760064014,0.9892501704112979
+BARAT_PIER,2025-10,17,0.6575619291338746,114.60586677673841,0.999603814871876
+MULUT_ALUR,2025-10,17,0.5478227176397404,67.2421841473963,0.9832039008563821
+TIMUR_PIER,2025-10,17,0.809101180953164,117.37352626489084,0.9870820418929644
+KONTROL,2025-10,17,0.7170204484989957,177.0475599545539,0.9874026583046606
+BARAT_PIER,2026-01,12,0.6642749273153117,116.10105150366245,1.010095460388437
+MULUT_ALUR,2026-01,12,0.5664841246368708,66.53429243037601,0.9880573414058743
+TIMUR_PIER,2026-01,12,0.7546162533222447,106.6843765853684,0.9879533261013331
+KONTROL,2026-01,12,0.7477725946932523,176.32786181831057,0.9742864197401161
+BARAT_PIER,2026-04,30,0.6714592411121277,117.57524613313721,1.0014510757055717
+MULUT_ALUR,2026-04,30,0.5787033127492247,70.62902038908999,0.9927355258674776
+TIMUR_PIER,2026-04,30,0.758145340424365,109.31377157147614,0.9887558434818331
+KONTROL,2026-04,30,0.7333559344519586,177.9643894981633,0.9885432234142305
+BARAT_PIER,2026-07,37,0.6671486687749022,116.57267554370505,0.9911866179017663
+MULUT_ALUR,2026-07,37,0.5782063595612863,70.43582111453773,0.9943726384938261
+TIMUR_PIER,2026-07,37,0.746026610654819,106.16536489376772,0.989766693473774
+KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</script>
+<script type="text/csv" id="csv-bulanan">bulan,jumlah_citra,ndti,merah_air,frac_air,hujan_mm
+2019-01,8,-0.2480301243083259,0.02975400996147414,0.5239109151407458,359.29251363661405
+2019-02,4,-0.29178707303663787,0.03405150565096778,0.5009013655914853,224.71292411432734
+2019-03,6,-0.18774125574422776,0.04295118494491844,0.5456687982033913,259.07025338915844
+2019-04,6,-0.23879741567412038,0.03454313827470034,0.54302334394502,293.4797668617763
+2019-05,11,-0.31789729259969846,0.029050495665009016,0.5493903244103894,171.54438190960258
+2019-06,10,-0.2704382965765728,0.04912007554553998,0.5713183645123778,243.41276148106718
+2019-07,12,-0.2582400753713128,0.04410518972241347,0.5557322863950264,173.01788931214406
+2019-08,8,-0.16023542110465097,0.09606103721858707,0.5770215398710193,52.491358882032536
+2019-09,12,-0.12743124096856615,0.08553163108538804,0.5541959490294589,52.14309938391496
+2019-10,3,-0.0969614952589404,0.08242787197642046,0.5034531203200999,95.98643231034724
+2019-11,8,-0.11240769640961365,0.056942899023577825,0.5147053043999991,88.79532981677895
+2019-12,4,-0.18397661819132036,0.04523656316811653,0.5144205547229452,350.7483813039372
+2020-01,8,-0.33892711668041897,0.021859612511813478,0.5250417545582682,362.69452780820006
+2020-02,4,-0.17844470766228662,0.04353525138102188,0.48322183635641763,261.44747203119687
+2020-03,9,-0.149028754251156,0.04229546578208561,0.5179256592761904,438.35563433572145
+2020-04,10,-0.26113333651199866,0.03377423021739565,0.5303343839069873,260.69831000017314
+2020-05,8,-0.294284162425,0.03863837381940783,0.5441259863814464,400.6300941379776
+2020-06,6,-0.27704234039063047,0.04767195772573339,0.5561169325885632,268.97477795769663
+2020-07,6,-0.2969682199623796,0.036786514073879235,0.5472360039078684,254.50001691432482
+2020-08,10,-0.22780528384038223,0.04352687370725127,0.5566989259730276,160.61819489439776
+2020-09,8,-0.16664042861692674,0.05248951781385819,0.5514445309130089,238.9992432076386
+2020-10,5,-0.07853547709987949,0.12185330896360745,0.4083061191460537,460.1331968244988
+2020-11,2,-0.09587944201992601,0.08051963826581293,0.0881496806930179,473.70392188329373
+2020-12,1,,,,327.29753163959197
+2021-01,4,-0.24313801385116932,0.03491048090950548,0.549989379686891,445.5524396699912
+2021-02,2,-0.049191288652762614,0.04658049544579052,0.008155192274068971,242.69232372398233
+2021-03,9,-0.2556710323975524,0.03721734472993051,0.5230457598458277,343.13864035820694
+2021-04,8,-0.21995313646453055,0.04699077962435408,0.527283453816944,157.6304610275597
+2021-05,8,-0.28720060636000594,0.03319821202458644,0.5540948540721158,501.1471487734648
+2021-06,8,-0.3360726433344442,0.029561994696796077,0.5701157553156476,238.18294557471395
+2021-07,10,-0.3356778458764988,0.026070800884696727,0.5519320382777289,120.23839550696955
+2021-08,11,-0.280351409652309,0.042202316943079785,0.5509611463441808,280.6121425825111
+2021-09,8,-0.15158511962537305,0.07076307699519072,0.5490074866945718,348.39428157127753
+2021-10,9,-0.1370369024199837,0.07187814590257434,0.5319847090250942,428.0968791447328
+2021-11,4,-0.2026170410182798,0.03806343409011728,0.5373436196753588,329.227090054237
+2021-12,3,-0.25292473590193176,0.04544000673670104,0.2605942389794553,390.63834678635607
+2022-01,6,-0.2491997552201079,0.029066553288999448,0.530238537771079,332.0392985254638
+2022-02,3,-0.08986704260641197,0.1313633183899211,0.060866057545481696,172.94878036609748
+2022-03,3,-0.11928653079619318,0.06202930777423343,0.5384468796956694,208.78583061203975
+2022-04,9,-0.2056017756902813,0.03894706197034123,0.5440290312382704,258.90906778614175
+2022-05,8,-0.2966797098916055,0.03288792229536477,0.562421630422948,282.47446738468125
+2022-06,7,-0.23362038250519204,0.04595303648514811,0.5456319723935531,499.54963819632366
+2022-07,9,-0.236694346203812,0.038075999318193485,0.5575768754555145,252.06937575965333
+2022-08,8,-0.2441990025655804,0.034492960710203455,0.5528100800760241,497.0988047149744
+2022-09,5,-0.1602920126904263,0.08045323939608093,0.3125117063570493,328.9180768643426
+2022-10,1,-0.13912183946055623,0.07824255167582243,0.45261445779083676,652.3996633893988
+2022-11,3,-0.2690288872215313,0.027757568379163856,0.5448316390352005,477.9940774958679
+2022-12,6,-0.17081155081184468,0.04458811080231074,0.551295063874182,324.4195531450407
+2023-01,2,-0.21819876806552393,0.04413991858083669,0.42066853353326944,403.760449425558
+2023-02,3,-0.12392681597564424,0.09496260077490282,0.11414796907275877,174.70585337113798
+2023-03,8,-0.1967162365523137,0.041198795782101394,0.5461278196798587,357.3167693766762
+2023-04,5,-0.22388631323807062,0.04103249825853422,0.4307701860112307,275.7552741815088
+2023-05,10,-0.29446399955079855,0.028911495754289567,0.5558490857491439,118.8091526263662
+2023-06,7,-0.29850264406496013,0.036746466111380945,0.5675069792415518,283.47312263245885
+2023-07,7,-0.27065946238229344,0.03984619926869473,0.5601812454175311,264.1899587224039
+2023-08,10,-0.198127967235026,0.058192145192042244,0.546829292761112,81.22010138508087
+2023-09,10,-0.1443066135659653,0.07116165268049293,0.5262171359076069,40.78592554728189
+2023-10,12,-0.07860015489316952,0.07664461067812546,0.5111103978438422,64.6482762968942
+2023-11,0,,,,321.5513041564141
+2023-12,8,-0.1550338171767446,0.042463691617577036,0.502468662791508,234.37917601660396
+2024-01,4,-0.2309102265187276,0.03846492252239141,0.528366479647964,398.46725245093586
+2024-02,6,-0.20016856017195092,0.04889290322252727,0.5150804655354828,343.72244997060255
+2024-03,6,-0.2527236292500052,0.030228029792249714,0.6507544938317438,366.6055908738897
+2024-04,6,-0.23239151233557157,0.03542543169599478,0.5602298366399081,379.6248483425669
+2024-05,6,-0.2800522977868746,0.027155847711492775,0.5889896024944843,383.3367858933152
+2024-06,10,-0.3277432184020008,0.027251770621925187,0.5732512376502755,337.0634091659431
+2024-07,12,-0.24856255700475596,0.045281916672158425,0.5487273595643924,187.8098073487871
+2024-08,7,-0.2113658069273198,0.05230053599319933,0.5409123317808929,97.59594100172376
+2024-09,10,-0.18065127149003196,0.0705896705679699,0.5490399963961841,156.65902913018556
+2024-10,10,-0.12949703649545674,0.06983374841404734,0.5357402753596637,258.28878834810143
+2024-11,2,-0.1666722985388542,0.05841406780549488,0.504694469379281,397.4620184541195
+2024-12,0,,,,347.70641133490574
+2025-01,1,-0.028782891442200968,0.388057142496109,0.3105427974947808,431.51524335346863
+2025-02,3,-0.1857126935985433,0.048856250099664156,0.5493779149093924,317.45527466004256
+2025-03,4,-0.16445437876847058,0.04535967110445617,0.5180554040927806,454.49064541398803
+2025-04,10,-0.2438661450401599,0.03200543287624831,0.4779087438189879,249.28718555196835
+2025-05,8,-0.37158151828938174,0.022749181707451455,0.5617417308088554,215.84453956503768
+2025-06,10,-0.3763280923301445,0.02550509716796968,0.5568226354081122,201.5552915441856
+2025-07,10,-0.3677870239692469,0.03040564358173628,0.5559608626456879,234.0806194954597
+2025-08,12,-0.2608935597847309,0.03811969823367777,0.5625019525610031,394.67914714527484
+2025-09,7,-0.12637774455765807,0.0818559379005283,0.4806407167884345,369.16735217633766
+2025-10,9,-0.14638737427821089,0.05715027101089354,0.5032268485382224,335.9301761786142
+2025-11,2,-0.3196087133657808,0.030004974633112316,0.5716987711324371,491.5183465911174
+2025-12,4,-0.1928837248387362,0.03770194553840322,0.5355459876854067,430.28236133954044
+2026-01,2,-0.06556643322110176,0.21946000158786774,0.8333333333333334,340.72917707136065
+2026-02,1,,,,350.7776400060689
+2026-03,6,-0.25371822752981604,0.03636055104670261,0.5223725742975431,260.0483948228957
+2026-04,10,-0.18551772600847635,0.04363201907471785,0.5481614463911865,407.44566691948677
+2026-05,11,-0.33477647813075145,0.027539001846580664,0.5519486385922667,383.43774279580106
+2026-06,7,-0.26726709344537264,0.04032393138102633,0.5355226068968999,197.07428881202296
+2026-07,16,-0.24609866611127068,0.04501237823168888,0.5234614699438322,110.55700102102443
+2026-08,8,-0.23406892775427587,0.04881473359000772,0.5606748787661372,82.58545731754506
+2026-09,10,-0.13589849373680646,0.07967612156753145,0.52636681542077,117.71211613072884
+2026-10,11,-0.11716755225180618,0.10160021951624251,0.5693067856959926,</script>
+<script type="application/json" id="img-data">{"g-selisih": "gambar/grafik-selisih-zona-vs-pembanding.png", "g-zona": "gambar/grafik-luas-air-tetap-per-zona.png", "g-ndti": "gambar/grafik-gee-ndti-bulanan.png", "g-frac": "gambar/grafik-gee-fraksi-air-bulanan.png", "fa-2025": "gambar/frekuensi-air-2025.png", "wa-2023": "gambar/warna-asli-2023.png", "wa-2025": "gambar/warna-asli-2025.png", "zona": "gambar/zona-pengamatan.png", "wa-2026": "gambar/warna-asli-2026.png", "fa-2019": "gambar/frekuensi-air-2019.png", "fa-2022": "gambar/frekuensi-air-2022.png"}</script>
+<script>
+/* Data dibaca dari folder data/. Jika gagal (misalnya file dibuka langsung dari komputer), dipakai salinan di halaman ini. */
+(async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
+ const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
+ document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
+ const s=document.createElement('script');s.src='app.js';document.body.appendChild(s)})();
+</script></body></html>
