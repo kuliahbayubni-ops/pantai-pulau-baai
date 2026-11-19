@@ -4,7 +4,7 @@ const fmt=(v,d=1)=>v==null||isNaN(v)?'–':v.toLocaleString('id-ID',{minimumFrac
 const sg=v=>(v>0?'+':'')+fmt(v)+'%';
 
 /* ---------- Tabs (hash) ---------- */
-const TABS=['beranda','simulasi','data-satelit','tentang'];let simLoaded=false;
+const TABS=['beranda','berita','simulasi','data-satelit','tentang'];let simLoaded=false;
 function route(){let t=location.hash.slice(1);if(!TABS.includes(t))t='beranda';
 $$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
 $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));
@@ -129,6 +129,33 @@ function drawTbl(){const T=DS==='zona'?ZT:BT,rows=T.split(/\r?\n/),h=rows[0].spl
 $$('#dbtn button[data-d]').forEach(b=>b.onclick=()=>{DS=b.dataset.d;drawTbl()});
 if($('#copy'))$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(DS==='zona'?ZT:BT);$('#copied').textContent='Tersalin. Tempel ke Excel atau Notepad.'}catch(e){$('#copied').textContent='Penyalinan ditolak peramban. Pilih isi tabel lalu salin manual.'}};
 
+/* ---------- Berita ---------- */
+const NCAT={sosial:{n:'Dampak sosial',c:'--rd'},ekonomi:{n:'Ekonomi & BBM',c:'--wn'},penanganan:{n:'Penanganan',c:'--z1'},kebijakan:{n:'Kebijakan',c:'--z3'},riset:{n:'Riset & solusi',c:'--ok'}};
+const BERITA=[
+ {d:'2025-03-30',src:'CNBC Indonesia',k:'ekonomi',t:'Pertamina Antisipasi Pasokan BBM Bengkulu dari Tiga Terminal BBM',r:'Karena kapal tanker tidak bisa masuk alur yang dangkal, Pertamina Patra Niaga mengalihkan pasokan BBM Bengkulu dari terminal BBM lain agar distribusi tidak terputus.',u:'https://www.cnbcindonesia.com/news/20250330201308-4-622937/pertamina-antisipasi-pasokan-bbm-bengkulu-dari-tiga-terminal-bbm'},
+ {d:'2025-04-11',src:'Kompas.com',k:'sosial',t:'Tak Ada Kapal Laut, 4.000 Masyarakat Adat di Enggano Terancam Terisolasi',r:'Sekitar 4.000 warga adat Pulau Enggano tidak mendapat layanan kapal laut selama dua pekan. Pendamping masyarakat adat meminta pemerintah menyiapkan langkah mitigasi selama pengerukan berlangsung.',u:'https://lestari.kompas.com/read/2025/04/11/160000286/tak-ada-kapal-laut-4.000-masyarakat-adat-di-enggano-terancam-terisolasi'},
+ {d:'2025-04-14',src:'ANTARA Bengkulu',k:'penanganan',t:'Pelindo: Alur Pelabuhan di Bengkulu Membaik dan Kapal Berhasil Lewat',r:'Setelah beberapa hari dikeruk, kapal penyeberangan KMP Pulo Tello berhasil melintasi alur dalam uji coba pada pagi 14 April 2025.',u:'https://bengkulu.antaranews.com/berita/407425/pelindo-alur-pelabuhan-di-bengkulu-membaik-dan-kapal-berhasil-lewat'},
+ {d:'2025-04-26',src:'detikSumbagsel',k:'ekonomi',t:'Helmi Sebut Pertamina Rugi Rp 500 Juta/Hari Imbas Pelabuhan Dangkal',r:'Gubernur Bengkulu menyebut Pertamina menanggung kerugian sekitar Rp500 juta per hari karena BBM yang biasanya dikirim lewat laut harus diangkut melalui jalur darat.',u:'https://www.detik.com/sumbagsel/berita/d-7886714/helmi-sebut-pertamina-rugi-rp-500-juta-hari-imbas-pelabuhan-dangkal'},
+ {d:'2025-05-29',src:'Bisnis.com',k:'penanganan',t:'Pelindo Percepat Normalisasi Alur Pelayaran Logistik di Bengkulu',r:'Wakil Presiden meninjau pengerukan di Pulau Baai. Pemerintah menyatakan percepatan normalisasi alur untuk memulihkan distribusi logistik dan ekonomi Bengkulu, terutama akses ke Pulau Enggano.',u:'https://ekonomi.bisnis.com/read/20250529/98/1881094/pelindo-percepat-normalisasi-alur-pelayaran-logistik-di-bengkulu'},
+ {d:'2025-06-23',src:'Kompas',k:'sosial',t:'Sudah Status Darurat, tapi Sedimentasi Alur Pelabuhan Pulau Baai Tetap Berlarut',r:'Alur terputus sejak 27 Maret 2025 dan 15 kapal kandas di sekitar pelabuhan. Kerugian petani Enggano disebut sekitar Rp2 miliar per bulan karena hasil bumi tidak bisa diangkut, sementara pengerukan dipercepat dengan tambahan alat berat.',u:'https://www.kompas.id/artikel/sudah-status-darurat-tapi-sedimentasi-alur-pelabuhan-pulau-baai-tetap-berlarut'},
+ {d:'2025-06-24',src:'JDIH BPK',k:'kebijakan',t:'Instruksi Presiden Nomor 12 Tahun 2025',r:'Presiden menetapkan instruksi khusus untuk normalisasi alur pelayaran Pelabuhan Pulau Baai, pemulihan transportasi dan logistik, serta percepatan pembangunan Pulau Enggano.',u:'https://peraturan.bpk.go.id/Details/329086/inpres-no-12-tahun-2025'},
+ {d:'2025-07-11',src:'detikFinance',k:'penanganan',t:'Menhub Apresiasi Pelindo soal Pelabuhan Pulau Baai Siap Beroperasi Optimal',r:'Pengerukan darurat mencapai kedalaman sekitar 4 meter dan puluhan kapal sudah bisa melintas. Tahap berikutnya direncanakan memperdalam alur ke 6,5 meter, lalu hingga 12 meter.',u:'https://finance.detik.com/berita-ekonomi-bisnis/d-8006792/menhub-apresiasi-pelindo-soal-pelabuhan-pulau-baai-siap-beroperasi-optimal'},
+ {d:'2026-06-09',src:'Pelindo (siaran pers)',k:'penanganan',t:'Alur Pelabuhan Pulau Baai Layani 206 Pergerakan Pelayaran Bengkulu–Enggano',r:'Dengan kedalaman alur sekitar 6,5 meter, Pelindo mencatat 206 pergerakan kapal rute Bengkulu–Enggano sepanjang Januari hingga Juni 2026.',u:'https://pelindo.co.id/media/download/860/alur-pelabuhan-pulau-baai-layani-206-pergerakan-pelayaran-bengkulu-enggano-dan-89-kapal-pengangkut-bbm-pada-januari-juni-2026'},
+ {d:'2026-07-17',src:'RMOL',k:'riset',t:'Pulau Baai Butuh Solusi Permanen, Bukan Pengerukan Berulang',r:'Penanganan sedimentasi dinilai tidak bisa terus bergantung pada pengerukan. Ada dorongan agar pendalaman alur dilanjutkan hingga 12 meter sesuai rencana lanjutan dalam Inpres.',u:'https://rmol.id/politik/read/2026/07/17/714897/pulau-baai-butuh-solusi-permanen-bukan-pengerukan-berulang'},
+ {d:'2026-09-30',src:'BRIN',k:'riset',t:'Pendangkalan Pelabuhan Pulau Baai Puluhan Tahun, BRIN Dorong Peta Jalan Berbasis Riset',r:'BRIN menyoroti pendangkalan yang sudah berulang selama puluhan tahun dan mendorong peta jalan penanganan jangka panjang yang berbasis riset.',u:'https://brin.go.id/news/130613/pendangkalan-pelabuhan-pulau-baai-puluhan-tahun-brin-dorong-peta-jalan-berbasis-riset'},
+ {d:'2026-10-14',src:'IDX Channel',k:'kebijakan',t:'Kemenhub Serahkan Konsesi Alur Pelayaran Pulau Baai Bengkulu ke Pelindo',r:'Kementerian Perhubungan memberikan konsesi pengusahaan alur Pulau Baai kepada Pelindo selama 24 tahun, dengan kewajiban menjaga alur tetap andal dan aman.',u:'https://www.idxchannel.com/economics/kemenhub-serahkan-konsesi-alur-pelayaran-pulau-baai-bengkulu-ke-pelindo'}];
+const BLN2=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const tgl=d=>+d.slice(8)+' '+BLN2[+d.slice(5,7)-1]+' '+d.slice(0,4);
+let NK='semua',NO='asc';
+$('#nw-cat').innerHTML=`<button data-k="semua">Semua (${BERITA.length})</button>`+Object.keys(NCAT).map(k=>`<button data-k="${k}">${NCAT[k].n} (${BERITA.filter(b=>b.k===k).length})</button>`).join('');
+$$('#nw-cat button').forEach(b=>b.onclick=()=>{NK=b.dataset.k;drawNews()});
+$$('#nw-ord button').forEach(b=>b.onclick=()=>{NO=b.dataset.o;drawNews()});
+const srcN=new Set(BERITA.map(b=>b.src.replace(/ \(.*\)/,''))).size;
+$('#nw-stat').innerHTML=`<div class="kpi"><strong>${BERITA.length}</strong><span>berita dan dokumen resmi</span></div><div class="kpi"><strong>${srcN}</strong><span>media dan lembaga sumber</span></div><div class="kpi"><strong>${tgl(BERITA[0].d).replace(/^\d+ /,'')} – ${tgl(BERITA[BERITA.length-1].d).replace(/^\d+ /,'')}</strong><span>rentang waktu liputan</span></div>`;
+function drawNews(){$$('#nw-cat button').forEach(b=>b.classList.toggle('on',b.dataset.k===NK));$$('#nw-ord button').forEach(b=>b.classList.toggle('on',b.dataset.o===NO));
+ const L=BERITA.filter(b=>NK==='semua'||b.k===NK).sort((a,b)=>NO==='asc'?a.d.localeCompare(b.d):b.d.localeCompare(a.d));
+ $('#nw-list').innerHTML=L.map(b=>`<article class="nw" style="--c:var(${NCAT[b.k].c})"><div class="meta"><span class="tag">${NCAT[b.k].n}</span><span class="src">${esc(b.src)}</span><span>${tgl(b.d)}</span></div><h3>${esc(b.t)}</h3><p>${esc(b.r)}</p><a class="rd" href="${esc(b.u)}" target="_blank" rel="noopener noreferrer">Baca di sumber ↗</a></article>`).join('')}
+
 /* ---------- Galeri ---------- */
 const GAL=[
  {id:'area-studi',t:'Area studi',c:'Kotak area studi Pelabuhan Pulau Baai di Google Earth Engine.'},
@@ -210,4 +237,5 @@ $('#lb').addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTo
 
 function drawAll(){drawEWS();drawRaw();drawMon();drawTbl()}
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(location.hash==='#data-satelit')drawAll()});
+drawNews();
 route();

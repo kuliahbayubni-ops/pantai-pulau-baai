@@ -29,6 +29,16 @@ section.tab{display:none}section.tab.on{display:block}
 .grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .mini{background:var(--bg);border-radius:10px;padding:12px}.mini b{display:block;margin-bottom:3px}
 .mini p{font-size:14px;color:var(--mu);margin:0}
+.nwbar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;margin-bottom:14px}
+.nwg{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.nw{display:flex;flex-direction:column;border:1px solid var(--bd);border-left:4px solid var(--c,var(--ac));border-radius:10px;padding:14px;background:var(--card)}
+.nw .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12.5px;color:var(--mu);margin-bottom:6px}
+.nw .tag{font-weight:700;color:var(--c,var(--ac));text-transform:uppercase;letter-spacing:.03em;font-size:11.5px}
+.nw .src{font-weight:700;color:var(--tx)}
+.nw h3{font-size:16.5px;margin:0 0 6px}
+.nw p{font-size:14px;color:var(--mu);margin:0 0 10px;flex:1}
+.nw a.rd{align-self:flex-start;font-size:13.5px;font-weight:700;text-decoration:none;color:var(--ac)}
+.nw a.rd:hover{text-decoration:underline}
 .dlg{margin-left:auto;display:flex;flex-wrap:wrap;gap:6px}
 .dl{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:8px;border:1px dashed var(--ac);background:var(--ac2);color:var(--tx);text-decoration:none;font-size:14px;font-weight:600;line-height:1.4}
 .dl svg{width:16px;height:16px;flex:none;color:var(--ac)}
@@ -88,7 +98,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 </style></head><body>
 <header><div class="hd">
 <div class="brand">Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai<small>Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
-<nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
+<nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#berita" data-t="berita">Berita</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
 </div></header>
 <main>
 
@@ -129,6 +139,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <li class="o"><b>2025</b>Instruksi Presiden Nomor 12 Tahun 2025 tentang normalisasi alur Pelabuhan Pulau Baai.</li>
 <li class="o"><b>2026</b>BRIN mendorong peta jalan penanganan pendangkalan berbasis riset.</li>
 </ol>
+<p style="margin:8px 0 0"><a href="#berita">Lihat liputan media dan dokumen resmi →</a></p>
 </div>
 </div>
 
@@ -138,6 +149,20 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <div class="mini"><b>Simulasi konseptual</b><p>Butir pasir bergerak mengikuti arus, pasang surut, dan kalender musim Bengkulu. Kapal keluar masuk selama alur cukup dalam, tertahan saat alur kritis, lalu kapal keruk membuka kembali alur.</p><a class="go" href="#simulasi">Coba simulasi →</a></div>
 <div class="mini"><b>Pemantauan citra satelit</b><p>Citra Sentinel-2 periode 2019–2026 diolah di Google Earth Engine. Luas perairan di tiga zona sekitar mulut alur dibandingkan dengan pantai pembanding, setelah pola musimannya dikoreksi.</p><a class="go" href="#data-satelit">Lihat data →</a></div>
 </div>
+</div>
+</section>
+
+<!-- ================= BERITA ================= -->
+<section class="tab" id="t-berita">
+<div class="card hero">
+<h2>Isu ini dalam pemberitaan</h2>
+<p class="lead">Pendangkalan alur Pulau Baai bukan sekadar persoalan teknis pelabuhan. Liputan media dan dokumen resmi berikut menunjukkan dampaknya pada masyarakat Pulau Enggano, pasokan BBM, dan perekonomian Bengkulu, serta langkah penanganan yang diambil pemerintah.</p>
+<div class="kpis" id="nw-stat"></div>
+</div>
+<div class="card">
+<div class="nwbar"><div class="btns" id="nw-cat" style="margin:0"></div><div class="btns" id="nw-ord" style="margin:0"><button data-o="asc" class="on">Terlama dulu</button><button data-o="desc">Terbaru dulu</button></div></div>
+<div class="nwg" id="nw-list"></div>
+<p class="note" style="margin-top:12px">Ringkasan ditulis ulang dengan kata-kata sendiri dan bukan kutipan artikel. Klik "Baca di sumber" untuk membaca artikel atau dokumen aslinya.</p>
 </div>
 </section>
 
