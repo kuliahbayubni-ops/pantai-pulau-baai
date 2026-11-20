@@ -122,7 +122,12 @@ main.pres #ch{max-height:190px}}
 .mckpi{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:10px}
 .mckpi div{background:var(--bg);border-radius:10px;padding:8px 10px}.mckpi span{display:block;font-size:12px;color:var(--mu)}.mckpi strong{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mckpi small{font-size:12px;color:var(--mu)}
 @media(max-width:900px){.mckpi{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:520px){.mckpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
-#mchw{position:relative}#mcsv{display:block;width:100%;height:auto;font-family:inherit}
+#mchw{position:relative}
+#mcsv{cursor:crosshair;touch-action:pan-y}#mcsv .mchl{fill:var(--tx);opacity:.08}
+#mctip{position:absolute;z-index:6;pointer-events:none;min-width:200px;max-width:260px;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.4;box-shadow:0 6px 18px rgba(0,0,0,.25)}#mctip[hidden]{display:none}
+#mctip .mctn{font-size:16px;font-weight:700;margin:2px 0 6px}#mctip .mctn span{font-size:12px;font-weight:400;color:var(--mu)}
+#mctip .mctl{color:var(--mu);font-size:12px;margin-bottom:2px}#mctip ul{list-style:none;margin:0 0 6px;padding:0;max-height:180px;overflow:hidden}#mctip li{display:flex;justify-content:space-between;gap:12px}
+#mctip .mctc{border-top:1px solid var(--bd);padding-top:5px;color:var(--mu);font-size:12px}#mcsv{display:block;width:100%;height:auto;font-family:inherit}
 #mcsv .mcg{stroke:var(--bd);stroke-width:1}#mcsv .mcax{fill:var(--mu);font-size:12px}
 #mcsv .mcb-m{fill:var(--ac)}#mcsv .mcb-e{fill:var(--rd)}#mcsv .mcb-l{fill:var(--mu)}
 #mcsv .mcl{stroke-width:1.5;stroke-dasharray:5 4}#mcsv .mcl10,#mcsv .mcl90{stroke:var(--wn)}#mcsv .mcl50{stroke:var(--tx);stroke-dasharray:none}
@@ -554,14 +559,29 @@ function mcShow(){if(!MCR)return;const{res,V,thr}=MCR,ok=res.filter(r=>r.d!==nul
 function mcHist(ok,q10,q50,q90,main){const sv=$('mcsv');if(!sv)return;const W0=Math.max(320,$('mchw').clientWidth||800),h=W0<600?230:260,ml=40,mr=14,mt=34,mb=40;
  const lo=ok[0],hi=ok[ok.length-1],span=Math.max(1,hi-lo),bw=[3,5,7,10,14,15,20,30,45,60,90,120,180].find(v=>v>=span/16)||180,b0=Math.floor(lo/bw)*bw,nb=Math.max(1,Math.ceil((hi-b0+1)/bw)),cnt=new Array(nb).fill(0);
  ok.forEach(v=>cnt[Math.min(nb-1,Math.floor((v-b0)/bw))]++);const cm=Math.max(...cnt),pw=W0-ml-mr,X=d=>ml+(d-b0)/(nb*bw)*pw,Y=c=>h-mb-c/cm*(h-mb-mt);
- let s='';const ys=cm<=5?1:cm<=12?2:5;
+ let s='<rect id="mchl" class="mchl" x="0" y="'+mt+'" width="0" height="'+(h-mb-mt)+'" visibility="hidden"/>';const ys=cm<=5?1:cm<=12?2:5;
  for(let c=0;c<=cm;c+=ys)s+=`<line x1="${ml}" x2="${W0-mr}" y1="${Y(c)}" y2="${Y(c)}" class="mcg"/><text x="${ml-6}" y="${Y(c)+4}" text-anchor="end" class="mcax">${c}</text>`;
- cnt.forEach((c,i)=>{if(!c)return;const x0=X(b0+i*bw)+1,x1=X(b0+(i+1)*bw)-1;const mid=b0+i*bw+bw/2;const st=mid<q10?'e':mid<=q90?'m':'l';s+=`<rect x="${x0}" y="${Y(c)}" width="${Math.max(1,x1-x0)}" height="${h-mb-Y(c)}" rx="2" class="mcb mcb-${st}"><title>${fmt(b0+i*bw)} – ${fmt(b0+(i+1)*bw-1)}: ${c} ulangan</title></rect>`});
+ cnt.forEach((c,i)=>{if(!c)return;const x0=X(b0+i*bw)+1,x1=X(b0+(i+1)*bw)-1;const mid=b0+i*bw+bw/2;const st=mid<q10?'e':mid<=q90?'m':'l';s+=`<rect x="${x0}" y="${Y(c)}" width="${Math.max(1,x1-x0)}" height="${h-mb-Y(c)}" rx="2" class="mcb mcb-${st}"/>`});
  const lab=(d,t,cl,row)=>{const x=X(d);return `<line x1="${x}" x2="${x}" y1="${mt-4}" y2="${h-mb}" class="mcl ${cl}"/><text x="${x}" y="${row?mt-8:mt-20}" text-anchor="middle" class="mclt">${t}</text>`};
  s+=lab(q10,'P10 '+fmt(Math.round(q10),1),'mcl10',0)+lab(q50,'Median','mcl50',1)+lab(q90,'P90 '+fmt(Math.round(q90),1),'mcl90',0);
  if(main!==null){const x=X(main);s+=`<path d="M${x-7},${h-mb+14} l7,-10 l7,10z" class="mcmain"><title>Simulasi utama: ${fmt(main)}</title></path>`}
  const nt=W0<600?3:6;for(let i=0;i<=nt;i++){const d=Math.round(b0+i*(nb*bw)/nt);s+=`<text x="${X(d)}" y="${h-10}" text-anchor="${i===0?'start':i===nt?'end':'middle'}" class="mcax">${fmt(d,1)}</text>`}
  const cap=document.getElementById('mccap');if(cap)cap.textContent='Tinggi batang: jumlah ulangan yang kritis dalam setiap rentang '+bw+' hari.';
- sv.setAttribute('viewBox',`0 0 ${W0} ${h}`);sv.setAttribute('width',W0);sv.setAttribute('height',h);sv.innerHTML=s}
+ sv.setAttribute('viewBox',`0 0 ${W0} ${h}`);sv.setAttribute('width',W0);sv.setAttribute('height',h);sv.innerHTML=s;MCB={ok,b0,bw,nb,cnt,ml,pw,W0,X};mcTipInit(sv)}
+let MCB=null;
+function mcTipInit(sv){if(sv._tip)return;sv._tip=1;const wr=$('mchw');let tp=$('mctip');if(!tp){tp=document.createElement('div');tp.id='mctip';tp.hidden=true;wr.appendChild(tp)}
+ const hide=()=>{tp.hidden=true;const hl=$('mchl');if(hl)hl.setAttribute('visibility','hidden')};
+ const show=e=>{if(!MCB)return;const B=MCB,r=sv.getBoundingClientRect(),x=(e.clientX-r.left)*B.W0/r.width,i=Math.floor((x-B.ml)/B.pw*B.nb);if(i<0||i>=B.nb){hide();return}
+  const a=B.b0+i*B.bw,b=a+B.bw-1,n=B.cnt[i],N=B.ok.length,per={};
+  B.ok.forEach(v=>{if(Math.min(B.nb-1,Math.floor((v-B.b0)/B.bw))===i){const d=Math.round(v);per[d]=(per[d]||0)+1}});
+  const cum=B.ok.filter(v=>Math.min(B.nb-1,Math.floor((v-B.b0)/B.bw))<=i).length,pc=v=>(Math.round(v/N*1000)/10).toString().replace('.',',');
+  const ks=Object.keys(per).map(Number).sort((p,q)=>p-q);
+  let t=`<b>${fmt(a)} – ${fmt(b)}</b><div class="mctn">${n} ulangan <span>(${pc(n)}% dari ${N})</span></div>`;
+  if(ks.length){t+='<div class="mctl">Rincian per tanggal:</div><ul>'+ks.map(d=>`<li><span>${fmt(d)}</span><span>${per[d]}×</span></li>`).join('')+'</ul>'}else t+='<div class="mctl">Tidak ada ulangan yang kritis pada rentang ini.</div>';
+  t+=`<div class="mctc">Sampai ${fmt(b)}: ${cum} ulangan (${pc(cum)}%) sudah kritis.</div>`;tp.innerHTML=t;tp.hidden=false;
+  const hl=$('mchl');if(hl){const x0=B.X(a),x1=B.X(a+B.bw);hl.setAttribute('x',x0);hl.setAttribute('width',x1-x0);hl.setAttribute('visibility','visible')}
+  const wb=wr.getBoundingClientRect();let lx=e.clientX-wb.left+16,ty=e.clientY-wb.top+12;const tw=tp.offsetWidth,th=tp.offsetHeight;
+  if(lx+tw>wb.width-4)lx=e.clientX-wb.left-tw-16;if(lx<4)lx=4;if(ty+th>wb.height)ty=Math.max(0,e.clientY-wb.top-th-12);tp.style.left=lx+'px';tp.style.top=ty+'px'};
+ sv.addEventListener('pointermove',show);sv.addEventListener('pointerdown',show);sv.addEventListener('pointerleave',hide)}
 let MCH=null,MCW=0;new ResizeObserver(()=>{const w=$('mcc').clientWidth;if(Math.abs(w-MCW)<2)return;MCW=w;if(MCH&&$('mchw'))mcHist(...MCH)}).observe($('mcc'));
 </script></main><script>(function(){function s(){try{parent.postMessage({simH:Math.ceil(document.body.scrollHeight)},'*')}catch(e){}}new ResizeObserver(s).observe(document.body);addEventListener('load',s);setTimeout(s,300)})();</script></body></html>
