@@ -209,12 +209,12 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <h2>Simulasi pengendapan pasir</h2>
 <p>Simulasi ini menjelaskan <b>mekanisme</b> pendangkalan, bukan angka kedalaman yang sebenarnya. Petanya memakai <b>citra satelit asli Pulau Baai</b> (Sentinel-2, 2025): laut lepas di barat dan utara, semenanjung pelabuhan di barat daya, pulau kecil di depan mulut alur, tanggul pasir di timur, dan kolam pelabuhan di tengah. Titik krem adalah butir pasir, warna krem di atas air berarti area itu makin dangkal, jalur biru adalah alur pelayaran, dan kotak putus-putus putih adalah bagian alur di mulut yang kedalamannya dipantau.</p>
 <div class="grid4">
-<div class="mini"><b>1. Mulai dan amati</b><p>Klik <i>▶ Mulai simulasi</i> di tengah peta, lalu biarkan berjalan 15–20 detik dan perhatikan pasir menumpuk di sisi pier dan mulut alur.</p></div>
+<div class="mini"><b>1. Mulai dan amati</b><p>Isi <i>tanggal awal</i> di panel kontrol (wajib), klik <i>▶ Mulai simulasi</i> di tengah peta, lalu perhatikan pasir menumpuk di sisi pier dan mulut alur. Tombol <i>Jeda</i> dan <i>Ulangi</i> ada di atas peta.</p></div>
 <div class="mini"><b>2. Pasang dan surut</b><p>Label PASANG/SURUT berganti. Arus masuk lebih kuat, sehingga pasir terperangkap.</p></div>
 <div class="mini"><b>3. Musim</b><p>Musim mengikuti kalender Bengkulu secara otomatis. Tombol musim tetap bisa dipakai.</p></div>
 <div class="mini"><b>4. Kritis lalu keruk</b><p>Saat ambang tercapai, peringatan muncul dan kapal tertahan, tetapi pasir terus mengendap. Klik <i>Keruk alur sekarang</i> di bawah peta untuk membuka kembali.</p></div>
 </div>
-<p class="note" style="margin-top:10px">Untuk presentasi: isi tanggal awal yang tetap supaya hasilnya selalu sama di setiap percobaan. Di layar lebar, pilih tampilan Sejajar agar simulasi dan grafik terlihat bersamaan.</p>
+<p class="note" style="margin-top:10px">Untuk presentasi: isi tanggal awal yang tetap supaya hasilnya selalu sama di setiap percobaan. Di layar lebar, tampilan <b>Presentasi</b> menampilkan peta, grafik, dan parameter sekaligus tanpa perlu menggulir.</p>
 </div>
 <iframe id="simf" title="Simulasi pendangkalan alur Pelabuhan Pulau Baai" loading="eager"></iframe>
 </section>
@@ -580,5 +580,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=7f04c4a3';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=46e68a13';document.body.appendChild(s)})();
 </script></body></html>
