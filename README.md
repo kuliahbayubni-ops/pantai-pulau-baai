@@ -13,6 +13,7 @@ Website ini memadukan **simulasi konseptual** proses pengendapan pasir di alur P
 | `simulasi.html` | Simulasi interaktif pengendapan pasir |
 | `data/` | Data CSV hasil Google Earth Engine |
 | `gambar/` | Citra dan grafik untuk galeri |
+| `presentasi/` | File PowerPoint presentasi dan gambar setiap slide (tab tersembunyi `#presentasi`) |
 
 ## Memperbarui isi
 

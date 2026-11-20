@@ -5,7 +5,7 @@ const fmt=(v,d=1)=>v==null||isNaN(v)?'–':v.toLocaleString('id-ID',{minimumFrac
 const sg=v=>(v>0?'+':'')+fmt(v)+'%';
 
 /* ---------- Tabs (hash) ---------- */
-const TABS=['beranda','referensi','simulasi','data-satelit','tentang'];let simLoaded=false;
+const TABS=['beranda','referensi','simulasi','data-satelit','tentang','presentasi'];let simLoaded=false;
 function route(){let t=location.hash.slice(1);if(t==='berita'){t='referensi';history.replaceState(null,'','#referensi')}if(!TABS.includes(t))t='beranda';
 $$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
 $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));
@@ -354,3 +354,17 @@ route();
 (function(){const h=document.querySelector('header');if(!h)return;let sm=false,tk=false;function upd(){tk=false;const y=window.scrollY||document.documentElement.scrollTop||0;if(!sm&&y>80){sm=true;h.classList.add('sm')}else if(sm&&y<12){sm=false;h.classList.remove('sm')}}addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});upd()})();
 
 addEventListener('hashchange',()=>setTimeout(()=>{const a=document.querySelector('nav a.on'),n=a&&a.parentElement;if(n&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:'smooth'})},50));
+
+/* ---------- Presentasi (tab tersembunyi) ---------- */
+(function(){const el=document.getElementById('pres-data');if(!el)return;let S=[];try{S=JSON.parse(el.textContent)}catch(e){}if(!S.length)return;
+let k=0;const img=document.getElementById('pr-img'),th=document.getElementById('pr-th'),cnt=document.getElementById('pr-cnt'),pv=document.getElementById('pr-prev'),nx=document.getElementById('pr-next'),box=document.getElementById('prv');
+th.innerHTML=S.map((u,i)=>`<button type="button" data-i="${i}" aria-label="Slide ${i+1}"><img loading="lazy" src="${u}" alt=""></button>`).join('');
+function go(i){k=Math.max(0,Math.min(S.length-1,i));img.src=S[k];img.alt='Slide '+(k+1)+' dari '+S.length;cnt.textContent=(k+1)+' / '+S.length;pv.disabled=k===0;nx.disabled=k===S.length-1;
+ th.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===k));const b=th.children[k];if(b)th.scrollTo({left:b.offsetLeft-th.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});
+ if(S[k+1]){const p=new Image();p.src=S[k+1]}}
+pv.onclick=()=>go(k-1);nx.onclick=()=>go(k+1);th.onclick=e=>{const b=e.target.closest('button');if(b)go(+b.dataset.i)};
+document.getElementById('pr-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else if(box.requestFullscreen)box.requestFullscreen()};
+addEventListener('keydown',e=>{if(!document.getElementById('t-presentasi').classList.contains('on'))return;if(e.target.closest&&e.target.closest('input,select,textarea'))return;
+ if(e.key==='ArrowRight'||e.key==='PageDown'){go(k+1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='PageUp'){go(k-1);e.preventDefault()}});
+let sx=null;box.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});box.addEventListener('touchend',e=>{if(sx==null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)go(k+(d<0?1:-1));sx=null});
+go(0)})();
