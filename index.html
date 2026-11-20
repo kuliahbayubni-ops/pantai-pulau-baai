@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai</title>
+<title>PASIR: Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai</title>
 <style>
 :root{--sea:#cfe4ec;--land:#f1e3c4;--land2:#e2e3d8;--bg:#eef3f4;--card:#fff;--tx:#14262e;--mu:#56696f;--ac:#0b6e8a;--ac2:#e3f0f3;--bd:#cfdadd;--rd:#c0392b;--ok:#1f8a5b;--wn:#b9770e;--sand:#c9a46a;
 --z1:#0b6e8a;--z2:#c0392b;--z3:#7a5aa6;--z4:#6b7d83;color-scheme:light}
@@ -13,7 +13,10 @@ h1{font-size:30px}h2{font-size:22px;margin-top:6px}h3{font-size:17px}
 p{margin:0 0 10px}a{color:var(--ac)}
 header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--bd)}
 .hd{max-width:1240px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
-.brand{font:700 16px/1.2 Georgia,serif;margin-right:auto}.brand small{display:block;font:12px "Trebuchet MS",sans-serif;color:var(--mu)}
+.brand{font:700 16px/1.2 Georgia,serif;margin-right:auto}.bn{display:inline-block;font:800 13px/1 "Trebuchet MS",sans-serif;letter-spacing:.12em;background:var(--ac);color:var(--bg);padding:4px 7px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.kick{display:inline-flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:13.5px;font-weight:700;color:var(--ac);margin-bottom:8px}.kick b{letter-spacing:.14em;background:var(--ac);color:var(--bg);padding:3px 8px;border-radius:6px}
+.pasir{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 12px}.pasir div{background:var(--bg);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--mu)}.pasir b{display:block;color:var(--tx);font-size:15.5px}.pasir i{font-style:normal;font-weight:800;color:var(--ac)}
+@media(max-width:640px){.pasir{grid-template-columns:1fr}}.brand small{display:block;font:12px "Trebuchet MS",sans-serif;color:var(--mu)}
 nav{display:flex;flex-wrap:wrap;gap:4px}
 nav a{padding:7px 13px;border-radius:8px;text-decoration:none;color:var(--mu);font-weight:600;font-size:14.5px}
 nav a:hover{background:var(--ac2);color:var(--tx)}nav a.on{background:var(--ac);color:var(--bg)}
@@ -159,7 +162,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 @media(max-width:640px){h1{font-size:24px}.pair{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="hd">
-<div class="brand">Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai<small>Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
+<div class="brand"><span class="bn">PASIR</span> Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai<small>Pantau Alur, Simulasikan, Ingatkan sebelum Rawan · Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
 <nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#referensi" data-t="referensi">Referensi</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
 </div></header>
 <main>
@@ -167,6 +170,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <!-- ================= BERANDA ================= -->
 <section class="tab" id="t-beranda">
 <div class="card hero">
+<div class="kick"><b>PASIR</b><span>Pantau Alur, Simulasikan, Ingatkan sebelum Rawan</span></div>
 <h1>Ketika pasir menutup gerbang laut Bengkulu</h1>
 <p class="lead">Pelabuhan Pulau Baai adalah pelabuhan utama Provinsi Bengkulu. Pada akhir Maret 2025, alur masuknya tertutup total oleh endapan pasir. Inovasi ini memadukan <b>simulasi konseptual</b> untuk menjelaskan proses pengendapan dan <b>pemantauan citra satelit</b> untuk melihat jejak perubahannya dari luar angkasa.</p>
 <div class="kpis">
@@ -230,7 +234,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <div class="grid4">
 <div class="mini"><b>Penjaga batas negara</b><p>Termasuk Pulau-Pulau Kecil Terluar (PPKT), yaitu titik dasar garis pangkal wilayah perairan dan ZEE Indonesia, sekaligus daerah 3T (terdepan, terluar, tertinggal).</p></div>
 <div class="mini"><b>400,6 km²</b><p>Luas pulau, dengan panjang pantai sekitar 112 km.</p></div>
-<div class="mini"><b>± 4.000 jiwa</b><p>Tersebar di enam desa: Banjar Sari, Meok, Apoho, Malakoni, Kaana, dan Kahyapu. Data rinci per desa tersedia di publikasi BPS Kecamatan Enggano Dalam Angka.</p></div>
+<div class="mini"><b>± 4.000 jiwa</b><p>Tersebar di enam desa: Banjar Sari, Meok, Apoho, Malakoni, Kaana, dan Kahyapu. Sensus Penduduk 2020 mencatat 4.035 jiwa (BPS).</p></div>
 <div class="mini"><b>Feri 10–12 jam</b><p>Akses utama adalah kapal feri dari Pulau Baai. Pesawat perintis hanya sekitar 40 menit, tetapi kursinya sangat terbatas (pesawat 12 kursi, pada Juni 2025 harus dipesan sekitar satu bulan sebelumnya).</p></div>
 <div class="mini"><b>Kakao, pisang, melinjo</b><p>Komoditas unggulan pertanian Enggano, ditambah hasil laut. Semuanya dijual ke Kota Bengkulu lewat kapal.</p></div>
 </div>
@@ -246,7 +250,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <li class="o"><b>Penanganan darurat</b>Gubernur mengirim 16 ton beras dan bahan pokok lain dengan kapal kecil (April 2025), kapal pengawas KKP mengangkut 28 warga (2 Juli 2025), DPRD mengusulkan Pelabuhan Linau di Kaur sebagai jalur alternatif, dan Presiden menerbitkan Inpres Nomor 12 Tahun 2025 yang juga mencakup percepatan pembangunan Enggano.</li>
 </ol>
 <p class="lokpt"><b>Kaitannya dengan inovasi ini:</b> bila pendangkalan terpantau lebih awal dari citra satelit, pengerukan dapat dijadwalkan sebelum alur tertutup. Dengan begitu, Enggano tidak perlu kembali terputus dari daratan Sumatra.</p>
-<div class="srcs"><span class="note">Sumber (16), klik untuk melihat di tab Referensi:</span><a href="#referensi" data-go="ref-doc-setkab-profil">Setkab: profil Enggano</a><a href="#referensi" data-go="ref-doc-setkab-bappenas">Setkab/Bappenas: status PPKT dan komoditas</a><a href="#referensi" data-go="ref-doc-bps-enggano">BPS: Kecamatan Enggano Dalam Angka</a><a href="#referensi" data-go="ref-nw-mongabay-2024">Mongabay: enam desa</a><a href="#referensi" data-go="ref-sci-arifin2003">Arifin dkk. (2003): letak pelabuhan</a><a href="#referensi" data-go="ref-sci-ariansyah2026">Ariansyah (2026): alamat pelabuhan</a><a href="#referensi" data-go="ref-nw-kontan-menhub">Kontan: jenis muatan</a><a href="#referensi" data-go="ref-nw-detik-terisolir">detikSumbagsel: warga terisolasi</a><a href="#referensi" data-go="ref-nw-antara-bantuan">Antara: bantuan bahan pokok</a><a href="#referensi" data-go="ref-nw-kompas-kliping">Kompas: harga pisang dan sewa kapal</a><a href="#referensi" data-go="ref-nw-detik-linau">detikSumbagsel: Pelabuhan Linau</a><a href="#referensi" data-go="ref-nw-inews-orca">iNews: KP Orca 05</a><a href="#referensi" data-go="ref-doc-bmkg-rute">BMKG: rute 88 mil laut</a><a href="#referensi" data-go="ref-nw-bisnis-dasco">Bisnis.com: jarak 90 mil laut</a><a href="#referensi" data-go="ref-nw-kompas-tiket">Kompas: tiket pesawat perintis</a><a href="#referensi" data-go="ref-doc-inpres12">Inpres Nomor 12 Tahun 2025</a><a href="#referensi" class="all">Semua referensi →</a></div>
+<div class="srcs"><span class="note">Sumber (16), klik untuk melihat di tab Referensi:</span><a href="#referensi" data-go="ref-doc-setkab-profil">Setkab: profil Enggano</a><a href="#referensi" data-go="ref-doc-setkab-bappenas">Setkab/Bappenas: status PPKT dan komoditas</a><a href="#referensi" data-go="ref-doc-bps-enggano">BPS: Bengkulu Utara Dalam Angka</a><a href="#referensi" data-go="ref-nw-mongabay-2024">Mongabay: enam desa</a><a href="#referensi" data-go="ref-sci-arifin2003">Arifin dkk. (2003): letak pelabuhan</a><a href="#referensi" data-go="ref-sci-ariansyah2026">Ariansyah (2026): alamat pelabuhan</a><a href="#referensi" data-go="ref-nw-kontan-menhub">Kontan: jenis muatan</a><a href="#referensi" data-go="ref-nw-detik-terisolir">detikSumbagsel: warga terisolasi</a><a href="#referensi" data-go="ref-nw-antara-bantuan">Antara: bantuan bahan pokok</a><a href="#referensi" data-go="ref-nw-kompas-kliping">Kompas: harga pisang dan sewa kapal</a><a href="#referensi" data-go="ref-nw-detik-linau">detikSumbagsel: Pelabuhan Linau</a><a href="#referensi" data-go="ref-nw-inews-orca">iNews: KP Orca 05</a><a href="#referensi" data-go="ref-doc-bmkg-rute">BMKG: rute 88 mil laut</a><a href="#referensi" data-go="ref-nw-bisnis-dasco">Bisnis.com: jarak 90 mil laut</a><a href="#referensi" data-go="ref-nw-kompas-tiket">Kompas: tiket pesawat perintis</a><a href="#referensi" data-go="ref-doc-inpres12">Inpres Nomor 12 Tahun 2025</a><a href="#referensi" class="all">Semua referensi →</a></div>
 </div>
 
 <div class="grid2">
@@ -276,7 +280,8 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 </div>
 
 <div class="card">
-<h2>Inovasi kami: dua bagian yang saling melengkapi</h2>
+<h2>Inovasi kami: PASIR</h2>
+<div class="pasir"><div><b><i>P</i>antau <i>A</i>lur</b>Citra satelit Sentinel-2 memantau perubahan luas air di sekitar mulut alur setiap kuartal.</div><div><b><i>S</i>imulasikan</b>Simulasi konseptual menunjukkan bagaimana pasir mengendap dan kapan alur menjadi kritis.</div><div><b><i>I</i>ngatkan sebelum <i>R</i>awan</b>Ambang siaga dan kritis memberi peringatan dini agar pengerukan dijadwalkan sebelum alur tertutup.</div></div>
 <div class="grid2">
 <div class="mini"><b>Simulasi konseptual</b><p>Butir pasir bergerak mengikuti arus, pasang surut, dan kalender musim Bengkulu. Kapal keluar masuk selama alur cukup dalam, tertahan saat alur kritis, lalu kapal keruk membuka kembali alur.</p><a class="go" href="#simulasi">Coba simulasi →</a></div>
 <div class="mini"><b>Pemantauan citra satelit</b><p>Citra Sentinel-2 periode 2019–2026 diolah di Google Earth Engine. Luas perairan di tiga zona sekitar mulut alur dibandingkan dengan pantai pembanding, setelah pola musimannya dikoreksi.</p><a class="go" href="#data-satelit">Lihat data →</a></div>
@@ -689,5 +694,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=8d453d10';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=36f825df';document.body.appendChild(s)})();
 </script></body></html>
