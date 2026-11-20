@@ -9,7 +9,7 @@ const TABS=['beranda','referensi','simulasi','data-satelit','tentang'];let simLo
 function route(){let t=location.hash.slice(1);if(t==='berita'){t='referensi';history.replaceState(null,'','#referensi')}if(!TABS.includes(t))t='beranda';
 $$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
 $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));
-if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit')drawAll();window.scrollTo(0,0)}
+if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit'){['ch-ews','ch-raw','ch-mon','ch-sea'].forEach(k=>{const e=document.getElementById(k);if(e)e.dataset.fresh='1'});drawAll()}window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 
 /* ---------- Simulasi (iframe) ---------- */
@@ -38,40 +38,63 @@ const TH={MULUT_ALUR:{sg:-3,kr:-6},TIMUR_PIER:{sg:-5.8,kr:-11.6},BARAT_PIER:{sg:
 const iOUT=Q.indexOf(OUT);
 
 /* ---------- Chart engine (SVG) ---------- */
-function chart(host,o){const W=900,H=o.h||330,L=56,R=16,T=18,Bm=40,n=o.labels.length;
+function mpath(P){const n=P.length;if(n<2)return n?`M${P[0][0].toFixed(1)} ${P[0][1].toFixed(1)}`:'';const d=[],m=[];
+ for(let i=0;i<n-1;i++)d[i]=(P[i+1][1]-P[i][1])/(P[i+1][0]-P[i][0]);m[0]=d[0];m[n-1]=d[n-2];
+ for(let i=1;i<n-1;i++)m[i]=d[i-1]*d[i]<=0?0:(d[i-1]+d[i])/2;
+ for(let i=0;i<n-1;i++){if(d[i]===0){m[i]=m[i+1]=0;continue}const a=m[i]/d[i],b=m[i+1]/d[i],s=a*a+b*b;if(s>9){const t=3/Math.sqrt(s);m[i]=t*a*d[i];m[i+1]=t*b*d[i]}}
+ let p=`M${P[0][0].toFixed(1)} ${P[0][1].toFixed(1)}`;for(let i=0;i<n-1;i++){const dx=(P[i+1][0]-P[i][0])/3;p+=`C${(P[i][0]+dx).toFixed(1)} ${(P[i][1]+m[i]*dx).toFixed(1)} ${(P[i+1][0]-dx).toFixed(1)} ${(P[i+1][1]-m[i+1]*dx).toFixed(1)} ${P[i+1][0].toFixed(1)} ${P[i+1][1].toFixed(1)}`}return p}
+const glow=c=>/^#[0-9a-f]{6}$/i.test(c)?`filter:drop-shadow(0 2px 5px ${c}66)`:'';
+let CHIO=null;
+function chart(host,o){const W=900,H=o.h||330,L=56,R=16,T=18,Bm=40,n=o.labels.length,id=host.id||'ch';
 const pw=W-L-R,ph=H-T-Bm,x=i=>L+(n<2?pw/2:i*pw/(n-1)),bw=o.bars?pw/n*.7:0,xb=i=>L+(i+.5)*pw/n;const X=o.bars?xb:x;
-const y=v=>T+ph-(v-o.ymin)/(o.ymax-o.ymin)*ph;let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||''}">`;
-const mu=css('--mu'),bd=css('--bd');
+const y=v=>T+ph-(v-o.ymin)/(o.ymax-o.ymin)*ph,yc=v=>y(Math.max(o.ymin,Math.min(o.ymax,v)));
+const fresh=host.dataset.fresh==='1';host.dataset.fresh='';
+let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||''}"${fresh?' class="an"':''}><defs>`;
+const mu=css('--mu'),bd=css('--bd'),cd=css('--card');
+o.series.forEach((se,k)=>{s+=`<linearGradient id="${id}-g${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${se.c}" stop-opacity="${se.bar?1:.34}"/><stop offset="1" stop-color="${se.c}" stop-opacity="${se.bar?.4:0}"/></linearGradient>`});
+s+='</defs>';
 (o.shade||[]).forEach(([a,b,c])=>s+=`<rect x="${X(a)-(o.bars?pw/n/2:0)}" y="${T}" width="${X(b)-X(a)+(o.bars?pw/n:0)}" height="${ph}" fill="${c}" opacity=".5"/>`);
+(o.zones||[]).forEach(z=>{const y1=yc(z.b),y0=yc(z.a);s+=`<rect x="${L}" y="${y1}" width="${pw}" height="${y0-y1}" fill="${z.c}" opacity="${z.op||.1}"/>`;
+ if(z.t&&y0-y1>16)s+=`<text x="${L+8}" y="${z.top?y1+15:(y1+y0)/2+4}" font-size="11" font-weight="700" letter-spacing="1.2" fill="${z.c}" opacity=".85">${z.t}</text>`});
 if(o.band)s+=`<rect x="${L}" y="${y(o.band[1])}" width="${pw}" height="${y(o.band[0])-y(o.band[1])}" fill="${mu}" opacity=".14"/>`;
-o.ticks.forEach(t=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(t)}" y2="${y(t)}" stroke="${bd}" stroke-width="1"/><text x="${L-7}" y="${y(t)+4}" text-anchor="end" font-size="12" fill="${mu}">${o.yf?o.yf(t):t}</text>`);
+o.ticks.forEach(t=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(t)}" y2="${y(t)}" stroke="${bd}" stroke-width="1"${t===0&&o.ymin<0?'':' opacity=".7"'}/><text x="${L-7}" y="${y(t)+4}" text-anchor="end" font-size="12" fill="${mu}">${o.yf?o.yf(t):t}</text>`);
 if(o.ytitle)s+=`<text transform="translate(14 ${T+ph/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="${mu}">${o.ytitle}</text>`;
 o.labels.forEach((l,i)=>{if(o.xshow(i))s+=`<text x="${X(i)}" y="${H-Bm+18}" text-anchor="middle" font-size="12" fill="${mu}">${o.xl(i)}</text><line x1="${X(i)}" x2="${X(i)}" y1="${T+ph}" y2="${T+ph+4}" stroke="${mu}"/>`});
 (o.hl||[]).forEach(h=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(h.v)}" y2="${y(h.v)}" stroke="${h.c}" stroke-width="1.6" stroke-dasharray="6 4"/><text x="${W-R-4}" y="${y(h.v)-5}" text-anchor="end" font-size="12" fill="${h.c}" font-weight="700">${h.t}</text>`);
 (o.marks||[]).forEach((m,k)=>s+=`<line x1="${X(m.i)}" x2="${X(m.i)}" y1="${T}" y2="${T+ph}" stroke="${mu}" stroke-dasharray="2 3"/><text x="${X(m.i)>L+pw*.7?X(m.i)-4:X(m.i)+4}" text-anchor="${X(m.i)>L+pw*.7?'end':'start'}" y="${T+12+k*14}" font-size="11.5" fill="${mu}">${m.t}</text>`);
-o.series.forEach(se=>{if(se.hide)return;const c=se.c;
- if(se.bar){se.v.forEach((v,i)=>{if(v==null)return;const yy=y(Math.max(v,0)),h=Math.abs(y(v)-y(0));s+=`<rect x="${X(i)-bw/2}" y="${yy}" width="${bw}" height="${h}" fill="${c}" opacity=".8" rx="2"/>`});return}
- let d='',pen=false;se.v.forEach((v,i)=>{const ok=v!=null&&!(se.skip||[]).includes(i);if(ok){d+=(pen?'L':'M')+X(i).toFixed(1)+' '+y(Math.max(o.ymin,Math.min(o.ymax,v))).toFixed(1);pen=true}else pen=false});
- s+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="${se.w||2.4}" stroke-linejoin="round" ${se.dash?'stroke-dasharray="5 4"':''}/>`;
+o.series.forEach((se,k)=>{if(se.hide)return;const c=se.c;
+ if(se.bar){se.v.forEach((v,i)=>{if(v==null)return;const yy=y(Math.max(v,0)),h=Math.abs(y(v)-y(0));s+=`<rect class="br" style="transition-delay:${(i/n*.6).toFixed(2)}s" x="${X(i)-bw/2}" y="${yy}" width="${bw}" height="${h}" fill="url(#${id}-g${k})" rx="3"/>`});return}
+ const segs=[];let cur=null;se.v.forEach((v,i)=>{const ok=v!=null&&!(se.skip||[]).includes(i);if(ok){if(!cur){cur=[];segs.push(cur)}cur.push([X(i),yc(v)])}else cur=null});
+ segs.forEach(P=>{const d=mpath(P);
+  if(se.area&&P.length>1)s+=`<path class="ar" d="${d}L${P[P.length-1][0].toFixed(1)} ${T+ph}L${P[0][0].toFixed(1)} ${T+ph}Z" fill="url(#${id}-g${k})"/>`;
+  s+=`<path class="${se.dash?'ld':'ln'}" d="${d}" fill="none" stroke="${c}" stroke-width="${se.w||2.4}" stroke-linejoin="round" stroke-linecap="round" ${se.dash?'stroke-dasharray="5 4"':''} style="${se.dash?'':glow(c)}"/>`});
  se.v.forEach((v,i)=>{if(v==null)return;const sk=(se.skip||[]).includes(i);
-  if(sk&&se.outlier){s+=`<rect x="${X(i)-6}" y="${T+ph-14}" width="12" height="12" transform="rotate(45 ${X(i)} ${T+ph-8})" fill="${mu}"/>`}
-  else if(sk){s+=`<circle cx="${X(i)}" cy="${y(v)}" r="3.4" fill="none" stroke="${c}" stroke-width="1.5"/>`}
-  else if(se.dots!==false)s+=`<circle cx="${X(i)}" cy="${y(v)}" r="${se.r||2.8}" fill="${c}"/>`})});
-if(o.cur!=null)s+=`<line x1="${X(o.cur)}" x2="${X(o.cur)}" y1="${T}" y2="${T+ph}" stroke="${css('--tx')}" stroke-width="1.5"/>`;
-s+=`<line id="hv" x1="0" x2="0" y1="${T}" y2="${T+ph}" stroke="${mu}" visibility="hidden"/><rect x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent" class="ov"/></svg><div class="tip"></div>`;
-host.innerHTML=s;const sv=host.querySelector('svg'),tip=host.querySelector('.tip'),hv=sv.querySelector('#hv');
+  if(sk&&se.outlier){s+=`<rect class="dt" x="${X(i)-6}" y="${T+ph-14}" width="12" height="12" transform="rotate(45 ${X(i)} ${T+ph-8})" fill="${mu}"/>`}
+  else if(sk){s+=`<circle class="dt" cx="${X(i)}" cy="${yc(v)}" r="3.4" fill="none" stroke="${c}" stroke-width="1.5"/>`}
+  else if(se.dots!==false)s+=`<circle class="dt" cx="${X(i)}" cy="${yc(v)}" r="${se.r||2.8}" fill="${se.dc?se.dc(i):c}" stroke="${cd}" stroke-width="1.2"/>`})});
+if(o.cur!=null){s+=`<line x1="${X(o.cur)}" x2="${X(o.cur)}" y1="${T}" y2="${T+ph}" stroke="${css('--tx')}" stroke-width="1.5" opacity=".7"/>`;
+ const se=o.series[0],v=se&&se.v[o.cur];if(v!=null&&!(se.skip||[]).includes(o.cur)){const cc=se.dc?se.dc(o.cur):se.c;
+  s+=`<circle class="pl" cx="${X(o.cur)}" cy="${yc(v)}" r="7" fill="none" stroke="${cc}" stroke-width="2"/><circle cx="${X(o.cur)}" cy="${yc(v)}" r="5.5" fill="${cc}" stroke="${cd}" stroke-width="2"/>`}}
+s+=`<line class="hv" x1="0" x2="0" y1="${T}" y2="${T+ph}" stroke="${mu}" visibility="hidden"/><g class="chhd"></g><rect x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent" class="ov"/></svg><div class="tip"></div>`;
+host.innerHTML=s;const sv=host.querySelector('svg'),tip=host.querySelector('.tip'),hv=sv.querySelector('.hv'),hd=sv.querySelector('.chhd');
+if(fresh){sv.querySelectorAll('.ln').forEach(p=>{const l=Math.ceil(p.getTotalLength())+2;p.style.strokeDasharray=l;p.style.setProperty('--L',l)});
+ if(!CHIO)CHIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const a=e.target.querySelector('svg.an');if(a)requestAnimationFrame(()=>a.classList.add('chgo'));CHIO.unobserve(e.target)}}),{threshold:.25});
+ CHIO.observe(host)}
 function at(ev){const p=sv.createSVGPoint();p.x=ev.clientX;p.y=ev.clientY;const q=p.matrixTransform(sv.getScreenCTM().inverse());
  let i=o.bars?Math.floor((q.x-L)/(pw/n)):Math.round((q.x-L)/pw*(n-1));return Math.max(0,Math.min(n-1,i))}
 sv.querySelector('.ov').addEventListener('pointermove',ev=>{const i=at(ev);hv.setAttribute('x1',X(i));hv.setAttribute('x2',X(i));hv.setAttribute('visibility','visible');
+ let g='';if(o.bars)g=`<rect x="${X(i)-pw/n/2}" y="${T}" width="${pw/n}" height="${ph}" fill="${css('--tx')}" opacity=".07"/>`;
+ else o.series.forEach(se=>{const v=se.v[i];if(se.hide||se.bar||v==null||(se.skip||[]).includes(i))return;const c=se.dc?se.dc(i):se.c;g+=`<circle cx="${X(i)}" cy="${yc(v)}" r="9" fill="${c}" opacity=".22"/><circle cx="${X(i)}" cy="${yc(v)}" r="5" fill="${c}" stroke="${cd}" stroke-width="2"/>`});
+ hd.innerHTML=g;
  tip.innerHTML=o.tip(i);tip.style.display='block';const r=host.getBoundingClientRect();let lx=ev.clientX-r.left+14;if(lx>r.width-270)lx=ev.clientX-r.left-270;tip.style.left=Math.max(0,lx)+'px';tip.style.top=(ev.clientY-r.top-10)+'px'});
-sv.querySelector('.ov').addEventListener('pointerleave',()=>{tip.style.display='none';hv.setAttribute('visibility','hidden')});
+sv.querySelector('.ov').addEventListener('pointerleave',()=>{tip.style.display='none';hv.setAttribute('visibility','hidden');hd.innerHTML=''});
 if(o.click)sv.querySelector('.ov').addEventListener('click',ev=>o.click(at(ev)))}
 const nice=(a,b,st)=>{const t=[];for(let v=Math.ceil(a/st)*st;v<=b+1e-9;v+=st)t.push(+v.toFixed(6));return t};
 
 /* ---------- 1. Indeks peringatan dini ---------- */
 let ZS='MULUT_ALUR',QI=Q.length-1,timer=null;
 $('#zbtn').innerHTML=ZONES.map(z=>`<button data-z="${z}">${ZN[z]}</button>`).join('');
-$$('#zbtn button').forEach(b=>b.onclick=()=>{ZS=b.dataset.z;drawEWS()});
+$$('#zbtn button').forEach(b=>b.onclick=()=>{ZS=b.dataset.z;$('#ch-ews').dataset.fresh='1';drawEWS()});
 $('#qs').max=Q.length-1;$('#qs').oninput=e=>{QI=+e.target.value;drawEWS()};
 $('#play').onclick=()=>{if(timer){clearInterval(timer);timer=null;$('#play').textContent='▶ Putar waktu';return}
  if(QI>=Q.length-1)QI=0;$('#play').textContent='⏸ Jeda';timer=setInterval(()=>{QI++;drawEWS();if(QI>=Q.length-1){clearInterval(timer);timer=null;$('#play').textContent='▶ Putar waktu'}},650)};
@@ -79,13 +102,13 @@ function stat(z,i){const v=SEL[z][i],t=TH[z];if(i===iOUT)return['tidak wajar (da
  if(v<=t.kr)return['KRITIS',css('--rd')];if(v<=t.sg)return['SIAGA',css('--wn')];if(v>=-t.sg)return['di atas kisaran normal',css('--ac')];return['normal',css('--ok')]}
 function drawEWS(){$$('#zbtn button').forEach(b=>b.classList.toggle('on',b.dataset.z===ZS));$('#qs').value=QI;
  const v=SEL[ZS],t=TH[ZS],c=css(ZC[ZS]),lo=Math.min(-14,t.kr-2),hi=12;
- chart($('#ch-ews'),{labels:Q,ymin:lo,ymax:hi,ticks:nice(lo,hi,lo<-14?4:3),yf:v=>v+'%',ytitle:'Selisih terhadap pembanding (%)',band:[t.sg,-t.sg],
+ chart($('#ch-ews'),{labels:Q,ymin:lo,ymax:hi,ticks:nice(lo,hi,lo<-14?4:3),yf:v=>v+'%',ytitle:'Selisih terhadap pembanding (%)',zones:[{a:lo,b:t.kr,c:css('--rd'),t:'KRITIS',op:.13,top:1},{a:t.kr,b:t.sg,c:css('--wn'),t:'SIAGA',op:.12},{a:t.sg,b:-t.sg,c:css('--ok'),t:'NORMAL',op:.09,top:1}],
   hl:[{v:t.sg,c:css('--wn'),t:'Siaga '+fmt(t.sg)+'%'},{v:t.kr,c:css('--rd'),t:'Kritis '+fmt(t.kr)+'%'}],
   marks:[{i:Q.indexOf('2025-01'),t:'Mar 2025: alur tertutup'},{i:Q.indexOf('2025-04'),t:'Jun 2025: pengerukan resmi'}],
-  series:[{v,c,skip:[iOUT],outlier:true,r:3.4}],cur:QI,xshow:i=>Q[i].endsWith('-01'),xl:i=>Q[i].slice(0,4),
+  series:[{v,c,skip:[iOUT],outlier:true,r:4.2,area:true,w:2.8,dc:i=>stat(ZS,i)[1]}],cur:QI,xshow:i=>Q[i].endsWith('-01'),xl:i=>Q[i].slice(0,4),
   aria:'Grafik indeks peringatan dini '+ZN[ZS],click:i=>{QI=i;drawEWS()},
   tip:i=>`<b>${ql(Q[i])}</b><br>${ZN[ZS]}: ${sg(v[i])}<br>Status: <b style="color:${stat(ZS,i)[1]}">${stat(ZS,i)[0]}</b>`});
- $('#lg-ews').innerHTML=`<span><i style="background:${c}"></i>${ZN[ZS]}</span><span><i style="background:${css('--mu')};opacity:.35;height:10px"></i>kisaran normal 2019–2022</span><span>◆ Kuartal IV 2020: ${sg(v[iOUT])}, tidak wajar, di luar skala</span>`;
+ $('#lg-ews').innerHTML=`<span><i style="background:${c}"></i>${ZN[ZS]}</span><span><i style="background:${css('--ok')};opacity:.45;height:10px"></i>normal (kisaran 2019–2022)</span><span><i style="background:${css('--wn')};opacity:.5;height:10px"></i>siaga</span><span><i style="background:${css('--rd')};opacity:.5;height:10px"></i>kritis</span><span>titik diwarnai sesuai status</span><span>◆ Kuartal IV 2020: ${sg(v[iOUT])}, tidak wajar, di luar skala</span>`;
  const [st,sc]=stat(ZS,QI);$('#qst').innerHTML=`${ql(Q[QI])}: selisih ${ZN[ZS].toLowerCase()} <span style="color:${sc}">${sg(v[QI])} · ${st}</span>`;
  $('#chips').innerHTML=ZONES.map(z=>{const[s2,c2]=stat(z,QI);return`<div class="chip" style="border-left:4px solid ${css(ZC[z])}"><span>${ZN[z]} · ${qs(Q[QI])}</span><strong>${sg(SEL[z][QI])}</strong><span style="color:${c2};font-weight:700">${s2}</span><span> (siaga ${fmt(TH[z].sg)}%, kritis ${fmt(TH[z].kr)}%)</span></div>`}).join('')}
 
@@ -94,7 +117,7 @@ const RZ=['MULUT_ALUR','TIMUR_PIER','BARAT_PIER','KONTROL'],RH={};
 $('#rbtn').innerHTML=RZ.map(z=>`<button data-z="${z}" class="on" style="border-color:${css(ZC[z])}">${ZN[z]}</button>`).join('');
 $$('#rbtn button').forEach(b=>b.onclick=()=>{RH[b.dataset.z]=!RH[b.dataset.z];b.classList.toggle('on',!RH[b.dataset.z]);drawRaw()});
 function drawRaw(){chart($('#ch-raw'),{labels:Q,ymin:0,ymax:200,ticks:nice(0,200,40),yf:v=>v+' ha',ytitle:'Luas air tetap (ha)',
- series:RZ.map(z=>({v:Q.map(q=>val(z,q)),c:css(ZC[z]),hide:RH[z],skip:[iOUT],outlier:true,dash:z==='KONTROL'})),
+ series:RZ.map(z=>({v:Q.map(q=>val(z,q)),c:css(ZC[z]),hide:RH[z],skip:[iOUT],outlier:true,dash:z==='KONTROL',r:3.2,area:z==='MULUT_ALUR'})),
  marks:[{i:Q.indexOf('2025-01'),t:'Mar 2025'}],xshow:i=>Q[i].endsWith('-01'),xl:i=>Q[i].slice(0,4),aria:'Luas air tetap per zona',
  tip:i=>`<b>${ql(Q[i])}</b>${i===iOUT?' <i>(tidak wajar)</i>':''}<br>`+RZ.filter(z=>!RH[z]).map(z=>{const r=Z.find(r=>r.zona===z&&r.kuartal===Q[i]);return`<span style="color:${css(ZC[z])}">●</span> ${ZN[z]}: ${fmt(r.luas_air_tetap_ha)} ha (${r.jumlah_citra} citra)`}).join('<br>')})}
 
@@ -104,18 +127,18 @@ const MET={ndti:{n:'Kekeruhan (NDTI)',d:3,lo:-.45,hi:0,st:.1,yt:'NDTI (makin tin
  hujan_mm:{n:'Curah hujan (CHIRPS)',d:0,lo:0,hi:700,st:100,yt:'Curah hujan bulanan (mm)',c:'--z3',q:false,bar:true}};
 let MS='ndti';const MBAD=B.map((r,i)=>r.jumlah_citra<=3?i:-1).filter(i=>i>=0);
 $('#mbtn').innerHTML=Object.keys(MET).map(k=>`<button data-m="${k}">${MET[k].n}</button>`).join('');
-$$('#mbtn button').forEach(b=>b.onclick=()=>{MS=b.dataset.m;drawMon()});
+$$('#mbtn button').forEach(b=>b.onclick=()=>{MS=b.dataset.m;$('#ch-mon').dataset.fresh='1';$('#ch-sea').dataset.fresh='1';drawMon()});
 function drawMon(){$$('#mbtn button').forEach(b=>b.classList.toggle('on',b.dataset.m===MS));const m=MET[MS],c=css(m.c);
  const v=B.map(r=>r[MS]==null?null:(m.pct?r[MS]*100:r[MS]));const skip=m.q?MBAD:[];
  const lab=B.map(r=>r.bulan);const shade=[];B.forEach((r,i)=>{const mo=+r.bulan.slice(5);if(mo===9&&i+1<B.length)shade.push([i,Math.min(i+1,B.length-1),css('--ac2')])});
  chart($('#ch-mon'),{labels:lab,ymin:m.lo,ymax:m.hi,ticks:nice(m.lo,m.hi,m.st),yf:t=>m.pct?t+'%':(m.d?t.toFixed(1):t),ytitle:m.yt,
-  series:[m.bar?{v,c,bar:true}:{v,c,skip,dots:true,r:2.2}],bars:m.bar,shade:m.bar?[]:shade,
+  series:[m.bar?{v,c,bar:true}:{v,c,skip,dots:true,r:2.6,area:true}],bars:m.bar,shade:m.bar?[]:shade,
   marks:[{i:lab.indexOf('2025-03'),t:'Mar 2025'}],xshow:i=>lab[i].endsWith('-01'),xl:i=>lab[i].slice(0,4),aria:m.n+' bulanan',
   tip:i=>{const r=B[i];return`<b>${ml(r.bulan)}</b><br>${m.n}: ${v[i]==null?'tidak ada data':fmt(v[i],m.d)+(m.pct?'%':m.bar?' mm':'')}<br>Jumlah citra: ${r.jumlah_citra}${m.q&&r.jumlah_citra<=3?' <i>(kurang bisa dipercaya)</i>':''}`}});
  const sea=BLN.map((_,k)=>{const xs=B.filter((r,i)=>+r.bulan.slice(5)===k+1&&!skip.includes(i)&&r[MS]!=null).map(r=>m.pct?r[MS]*100:r[MS]);return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null});
  const slo=MS==='frac_air'?40:m.lo,shi=MS==='frac_air'?65:(MS==='ndti'?0:m.hi*.7);
  chart($('#ch-sea'),{h:250,labels:BLN,ymin:slo,ymax:shi,ticks:nice(slo,shi,MS==='frac_air'?5:m.st),yf:t=>m.pct?t+'%':(m.d?t.toFixed(1):t),
-  series:[MS==='ndti'?{v:sea.map(x=>x-slo+slo),c,bar:false,r:4,w:3}:{v:sea,c,bar:true}],bars:MS!=='ndti',xshow:()=>true,xl:i=>BLN[i],aria:'Pola musiman '+m.n,
+  series:[MS==='ndti'?{v:sea.map(x=>x-slo+slo),c,bar:false,r:4.5,w:3,area:true}:{v:sea,c,bar:true}],bars:MS!=='ndti',xshow:()=>true,xl:i=>BLN[i],aria:'Pola musiman '+m.n,
   tip:i=>`<b>${BLN[i]}</b><br>Rata-rata ${m.n.toLowerCase()}: ${fmt(sea[i],m.d)}${m.pct?'%':m.bar?' mm':''}`});
  const ok=B.length-MBAD.length;$('#mon-note').textContent=m.q?`Rata-rata dihitung dari ${ok} bulan dengan lebih dari 3 citra (dari ${B.length} bulan). Pita biru muda pada grafik atas menandai September–Oktober, periode kekeruhan tertinggi.`:`Rata-rata dari seluruh bulan yang tersedia. Data hujan Oktober 2026 belum tersedia di CHIRPS saat data diambil.`}
 

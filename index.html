@@ -82,6 +82,11 @@ ol.tl b{display:block;font-size:13.5px;color:var(--mu)}
 button{font:inherit;font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid var(--ac);background:transparent;color:var(--ac);cursor:pointer}
 button.on{background:var(--ac);color:var(--bg)}button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 .ch{position:relative}.ch svg{width:100%;height:auto;display:block;font-family:"Trebuchet MS",sans-serif}
+.ch svg .ln{transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}.ch svg.an .ln{stroke-dashoffset:var(--L)}.ch svg.an.chgo .ln{stroke-dashoffset:0}
+.ch svg .ar,.ch svg .dt,.ch svg .ld{transition:opacity .9s ease .5s}.ch svg .dt{transition-delay:1.1s}.ch svg.an .ar,.ch svg.an .dt,.ch svg.an .ld{opacity:0}.ch svg.an.chgo .ar,.ch svg.an.chgo .dt,.ch svg.an.chgo .ld{opacity:1}
+.ch svg .br{transform-box:fill-box;transform-origin:50% 100%;transition:transform .7s cubic-bezier(.3,1.3,.5,1)}.ch svg.an .br{transform:scaleY(0)}.ch svg.an.chgo .br{transform:none}
+.ch svg .pl{transform-box:fill-box;transform-origin:center;animation:chpl 1.8s ease-out infinite}@keyframes chpl{0%{transform:scale(.8);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+@media(prefers-reduced-motion:reduce){.ch svg .ln,.ch svg .ar,.ch svg .dt,.ch svg .ld,.ch svg .br{transition:none!important}.ch svg.an .ln{stroke-dashoffset:0}.ch svg.an .ar,.ch svg.an .dt,.ch svg.an .ld{opacity:1}.ch svg.an .br{transform:none}.ch svg .pl{animation:none;opacity:0}}
 .tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 10px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.15);display:none;max-width:260px;z-index:3}
 .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--mu);margin-top:4px}.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
 .status{font-weight:700;padding:8px 10px;border-radius:8px;background:var(--bg);margin-top:8px}
@@ -351,7 +356,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 
 <div class="card">
 <h2>Indeks peringatan dini</h2>
-<p class="note">Selisih perubahan luas air tetap tiap zona terhadap pantai pembanding (%). Nilai negatif berarti perairan di zona itu menyempit dibanding pantai yang tidak terpengaruh pelabuhan. Pita abu-abu adalah kisaran normal 2019–2022.</p>
+<p class="note">Selisih perubahan luas air tetap tiap zona terhadap pantai pembanding (%). Nilai negatif berarti perairan di zona itu menyempit dibanding pantai yang tidak terpengaruh pelabuhan. Pita hijau adalah kisaran normal 2019–2022, pita kuning zona siaga, dan pita merah zona kritis. Warna titik mengikuti status setiap kuartal.</p>
 <div class="btns" id="zbtn"></div>
 <div class="ch" id="ch-ews"></div>
 <div class="legend" id="lg-ews"></div>
@@ -697,5 +702,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=ed21857f';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=36ad534e';document.body.appendChild(s)})();
 </script></body></html>
