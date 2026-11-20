@@ -548,7 +548,7 @@ function mcShow(){if(!MCR)return;const{res,V,thr}=MCR,ok=res.filter(r=>r.d!==nul
 <li>Simulasi utama di atas (ulangan ke-1, tanpa variasi) kritis pada <b>${main===null?'lebih dari 10 tahun':F(main)}</b>${main!==null?', berada pada persentil ke-'+R0(100*ok.filter(v=>v<=main).length/ok.length)+' dari sebaran':''}.</li>
 </ul><p class="note" style="margin:6px 0 0">Variasi parameter: ${V?'±'+R0(V*100)+'% untuk gelombang, arus, dan hujan pada setiap ulangan':'tidak ada, hanya gerak acak butir pasir yang berbeda'}. Mode musim: ${MCR.mode?'otomatis mengikuti kalender Bengkulu':'manual'}. Hasil ini bersifat konseptual, karena model belum dikalibrasi dengan data kedalaman lapangan.</p></div>`;
  h+='<details class="mcdt"><summary>Lihat hasil setiap ulangan</summary><div class="mctw"><table><tr><th>Ulangan</th><th>Gelombang</th><th>Arus</th><th>Hujan</th><th>Hari kritis</th><th>Tanggal kritis</th></tr>'+res.map(r=>`<tr><td>${r.k}</td><td>×${r.f.w.toFixed(2)}</td><td>×${r.f.c.toFixed(2)}</td><td>×${r.f.r.toFixed(2)}</td><td>${r.d===null?'> 3650':r.d}</td><td>${r.d===null?'belum kritis':fmt(r.d)}</td></tr>`).join('')+'</table></div><button type="button" id="mccsv">Unduh hasil (CSV)</button></details>';
- $('mcout').innerHTML=h;mcHist(ok,q10,q50,q90,main);
+ $('mcout').innerHTML=h;MCH=[ok,q10,q50,q90,main];mcHist(...MCH);
  $('mccsv').onclick=()=>{const rows=[['ulangan','seed','faktor_gelombang','faktor_arus','faktor_hujan','hari_kritis','tanggal_kritis']].concat(res.map(r=>[r.k,r.seed,r.f.w.toFixed(3),r.f.c.toFixed(3),r.f.r.toFixed(3),r.d===null?'':r.d,r.d===null?'':dateAt(r.d).toISOString().slice(0,10)]));
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='uji-berulang-pasir.csv';document.body.appendChild(a);a.click();a.remove()}}
 function mcHist(ok,q10,q50,q90,main){const sv=$('mcsv');if(!sv)return;const W0=Math.max(320,$('mchw').clientWidth||800),h=W0<600?230:260,ml=40,mr=14,mt=34,mb=40;
@@ -563,5 +563,5 @@ function mcHist(ok,q10,q50,q90,main){const sv=$('mcsv');if(!sv)return;const W0=M
  const nt=W0<600?3:6;for(let i=0;i<=nt;i++){const d=Math.round(b0+i*(nb*bw)/nt);s+=`<text x="${X(d)}" y="${h-10}" text-anchor="${i===0?'start':i===nt?'end':'middle'}" class="mcax">${fmt(d,1)}</text>`}
  const cap=document.getElementById('mccap');if(cap)cap.textContent='Tinggi batang: jumlah ulangan yang kritis dalam setiap rentang '+bw+' hari.';
  sv.setAttribute('viewBox',`0 0 ${W0} ${h}`);sv.setAttribute('width',W0);sv.setAttribute('height',h);sv.innerHTML=s}
-new ResizeObserver(()=>{if(MCR&&$('mchw'))mcShow()}).observe($('mcc'));
+let MCH=null,MCW=0;new ResizeObserver(()=>{const w=$('mcc').clientWidth;if(Math.abs(w-MCW)<2)return;MCW=w;if(MCH&&$('mchw'))mcHist(...MCH)}).observe($('mcc'));
 </script></main><script>(function(){function s(){try{parent.postMessage({simH:Math.ceil(document.body.scrollHeight)},'*')}catch(e){}}new ResizeObserver(s).observe(document.body);addEventListener('load',s);setTimeout(s,300)})();</script></body></html>
