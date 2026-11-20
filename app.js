@@ -13,7 +13,7 @@ if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit'){['ch-ews','ch-raw
 addEventListener('hashchange',route);
 
 /* ---------- Simulasi (iframe) ---------- */
-function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=d8e53db5'}
+function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=f77cef05'}
 addEventListener('message',e=>{if(e.data&&e.data.simH){const f=$('#simf');if(f)f.style.height=Math.max(600,e.data.simH+4)+'px'}});
 
 /* ---------- Data ---------- */
