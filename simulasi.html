@@ -46,12 +46,41 @@ main.pres #lgtip{display:block}
 main.pres .ctl{grid-template-columns:repeat(2,minmax(0,1fr))}
 main.pres #ch{max-height:190px}}
 #lgtip{display:none;font-size:12.5px;color:var(--mu);margin:8px 0 0}
+
+#cvw{container-type:inline-size}
+#startp{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(8,20,26,.55);backdrop-filter:blur(2px)}
+#startp[hidden]{display:none}
+.spc{background:var(--card);color:var(--tx);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.45);padding:16px 18px;width:min(660px,100%);max-height:100%;overflow:auto;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 20px}
+.sph{grid-column:1/-1}.sph small,.cq small,#cpick small{display:block;color:var(--mu);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+.sph h2{font:700 20px/1.25 Georgia,serif;margin:2px 0 4px}.sph p{margin:0;font-size:13.5px;color:var(--mu);line-height:1.45}
+.cnav{display:flex;gap:6px;align-items:center;margin-bottom:8px}.cnav select{font:inherit;font-size:14px;padding:5px 6px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx);flex:1;min-width:0}
+.cnav button{padding:3px 11px;font-size:18px;line-height:1.2}
+.cwk,#cgrid{display:grid;grid-template-columns:repeat(7,38px);gap:3px}.cwk{margin-bottom:3px}.cwk span{font-size:11.5px;text-align:center;color:var(--mu);font-weight:700}
+#cgrid button{height:35px;padding:0;border:1px solid transparent;border-radius:8px;background:var(--bg);color:var(--tx);font-size:14px;position:relative}
+#cgrid button:after{content:"";position:absolute;left:50%;bottom:4px;width:14px;height:3px;border-radius:2px;transform:translateX(-50%);background:var(--sc)}
+.s-h{--sc:#3d9be9}.s-k{--sc:#e1a100}.s-p{--sc:#95a5a6}
+#cgrid button:hover{border-color:var(--ac)}#cgrid button.td{border-color:var(--mu)}#cgrid button.sel{background:var(--ac);color:var(--bg);font-weight:700}#cgrid button.sel:after{background:currentColor}
+.clg{display:flex;gap:4px 12px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:8px}.clg i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px;background:var(--sc)}
+.sps{display:flex;flex-direction:column;gap:10px;min-width:0}
+#cpick{background:var(--bg);border-radius:10px;padding:10px 12px}#cpick strong{display:block;font:700 18px/1.3 Georgia,serif;margin:3px 0 6px}#cpick strong.none{color:var(--mu)}#cpick .note{font-size:12.5px;color:var(--mu)}
+.sch{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;color:#fff;background:var(--sc)}
+.cq{display:flex;flex-direction:column;gap:5px}.cq button{text-align:left;font-size:13px;padding:6px 10px}
+.cmsg{display:none;margin:0;color:var(--rd);font-weight:700;font-size:13px}
+#startp #bstart{position:static;transform:none;flex-direction:row;gap:10px;padding:12px 16px;border-radius:12px;background:var(--ac);color:var(--bg);box-shadow:none;margin-top:auto;justify-content:center}
+#startp #bstart span{width:auto;height:auto;background:none;font-size:18px;padding:0}#startp #bstart b{font-size:17px}
+#startp #bstart.nodate{background:var(--mu)}#startp #bstart:hover{filter:brightness(1.1)}
+.ssm{font-size:12px;color:var(--mu);margin-top:-4px}
+#startp.need .spc{animation:shk .45s}#startp.need .cmsg{display:block}#startp.need #cpick{outline:2px solid var(--rd)}
+@keyframes shk{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.sdrow{display:flex;flex-direction:column;gap:4px;font-size:14px}.sdrow span{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.sdrow b{font-size:15px}.sdrow button{font-size:13px;padding:4px 10px}
+@container (max-width:620px){.spc{grid-template-columns:1fr}.sps{max-width:300px}}
+@media (max-width:560px){#cvw{display:flex;flex-direction:column}#startp{order:-1;position:static;background:none;backdrop-filter:none;padding:0 0 10px}.spc{box-shadow:none;border:1px solid var(--bd);max-height:none}}
 </style></head><body><main>
 <h1>Simulasi Pendangkalan Alur Pelabuhan Pulau Baai</h1>
 <p class="sub">Demonstrasi konseptual di atas peta asli Pulau Baai (citra Sentinel-2): pasir dari Samudra Hindia terbawa gelombang dan arus menyusuri pantai, lalu mengendap di sekitar ujung semenanjung (pier barat) dan mulut alur. Arus pasang membawa pasir masuk lebih kuat daripada arus surut membawanya keluar.</p>
 <section class="vt" aria-label="Pilihan tampilan"><span>Tampilan:</span><button id="tv1">Terpisah (simulasi dan grafik bergantian)</button><button id="tv2">Sejajar (simulasi dan grafik bersamaan)</button><button id="tv3" class="on">Presentasi (simulasi, grafik, dan parameter)</button></section>
 
-<div class="card"><div id="cvw"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="mapbar" role="toolbar" aria-label="Kontrol simulasi"><span id="mpill" role="status"></span><button type="button" id="mjeda">⏸ Jeda</button><button type="button" id="mulang">↺ Ulangi</button></div><button id="bstart" type="button"><span aria-hidden="true">▶</span><b>Mulai simulasi</b><small>Tanggal awal dapat diatur di panel kontrol</small></button></div><div id="ban" role="alert"><span id="bant"></span><button id="bdq" type="button">⛏ Keruk alur sekarang</button></div>
+<div class="card"><div id="cvw"><canvas id="cv" width="840" height="623" aria-label="Simulasi pengendapan sedimen di alur pelabuhan"></canvas><div id="mapbar" role="toolbar" aria-label="Kontrol simulasi"><span id="mpill" role="status"></span><button type="button" id="mjeda">⏸ Jeda</button><button type="button" id="mulang">↺ Ulangi</button></div><div id="startp" role="dialog" aria-labelledby="sph-t"><div class="spc"><div class="sph"><small>Langkah 1 dari 2</small><h2 id="sph-t">Pilih tanggal awal simulasi</h2><p>Pada tanggal ini alur dianggap baru dinormalisasi (kedalaman ideal 12 m). Tanggal juga menentukan musim yang dialami simulasi, karena gelombang dan curah hujan mengikuti kalender Bengkulu.</p></div><div class="scal"><div class="cnav"><button type="button" id="cprev" aria-label="Bulan sebelumnya">‹</button><select id="cmon" aria-label="Bulan"></select><select id="cyr" aria-label="Tahun"></select><button type="button" id="cnext" aria-label="Bulan berikutnya">›</button></div><div class="cwk" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div><div id="cgrid"></div><div class="clg"><span class="s-h"><i></i>Musim hujan</span><span class="s-p"><i></i>Peralihan</span><span class="s-k"><i></i>Musim kemarau</span></div></div><div class="sps"><div id="cpick" aria-live="polite"></div><p class="cmsg">Pilih tanggal pada kalender terlebih dahulu.</p><div class="cq"><small>Pilihan cepat</small><button type="button" data-q="today">Hari ini</button><button type="button" data-q="2025-06-06">6 Juni 2025: pengerukan resmi dimulai</button><button type="button" data-q="2026-01-01">1 Januari 2026: awal tahun</button></div><button id="bstart" type="button"><span aria-hidden="true">▶</span><b>Mulai simulasi</b></button><small class="ssm">Langkah 2: tekan Mulai, lalu amati pasir mengendap hari demi hari.</small></div></div></div></div><div id="ban" role="alert"><span id="bant"></span><button id="bdq" type="button">⛏ Keruk alur sekarang</button></div>
 <style>
 .lgh{font-size:13px;font-weight:700;margin:10px 0 4px;color:var(--tx)}
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:5px 14px;font-size:13px;color:var(--tx)}
@@ -91,7 +120,7 @@ ul.nl{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--mu)}ul.nl li{m
 <label>Kecepatan arus sepanjang pantai: <b id="vc">0.5</b> m/s<input type="range" id="c" min="0" max="1" step="0.05" value="0.5"></label>
 <label>Curah hujan (pasokan sungai): <b id="vr">30</b> mm/hari<input type="range" id="r" min="0" max="100" step="5" value="30"></label>
 <label>Ambang kedalaman kritis: <b id="vt">8.0</b> m<input type="range" id="t" min="6" max="11" step="0.1" value="8"></label>
-<label>Tanggal awal (alur dianggap ideal, 12 m) <b style="color:var(--rd)" aria-hidden="true">*</b><input type="date" id="sd" required aria-describedby="sdmsg"><small id="sdmsg" hidden>Isi tanggal awal terlebih dahulu sebelum memulai simulasi.</small></label>
+<div class="sdrow">Tanggal awal (alur dianggap ideal, 12 m)<span><b id="sdv">belum dipilih</b><button type="button" id="bsd">📅 Ubah tanggal</button></span><input type="hidden" id="sd"></div>
 <label>Kecepatan simulasi: <b id="vs">2</b>x<input type="range" id="s" min="1" max="6" step="1" value="2"></label>
 </div>
 <p id="sea" class="note" style="margin:10px 0 0"></p><div class="btns"><button class="p" id="bp">Mulai</button><button id="br">Ulangi dari awal</button><button id="bd">Keruk alur</button><button id="b1">Musim kering</button><button id="b2">Musim hujan</button><button id="b3" class="p">Otomatis (ikuti kalender)</button></div></div>
@@ -310,16 +339,16 @@ if(run){if(dr)dredgeStep();else{acc+=+$('s').value*.5;while(acc>=1){applySeason(
 banner();draw();if(run)info();requestAnimationFrame(loop)}
 [['w','vw',1],['c','vc',2],['r','vr',0],['t','vt',1],['s','vs',0]].forEach(([i,o,f])=>$(i).addEventListener('input',()=>{$(o).textContent=(+$(i).value).toFixed(f);info()}));
 function setP(w,c,r){[['w',w],['c',c],['r',r]].forEach(([i,v])=>{$(i).value=v;$(i).dispatchEvent(new Event('input'))})}
-let started=false;function needDate(){const d=$('sd');d.classList.add('need');$('sdmsg').hidden=false;d.scrollIntoView({block:'center',behavior:'smooth'});setTimeout(()=>{try{d.focus();d.showPicker&&d.showPicker()}catch(e){}},350)}
+let started=false;function needDate(){const c=$('startp');c.hidden=false;c.classList.remove('need');void c.offsetWidth;c.classList.add('need');c.scrollIntoView({block:'nearest',behavior:'smooth'})}
 let pauseWhy='';function setRun(v,why){if(v&&!$('sd').value){needDate();v=false}run=v;if(v)started=true;pauseWhy=v?'':(why||'');
 $('mapbar').style.display=started?'flex':'none';$('mjeda').textContent=run?'⏸ Jeda':'▶ Lanjutkan';const pl=$('mpill');pl.style.display=(started&&!run)?'inline-flex':'none';pl.classList.toggle('kr',pauseWhy==='kritis');pl.textContent=pauseWhy==='kritis'?'Dijeda otomatis: alur kritis':'Simulasi dijeda';
-$('bp').textContent=run?'Jeda':(started?'Lanjutkan':'Mulai');const o=$('bstart');o.style.display=(!run&&!started)?'flex':'none';const nd=!$('sd').value;o.classList.toggle('nodate',nd);o.querySelector('b').textContent=nd?'Isi tanggal awal dulu':'Mulai simulasi';o.querySelector('small').textContent=nd?'Klik di sini untuk mengisi tanggal awal di panel kontrol':'Tanggal awal: '+fmt(0)}
+$('bp').textContent=run?'Jeda':(started?'Lanjutkan':'Mulai');$('startp').hidden=!(!run&&!started);try{calRender()}catch(e){}}
 $('mjeda').onclick=()=>setRun(!run);$('mulang').onclick=()=>$('br').click();
 $('bp').onclick=()=>setRun(!run);$('bstart').onclick=()=>setRun(true);
 $('br').onclick=()=>{reset();started=false;setRun(false);info()};$('bd').onclick=dredge;
 $('b1').onclick=()=>{auto=false;setP(1,.3,10)};$('b2').onclick=()=>{auto=false;setP(3.2,.75,70)};$('b3').onclick=()=>{auto=true};
 ['w','c','r'].forEach(i=>$(i).addEventListener('input',e=>{if(e.isTrusted)auto=false}));
-$('sd').addEventListener('change',()=>{if($('sd').value){$('sd').classList.remove('need');$('sdmsg').hidden=true}reset();started=false;setRun(false);info()});const DD={mulut:[-1.0,-1.2,-1.4,-1.7,-1.0,-1.4,-1.4,-78.5,0.4,0.1,0.8,0.4,1.6,2.5,2.1,1.3,2.9,1.9,-0.2,-0.9,-0.5,1.2,0.9,-0.3,-2.0,-3.8,-4.4,-9.0,-8.4,-4.2,-3.8],
+$('sd').addEventListener('change',()=>{if($('sd').value)$('startp').classList.remove('need');reset();started=false;setRun(false);info()});const DD={mulut:[-1.0,-1.2,-1.4,-1.7,-1.0,-1.4,-1.4,-78.5,0.4,0.1,0.8,0.4,1.6,2.5,2.1,1.3,2.9,1.9,-0.2,-0.9,-0.5,1.2,0.9,-0.3,-2.0,-3.8,-4.4,-9.0,-8.4,-4.2,-3.8],
 timur:[-3.1,-2.7,-4.1,-3.7,-1.7,-0.4,-1.2,-18.8,1.1,0.4,0.7,-0.7,3.8,2.7,4.7,4.4,9.2,6.5,7.9,8.6,9.9,5.2,6.8,7.7,7.1,5.5,3.4,-4.1,-9.8,-9.5,-11.2],
 barat:[1.0,0.9,0.7,0.0,-0.4,0.2,-0.7,-85.1,0.0,-0.2,0.8,-0.5,-0.7,-0.9,-0.8,0.6,0.8,-0.9,-0.1,2.5,0.5,-1.9,-0.5,0.2,-1.9,-2.5,-1.7,-1.7,-0.6,-0.8,0.1]};
 const TH={mulut:{sg:-3,kr:-6},timur:{sg:-5.8,kr:-11.6},barat:{sg:-1.4,kr:-2.8}};
@@ -347,4 +376,29 @@ dshow();
 function setView(m){const mn=document.querySelector('main');mn.classList.toggle('side',m===1);mn.classList.toggle('pres',m===2);['tv1','tv2','tv3'].forEach((id,i)=>$(id).classList.toggle('on',i===m))}
 $('tv1').onclick=()=>setView(0);$('tv2').onclick=()=>setView(1);$('tv3').onclick=()=>setView(2);setView(innerWidth>=1000?2:0);
 reset();setRun(false);info();loop();
+
+/* ---------- Kalender besar di depan simulasi ---------- */
+const BLNS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];let calY=null,calM=0;const Y0=2019,Y1=2035;
+function isoD(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function musimOf(dt){const r=clim(dt).raw;return r>=45?['h','Musim hujan']:r<=25?['k','Musim kemarau']:['p','Peralihan']}
+$('cmon').innerHTML=BLNS.map((b,i)=>`<option value="${i}">${b}</option>`).join('');
+{let h='';for(let y=Y0;y<=Y1;y++)h+=`<option value="${y}">${y}</option>`;$('cyr').innerHTML=h}
+function setDate(v){const d=new Date(v+'T00:00:00');calY=d.getFullYear();calM=d.getMonth();$('sd').value=v;$('sd').dispatchEvent(new Event('change'))}
+function calMove(k){calM+=k;if(calM<0){calM=11;calY--}if(calM>11){calM=0;calY++}if(calY<Y0){calY=Y0;calM=0}if(calY>Y1){calY=Y1;calM=11}calRender()}
+function calRender(){const v=$('sd').value,sel=v?new Date(v+'T00:00:00'):null,td=new Date();td.setHours(0,0,0,0);
+ if(calY===null){const b=sel||td;calY=b.getFullYear();calM=b.getMonth()}
+ $('cmon').value=calM;$('cyr').value=calY;
+ const off=(new Date(calY,calM,1).getDay()+6)%7,dim=new Date(calY,calM+1,0).getDate();let h='';
+ for(let i=0;i<off;i++)h+='<span></span>';
+ for(let d=1;d<=dim;d++){const dt=new Date(calY,calM,d),ms=musimOf(dt),k=isoD(dt);h+=`<button type="button" data-d="${k}" class="s-${ms[0]}${v===k?' sel':''}${dt.getTime()===td.getTime()?' td':''}" aria-label="${d} ${BLNS[calM]} ${calY}, ${ms[1]}"${v===k?' aria-pressed="true"':''}>${d}</button>`}
+ $('cgrid').innerHTML=h;$('cgrid').querySelectorAll('button').forEach(b=>b.onclick=()=>setDate(b.dataset.d));
+ if(sel){const ms=musimOf(sel);$('cpick').innerHTML=`<small>Tanggal dipilih</small><strong>${sel.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</strong><span class="sch s-${ms[0]}">${ms[1]}</span>`}
+ else $('cpick').innerHTML='<small>Tanggal dipilih</small><strong class="none">Belum ada</strong><span class="note">Klik salah satu tanggal pada kalender.</span>';
+ const b=$('bstart');b.classList.toggle('nodate',!sel);b.querySelector('b').textContent=sel?'Mulai simulasi':'Pilih tanggal dulu';
+ $('sdv').textContent=sel?fmt(0):'belum dipilih'}
+$('cprev').onclick=()=>calMove(-1);$('cnext').onclick=()=>calMove(1);
+$('cmon').onchange=()=>{calM=+$('cmon').value;calRender()};$('cyr').onchange=()=>{calY=+$('cyr').value;calRender()};
+document.querySelectorAll('.cq button').forEach(b=>b.onclick=()=>setDate(b.dataset.q==='today'?isoD(new Date()):b.dataset.q));
+$('bsd').onclick=()=>{reset();started=false;setRun(false);info();$('startp').scrollIntoView({block:'nearest',behavior:'smooth'})};
+calRender();
 </script></main><script>(function(){function s(){try{parent.postMessage({simH:Math.ceil(document.body.scrollHeight)},'*')}catch(e){}}new ResizeObserver(s).observe(document.body);addEventListener('load',s);setTimeout(s,300)})();</script></body></html>
