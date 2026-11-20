@@ -13,7 +13,7 @@ if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit'){['ch-ews','ch-raw
 addEventListener('hashchange',route);
 
 /* ---------- Simulasi (iframe) ---------- */
-function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=bb571631'}
+function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=d8e53db5'}
 addEventListener('message',e=>{if(e.data&&e.data.simH){const f=$('#simf');if(f)f.style.height=Math.max(600,e.data.simH+4)+'px'}});
 
 /* ---------- Data ---------- */
@@ -156,6 +156,7 @@ if($('#copy'))$('#copy').onclick=async()=>{try{await navigator.clipboard.writeTe
 /* ---------- Berita ---------- */
 const NCAT={artikel:{n:'Artikel',c:'--z1'},video:{n:'Video',c:'--rd'},instagram:{n:'Instagram',c:'--z3'}};
 const BERITA=[
+ {d:'2025-06-27',tp:'pelabuhan',src:'ANTARA',k:'artikel',t:'Pelindo: Akhir Juni Alur Pelabuhan Bengkulu Sudah Dapat Dilewati Kapal',r:'Pengerukan tahap pertama di sisi kiri alur mengangkat sekitar 263.000 m³ pasir. Panjang alur yang dikeruk 2,3 km, dan total sedimen yang harus dikeruk ternyata sekitar 1,112 juta m³, lebih besar dari perkiraan awal sekitar 800 ribu m³.',u:'https://www.antaranews.com/berita/4929457/pelindo-akhir-juni-alur-pelabuhan-bengkulu-sudah-dapat-dilewati-kapal'},
  {d:'2025-04-30',tp:'pelabuhan',src:'Pemprov Bengkulu',k:'artikel',t:'Wagub Mian Paparkan Masalah Pendangkalan Alur Pulau Baai ke Komisi II DPR RI: Ekonomi Bengkulu Tersendat, Pelindo Tak Serius Tangani Pendangkalan Alur',r:'Dalam rapat dengar pendapat dengan Komisi II DPR RI, Wakil Gubernur Bengkulu memaparkan pendangkalan alur dan meminta dukungan pemerintah pusat. Ia menyebut aktivitas pelabuhan terhenti sekitar tiga bulan, distribusi barang terganggu, dan antrean terjadi di SPBU karena kapal BBM tidak bisa bersandar.',u:'https://bengkuluprov.go.id/wagub-mian-paparkan-masalah-pendangkalan-alur-pulau-baai-ke-komisi-ii-dpr-ri-ekonomi-bengkulu-tersendat-pelindo-tak-serius-tangani-pendangkalan-alur/',img:'https://bengkuluprov.go.id/wp-content/uploads/2025/05/494424503_2382240762159075_3282316176394448400_n.jpg'},
  {d:'2025-06-23',tp:'pelabuhan',src:'Kompas',k:'artikel',t:'Sudah Status Darurat, tapi Sedimentasi Alur Pelabuhan Pulau Baai Tetap Berlarut',r:'Pengerukan dipercepat dengan kapal penyedot pasir dan tambahan alat berat. Alur yang tertutup total sejak akhir Maret 2025 sempat tertutup lagi setelah gempa 23 Mei 2025, dan 15 kapal kandas di sekitar pelabuhan. Target awal alur 60 m × 4 m, sedangkan kondisi normal 150 m × 12 m.',u:'https://www.kompas.id/artikel/sudah-status-darurat-tapi-sedimentasi-alur-pelabuhan-pulau-baai-tetap-berlarut',img:'gambar/berita/kompas.jpg'},
  {d:'2025-07-04',tp:'enggano',src:'TVR Parlemen',k:'video',t:'Komisi V DPR RI: Segera Atasi Pendangkalan Pelabuhan Pulau Baai',r:'Liputan tentang desakan Komisi V DPR RI agar pendangkalan segera ditangani, karena sekitar 4.000 warga Pulau Enggano terisolasi dan ekonomi pulau terganggu selama berbulan-bulan.',u:'https://www.youtube.com/watch?v=wjliExn6JfQ',yt:'wjliExn6JfQ'},
@@ -219,7 +220,22 @@ const SCI=[
   p:'Gambaran besarnya volume pasir yang bergerak setiap tahun, serta contoh pemodelan numerik sebagai pembanding simulasi konseptual dalam inovasi ini.'},
  {id:'ariansyah2026',a:'Ariansyah, A.',y:'2026',t:'Analisis rencana pengembangan pelabuhan multipurpose: Studi kasus Pelabuhan Pulau Baai Bengkulu',j:'Tugas akhir sarjana, Institut Teknologi Sepuluh Nopember',v:'Surabaya',u:'https://repository.its.ac.id/131910/',lk:'Buka di repositori ITS',x:'Tugas akhir',
   f:'Pelabuhan Pulau Baai adalah pelabuhan utama Provinsi Bengkulu yang terletak di Kelurahan Sumber Jaya, Kecamatan Kampung Melayu. Arus barang yang masuk dan keluar provinsi melewati pelabuhan ini, sehingga pelabuhan menjadi salah satu sumber perekonomian daerah.',
-  p:'Keterangan letak administratif pelabuhan dan alasan mengapa gangguan alur berdampak pada ekonomi seluruh provinsi.'}];
+  p:'Keterangan letak administratif pelabuhan dan alasan mengapa gangguan alur berdampak pada ekonomi seluruh provinsi.'},
+ {id:'usman2021',a:'Usman, F. S.',y:'2021',t:'Penentuan laju pengendapan sedimen menggunakan data pengukuran batimetri untuk pemeliharaan kedalaman perairan di alur pelayaran Pelabuhan Pulau Baai, Provinsi Bengkulu',j:'Karya akhir, Universitas Gadjah Mada',v:'Yogyakarta',u:'http://etd.repository.ugm.ac.id/penelitian/detail/202712',lk:'Buka di repositori UGM',x:'Data batimetri',
+  f:'Survei batimetri pada 7, 23, dan 29 Desember 2020 serta 5 Januari 2021 menunjukkan volume endapan di alur terus bertambah, dari 27.071,92 m³ menjadi 78.523,38 m³ hanya dalam tiga minggu. Laju pengendapan yang diperoleh 2.943,82 m³ per hari.',
+  p:'Pembanding laju pendangkalan simulasi pada uji kewajaran (setara 0,85 cm per hari di puncak musim hujan) dan dasar hitungan kebutuhan pengerukan di uji berulang.'},
+ {id:'nasution2019',a:'Nasution, A. P., & Kartohardjono, A.',y:'2019',t:'Pengerukan pemeliharaan alur pelayaran Pelabuhan Pulau Baai Bengkulu dengan sistim sand by passing',j:'Makalah ilmiah, PT Pelabuhan Indonesia II',v:'tersedia melalui CORE',u:'https://core.ac.uk/download/290153617.pdf',lk:'Buka PDF (CORE)',
+  f:'Volume sedimen yang masuk ke alur pelayaran Pulau Baai diperkirakan 450.000 sampai 600.000 m³ per tahun, sehingga pengelola pelabuhan selalu menganggarkan biaya pengerukan pemeliharaan yang besar. Metode sand bypassing dinilai lebih hemat dibanding pengerukan dengan kapal keruk.',
+  p:'Angka utama uji kewajaran: setara 1,30 sampai 1,74 m pendangkalan per tahun, dan dasar hitungan pasokan pasir harian di uji berulang.'},
+ {id:'hamdani2013',a:'Hamdani',y:'2013',t:'Kajian teknologi sand by passing penanggulangan sedimentasi dan erosi pantai Bengkulu (Pelabuhan Pulau Baai)',j:'Media Komunikasi Teknik Sipil',v:'19(1)',u:'https://ejournal.undip.ac.id/index.php/mkts/article/view/7837',lk:'Buka di jurnal',
+  f:'Angkutan sedimen sepanjang pantai di sekitar Pelabuhan Pulau Baai dihitung sebesar 601.576,20 m³ per tahun. Pengendapan terjadi di pintu masuk kolam pelabuhan, tempat kecepatan arus melambat.',
+  p:'Batas atas pasokan pasir pada uji kewajaran (setara 1,74 m per tahun bila seluruhnya masuk alur).'},
+ {id:'vimeris2015',a:'Vimeris, M., Sugianto, D. N., & Setyawan, W. B.',y:'2015',t:'Kajian refraksi-difraksi dan transformasi penjalaran gelombang laut di perairan Pantai Tapak Paderi Kota Bengkulu',j:'Jurnal Oseanografi',v:'4(1), 270–279',u:'https://ejournal3.undip.ac.id/index.php/joce/article/view/7691',lk:'Buka di jurnal',
+  f:'Pengukuran lapangan tiga hari mencatat tinggi gelombang signifikan 1,6 m dengan periode 7,75 detik. Dari data angin 10 tahun, gelombang tertinggi terjadi pada musim timur (2,23 m) dan peralihan II (2,0 m).',
+  p:'Pembanding besaran gelombang dalam simulasi. Gelombang bawaan simulasi (2,7 m) sengaja dibuat cukup berat, mendekati kondisi musim timur.'},
+ {id:'triyati2025',a:'Triyati, R.',y:'2025',t:'Analisis sedimentasi di alur pelayaran Pelabuhan Baai, Bengkulu',j:'Tugas akhir, Program Studi Teknik Kelautan, Institut Teknologi Sumatera',v:'Lampung Selatan',u:'https://repo.itera.ac.id//depan/keyword/Alur%20Pelayaran',lk:'Buka di repositori ITERA',x:'Tugas akhir',
+  f:'Arus yang keluar dari kolam pelabuhan tidak cukup kuat untuk membawa sedimen kembali ke laut lepas, sehingga sedimen tertahan dan menumpuk di alur pelayaran dan menyempitkannya.',
+  p:'Mendukung mekanisme dalam simulasi: arus surut yang keluar lebih lemah daripada arus pasang yang masuk.'}];
 function citeText(r){return `${r.a} (${r.y}). ${r.t}. ${r.j}, ${r.v}.${r.doi?' https://doi.org/'+r.doi:''}`}
 $('#ref-sci').innerHTML=SCI.map((r,i)=>`<article class="ref" id="ref-sci-${r.id||i}"><span class="no">${i+1}</span><div><p class="cit">${esc(r.a)} (${r.y}). ${esc(r.t)}. <i>${esc(r.j)}</i>, ${esc(r.v)}.${r.x?`<span class="tagx">${esc(r.x)}</span>`:''}</p>
 <dl><dt>Temuan utama</dt><dd>${esc(r.f)}</dd><dt>Dipakai untuk</dt><dd>${esc(r.p)}</dd></dl>

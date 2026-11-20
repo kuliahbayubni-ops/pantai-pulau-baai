@@ -81,6 +81,10 @@ ol.tl b{display:block;font-size:13.5px;color:var(--mu)}
 .btns{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
 button{font:inherit;font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid var(--ac);background:transparent;color:var(--ac);cursor:pointer}
 button.on{background:var(--ac);color:var(--bg)}button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.kwgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start;margin-top:8px}@media(max-width:900px){.kwgrid{grid-template-columns:1fr}}
+.kwsv{width:100%;height:auto;display:block;font-family:"Trebuchet MS",sans-serif}.kwg{stroke:var(--bd)}.kwax{fill:var(--mu);font-size:12px}.kwn{fill:var(--tx);font-size:13.5px}.kwb{font-weight:700;fill:var(--ac)}.kwv{fill:var(--tx);font-size:12.5px;font-weight:700}
+.kwband{fill:var(--ac);opacity:.1}.kwr{stroke-width:10;stroke-linecap:round}.kwd{stroke:var(--card);stroke-width:2.5}.kw-sim{stroke:var(--ac);fill:var(--ac)}.kwr.kw-sim{opacity:.55}.kw-ref{stroke:var(--wn);fill:var(--wn)}.kw-pk{stroke:var(--rd);fill:var(--rd)}
+.kwcalc ol{margin:6px 0 0;padding-left:20px}.kwcalc li{margin:5px 0;line-height:1.5;font-size:14px}.kwk{margin-top:12px;padding:10px 14px;border-left:4px solid var(--ok);background:var(--bg);border-radius:8px;line-height:1.55}
 .ch{position:relative}.ch svg{width:100%;height:auto;display:block;font-family:"Trebuchet MS",sans-serif}
 .ch svg .ln{transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}.ch svg.an .ln{stroke-dashoffset:var(--L)}.ch svg.an.chgo .ln{stroke-dashoffset:0}
 .ch svg .ar,.ch svg .dt,.ch svg .ld{transition:opacity .9s ease .5s}.ch svg .dt{transition-delay:1.1s}.ch svg.an .ar,.ch svg.an .dt,.ch svg.an .ld{opacity:0}.ch svg.an.chgo .ar,.ch svg.an.chgo .dt,.ch svg.an.chgo .ld{opacity:1}
@@ -339,6 +343,28 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <p class="note" style="margin-top:10px">Untuk presentasi: isi tanggal awal yang tetap supaya hasilnya selalu sama di setiap percobaan. Di layar lebar, tampilan <b>Presentasi</b> menampilkan peta, grafik, dan parameter sekaligus tanpa perlu menggulir.</p>
 </div>
 <iframe id="simf" title="Simulasi pendangkalan alur Pelabuhan Pulau Baai" loading="eager"></iframe>
+<div class="card" id="kewajaran">
+<h2>Uji kewajaran: apakah laju pendangkalan simulasi masuk akal?</h2>
+<p>Simulasi ini konseptual dan belum dikalibrasi. Namun lajunya bisa dibandingkan dengan data lapangan yang sudah terbit. Semua angka diubah ke satuan yang sama, yaitu <b>berapa meter alur mendangkal per tahun</b>, dengan anggapan pasir menyebar merata di seluruh alur.</p>
+<div class="kwgrid">
+<div><svg viewBox="0 0 760 238" role="img" aria-label="Perbandingan laju pendangkalan simulasi dengan data lapangan, dalam meter per tahun" class="kwsv"><line x1="250.0" x2="250.0" y1="14" y2="208" class="kwg"/><text x="250.0" y="226" text-anchor="middle" class="kwax">0</text><line x1="317.1" x2="317.1" y1="14" y2="208" class="kwg"/><text x="317.1" y="226" text-anchor="middle" class="kwax">0,5</text><line x1="384.3" x2="384.3" y1="14" y2="208" class="kwg"/><text x="384.3" y="226" text-anchor="middle" class="kwax">1</text><line x1="451.4" x2="451.4" y1="14" y2="208" class="kwg"/><text x="451.4" y="226" text-anchor="middle" class="kwax">1,5</text><line x1="518.6" x2="518.6" y1="14" y2="208" class="kwg"/><text x="518.6" y="226" text-anchor="middle" class="kwax">2</text><line x1="585.7" x2="585.7" y1="14" y2="208" class="kwg"/><text x="585.7" y="226" text-anchor="middle" class="kwax">2,5</text><line x1="652.9" x2="652.9" y1="14" y2="208" class="kwg"/><text x="652.9" y="226" text-anchor="middle" class="kwax">3</text><line x1="720.0" x2="720.0" y1="14" y2="208" class="kwg"/><text x="720.0" y="226" text-anchor="middle" class="kwax">3,5</text><rect x="424.6" y="14" width="59.1" height="194" class="kwband"/><text x="0" y="34.0" class="kwn kwb">Simulasi PASIR</text><text x="0" y="51.0" class="kwax">(100 ulangan)</text><line x1="466.2" x2="501.1" y1="37.0" y2="37.0" class="kwr kw-sim"/><circle cx="483.7" cy="37.0" r="7" class="kwd kw-sim"/><text x="513.1" y="41.0" class="kwv" text-anchor="start">1,61–1,87 (median 1,74)</text><text x="0" y="80.0" class="kwn">Pasir masuk alur</text><text x="0" y="97.0" class="kwax">(Nasution & Kartohardjono, 2019)</text><line x1="424.6" x2="483.7" y1="83.0" y2="83.0" class="kwr kw-ref"/><text x="495.7" y="87.0" class="kwv" text-anchor="start">1,30–1,74</text><text x="0" y="126.0" class="kwn">Angkutan pasir sepanjang pantai</text><text x="0" y="143.0" class="kwax">(Hamdani, 2013)</text><circle cx="483.7" cy="129.0" r="7" class="kwd kw-ref"/><text x="495.7" y="133.0" class="kwv" text-anchor="start">1,74 (batas atas)</text><text x="0" y="172.0" class="kwn">Ukur batimetri musim hujan</text><text x="0" y="189.0" class="kwax">(Usman, 2021)</text><circle cx="667.6" cy="175.0" r="7" class="kwd kw-pk"/><text x="655.6" y="163.0" class="kwv" text-anchor="end">3,11 (puncak musim hujan)</text><text x="454.1" y="202" text-anchor="middle" class="kwax">rentang data</text></svg><p class="note">Garis: rentang nilai. Titik: nilai tunggal atau median. Pita biru: rentang data pasir yang masuk alur.</p></div>
+<div class="kwcalc"><b>Cara menghitung</b><ol>
+<li><b>Luas alur</b> = panjang 2.300 m × lebar 150 m = 345.000 m².</li>
+<li><b>Data pasir masuk alur</b>: 450.000 m³ ÷ 345.000 m² = 1,30 m per tahun, dan 600.000 m³ ÷ 345.000 m² = 1,74 m per tahun.</li>
+<li><b>Angkutan pasir sepanjang pantai</b>: 601.576 m³ ÷ 345.000 m² = 1,74 m per tahun. Tidak semua pasir ini masuk alur, jadi angka ini batas atas.</li>
+<li><b>Simulasi</b>: kedalaman turun 4 m (12 m ke 8 m) dalam 780 sampai 906 hari. 4 m ÷ (906 ÷ 365) = 1,61 dan 4 m ÷ (780 ÷ 365) = 1,87 m per tahun; mediannya 4 m ÷ (837,5 ÷ 365) = 1,74 m per tahun.</li>
+<li><b>Ukur batimetri musim hujan</b>: 2.943,82 m³ per hari ÷ 345.000 m² = 0,85 cm per hari, atau 3,11 m per tahun bila berlangsung setahun penuh. Angka ini lebih tinggi karena diukur hanya sekitar 28 hari di puncak musim hujan.</li>
+</ol></div>
+</div>
+<div class="kwk"><b>Kesimpulan:</b> laju pendangkalan simulasi (median 1,74 m per tahun) berada di batas atas rentang data pasir yang masuk alur (1,30–1,74 m per tahun) dan sama dengan angkutan pasir sepanjang pantai. Artinya, meskipun konseptual, simulasi bekerja pada skala waktu yang realistis: alur ideal 12 m bisa mendangkal sampai 8 m dalam sekitar dua tahun lebih.</div>
+<div class="grid4" style="margin-top:12px">
+<div class="mini"><b>Pasokan rata-rata</b><p>450.000–600.000 m³ per tahun, atau sekitar 1.233–1.644 m³ per hari.</p></div>
+<div class="mini"><b>Puncak musim hujan</b><p>2.944 m³ per hari (ukur batimetri Desember 2020–Januari 2021).</p></div>
+<div class="mini"><b>Kemampuan 1 kapal keruk</b><p>Rata-rata 1.500 m³ per hari (kapal keruk hopper Nera 02, 2025). Hanya setara pasokan rata-rata.</p></div>
+<div class="mini"><b>Pengerukan 2025</b><p>Sekitar 1.112.000 m³ pasir di alur sepanjang 2,3 km. Dengan 1 kapal: 1.112.000 ÷ 1.500 ≈ 741 hari.</p></div>
+</div>
+<p class="note" style="margin-top:10px">Keterbatasan: pasir sebenarnya menumpuk lebih banyak di mulut alur daripada di sepanjang alur, lebar alur 150 m adalah angka pendekatan, dan sebagian data diukur pada tahun yang berbeda. Kalibrasi sungguhan membutuhkan data batimetri berkala dari Pelindo.</p>
+</div>
 </section>
 
 <!-- ================= DATA SATELIT ================= -->
@@ -702,5 +728,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=36ad534e';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=5c747a99';document.body.appendChild(s)})();
 </script></body></html>
