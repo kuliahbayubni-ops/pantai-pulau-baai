@@ -17,7 +17,7 @@ function stopMedia(){$$('section.tab:not(.on) iframe').forEach(f=>{const u=f.src
 addEventListener('hashchange',route);
 
 /* ---------- Simulasi (iframe) ---------- */
-function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=58545660'}
+function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=abee3e5f'}
 addEventListener('message',e=>{if(e.data&&e.data.simH){const f=$('#simf');if(f)f.style.height=Math.max(600,e.data.simH+4)+'px'}});
 
 /* ---------- Data ---------- */

@@ -133,7 +133,7 @@ main.pres #ch{max-height:190px}}
 #mcsv .mcb-m{fill:var(--ac)}#mcsv .mcb-e{fill:var(--rd)}#mcsv .mcb-l{fill:var(--mu)}
 #mcsv .mcl{stroke-width:1.5;stroke-dasharray:5 4}#mcsv .mcl10,#mcsv .mcl90{stroke:var(--wn)}#mcsv .mcl50{stroke:var(--tx);stroke-dasharray:none}
 #mcsv .mclt{fill:var(--tx);font-size:12px;font-weight:700}#mcsv .mcmain{fill:var(--tx)}
-.mclg{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin:4px 0 0}.sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-left:6px}.sw-e{background:var(--rd)}.sw-m{background:var(--ac)}.sw-l{background:var(--mu)}.tri{margin-left:6px;color:var(--tx)}
+.mclg{display:block;margin:4px 0 0}.mclgl{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:3px}.mclgl li{display:flex;align-items:center;gap:8px}.mclgl .sw,.mclgl .tri,.mclgl .swl{margin:0;flex:none}.mclgl .tri{width:12px;text-align:center;font-size:12px}.mclgl .swl{width:12px}.sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-left:6px}.sw-e{background:var(--rd)}.sw-m{background:var(--ac)}.sw-l{background:var(--mu)}.tri{margin-left:6px;color:var(--tx)}
 .mcrec{background:var(--bg);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:14px}.mcrec ul{margin:6px 0 0;padding-left:20px}.mcrec li{margin:3px 0}
 .mcdt{margin-top:10px;font-size:14px}.mcdt summary{cursor:pointer;font-weight:700}.mctw{max-height:260px;overflow:auto;margin:8px 0}
 .mcfd{max-height:none}.mcfdn{font-size:13px;color:var(--mu);margin:6px 0 0;line-height:1.5}.mcfdt td{font-weight:700;border-top:2px solid var(--bd)}.mcfd td:nth-child(3),.mcfd th:nth-child(3){text-align:left}#mcfdcsv{margin-bottom:6px}
@@ -554,7 +554,7 @@ function mcShow(){if(!MCR)return;const{res,V,thr}=MCR,ok=res.filter(r=>r.d!==nul
  const early=Math.max(0,R0(q10)-30);
  let h='<div class="mckpi">'+tiles.map(t=>`<div><span>${t[0]}</span><strong>${t[1]}</strong><small>${t[2]}</small></div>`).join('')+'</div>';
  h+='<div id="mchw"><svg id="mcsv" role="img" aria-label="Sebaran tanggal alur mencapai ambang kritis dari semua ulangan"></svg></div>';
- h+='<p class="note mclg"><span id="mccap"></span><span class="sw sw-e"></span>kritis lebih awal dari persentil ke-10 <span class="sw sw-m"></span>80% ulangan di tengah <span class="sw sw-l"></span>lebih lambat dari persentil ke-90 <span class="tri">▲</span> simulasi utama <span class="swl"></span>poligon frekuensi (garis yang menghubungkan titik tengah puncak setiap batang)</p>';
+ h+='<div class="note mclg"><div id="mccap"></div><ul class="mclgl"><li><span class="sw sw-e"></span>kritis lebih awal dari persentil ke-10</li><li><span class="sw sw-m"></span>80% ulangan di tengah</li><li><span class="sw sw-l"></span>lebih lambat dari persentil ke-90</li><li><span class="tri">▲</span>simulasi utama</li><li><span class="swl"></span>poligon frekuensi (garis yang menghubungkan titik tengah puncak setiap batang)</li></ul></div>';
  h+=`<div class="mcrec"><b>Kesimpulan untuk jadwal pengerukan</b><ul>
 <li>Dari ${res.length} ulangan${MCR.cancelled?' (dibatalkan sebelum selesai)':''}, ${ok.length} mencapai ambang kritis ${String(thr).replace('.',',')} m${nn?'; '+nn+' ulangan belum kritis dalam 10 tahun':''}.</li>
 <li>Tanggal kritis tersebar dari <b>${F(mn)}</b> sampai <b>${F(mx)}</b>, selisih ${mx-mn} hari. Rentang 80% ulangan di tengah (persentil 10 sampai 90): <b>${F(q10)}</b> sampai <b>${F(q90)}</b>, selebar ${R0(q90-q10)} hari.</li>
