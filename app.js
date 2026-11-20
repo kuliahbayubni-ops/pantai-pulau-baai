@@ -13,7 +13,7 @@ if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit')drawAll();window.s
 addEventListener('hashchange',route);
 
 /* ---------- Simulasi (iframe) ---------- */
-function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=65c8109b'}
+function loadSim(){simLoaded=true;$('#simf').src='simulasi.html?v=bb571631'}
 addEventListener('message',e=>{if(e.data&&e.data.simH){const f=$('#simf');if(f)f.style.height=Math.max(600,e.data.simH+4)+'px'}});
 
 /* ---------- Data ---------- */
