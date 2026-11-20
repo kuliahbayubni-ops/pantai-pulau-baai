@@ -350,3 +350,7 @@ drawNews();
 route();
 
 (function(){try{if(!document.fonts||!document.fonts.load)return;document.fonts.load('20px "Noto Sans Rejang"','\uA936\uA93C').then(function(f){if(f&&f.length)document.documentElement.classList.add('aks-ok')}).catch(function(){})}catch(e){}})();
+
+(function(){const h=document.querySelector('header');if(!h)return;let sm=false,tk=false;function upd(){tk=false;const y=window.scrollY||document.documentElement.scrollTop||0;if(!sm&&y>80){sm=true;h.classList.add('sm')}else if(sm&&y<12){sm=false;h.classList.remove('sm')}}addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});upd()})();
+
+addEventListener('hashchange',()=>setTimeout(()=>{const a=document.querySelector('nav a.on'),n=a&&a.parentElement;if(n&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:'smooth'})},50));
