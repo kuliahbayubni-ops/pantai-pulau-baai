@@ -3,9 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai</title>
 <style>
-:root{--bg:#eef3f4;--card:#fff;--tx:#14262e;--mu:#56696f;--ac:#0b6e8a;--ac2:#e3f0f3;--bd:#cfdadd;--rd:#c0392b;--ok:#1f8a5b;--wn:#b9770e;--sand:#c9a46a;
+:root{--sea:#d3e8ee;--land:#f1e6cf;--bg:#eef3f4;--card:#fff;--tx:#14262e;--mu:#56696f;--ac:#0b6e8a;--ac2:#e3f0f3;--bd:#cfdadd;--rd:#c0392b;--ok:#1f8a5b;--wn:#b9770e;--sand:#c9a46a;
 --z1:#0b6e8a;--z2:#c0392b;--z3:#7a5aa6;--z4:#6b7d83;color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--bg:#0e1a1f;--card:#16262d;--tx:#e6eff2;--mu:#94a9b0;--ac:#4cc0e0;--ac2:#1b333b;--bd:#2a3e46;--rd:#ff7b6b;--ok:#4cd39a;--wn:#f0b050;--sand:#d8b77f;--z1:#4cc0e0;--z2:#ff7b6b;--z3:#b79be0;--z4:#94a9b0;color-scheme:dark}}
+@media(prefers-color-scheme:dark){:root{--sea:#10303a;--land:#33302a;--bg:#0e1a1f;--card:#16262d;--tx:#e6eff2;--mu:#94a9b0;--ac:#4cc0e0;--ac2:#1b333b;--bd:#2a3e46;--rd:#ff7b6b;--ok:#4cd39a;--wn:#f0b050;--sand:#d8b77f;--z1:#4cc0e0;--z2:#ff7b6b;--z3:#b79be0;--z4:#94a9b0;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:15.5px/1.6 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
 h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.25;margin:0 0 8px}
@@ -116,6 +116,38 @@ tr.bad td{color:var(--mu);font-style:italic}
 #simf{width:100%;border:0;display:block;min-height:900px;background:var(--bg)}
 ul{margin:0 0 10px;padding-left:20px}li{margin-bottom:4px}
 .src li{font-size:14px}
+.lokw{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:860px){.lokw{grid-template-columns:1fr}}
+.lokmap{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--bd);font-family:"Trebuchet MS",sans-serif}
+.m-sea{fill:var(--sea)}.m-land{fill:var(--land)}.m-coast{fill:none;stroke:var(--sand);stroke-width:1.6}.m-eng{fill:var(--land);stroke-width:2}
+.m-reg{font-size:15px;letter-spacing:.25em;fill:var(--mu);font-weight:700;opacity:.75}
+.m-isl{font:italic 13px Georgia,serif;fill:var(--mu)}
+.m-ocean{font:italic 19px Georgia,serif;fill:var(--ac);opacity:.8;letter-spacing:.06em}
+.m-route{fill:none;stroke:var(--rd);stroke-width:2.6;stroke-dasharray:8 6}
+.m-alt{fill:none;stroke:var(--mu);stroke-width:1.8;stroke-dasharray:3 5}
+.m-rlab rect{fill:var(--card);stroke:var(--rd);stroke-width:1;opacity:.95}.m-rlab text{font-size:12.5px;fill:var(--tx)}
+.m-lab{font-size:14px;font-weight:700;fill:var(--tx);paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.m-small{font-size:11.5px;fill:var(--mu);paint-order:stroke;stroke:var(--sea);stroke-width:3px}
+.m-alttx{font-style:italic}
+.m-city{fill:var(--ac);stroke:var(--card);stroke-width:2}.m-port{fill:var(--rd);stroke:var(--card);stroke-width:2}
+.m-sm{fill:var(--tx);stroke:var(--card);stroke-width:1.5}.m-gr{fill:var(--mu)}
+.m-pt{cursor:pointer}.m-pt.hl .m-lab{fill:var(--ac)}
+.m-north path{fill:var(--tx)}.m-north text{font-size:12px;font-weight:700;fill:var(--tx)}
+.m-scale rect{fill:var(--tx)}.m-scale .m-scw{fill:var(--card);stroke:var(--tx);stroke-width:1}.m-scale text{font-size:11px;fill:var(--tx)}
+.m-inbg{fill:var(--card);stroke:var(--bd);opacity:.95}.m-inset .m-land{stroke:var(--sand);stroke-width:.6}.m-intx{stroke:var(--card)!important;font-weight:700}.m-box{fill:none;stroke:var(--rd);stroke-width:1.6}
+.lokl{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lokl li{margin:0;border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:10px;padding:10px 12px;transition:background .2s}
+.lokl li.p{border-left-color:var(--rd)}.lokl li.e{border-left-color:var(--sand)}
+.lokl li.hl{background:var(--ac2)}
+.lokl b{display:block;font-size:15.5px}.lokl p{margin:2px 0 4px;font-size:14px;color:var(--mu)}
+.lokl a{font-size:13px;font-weight:700;text-decoration:none}.lokl a:hover{text-decoration:underline}
+.chain{list-style:none;counter-reset:c;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.chain li{counter-increment:c;position:relative;margin:0;background:var(--bg);border-radius:10px;padding:12px 12px 12px 46px;font-size:14px;color:var(--mu)}
+.chain li:before{content:counter(c);position:absolute;left:11px;top:11px;width:26px;height:26px;border-radius:50%;background:var(--rd);color:#fff;font:700 14px Georgia,serif;display:flex;align-items:center;justify-content:center}
+.chain li.o:before{background:var(--ok)}
+.chain b{display:block;color:var(--tx);font-size:15px;margin-bottom:2px}
+@media(max-width:560px){.m-lab{font-size:17px}.m-small{font-size:14px}.m-rlab text{font-size:13.5px}.m-ocean{font-size:21px}}
+.lokpt{border-left:4px solid var(--ac);background:var(--ac2);padding:10px 14px;border-radius:6px;margin-top:14px}
 footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:var(--mu)}
 @media(max-width:640px){h1{font-size:24px}.pair{grid-template-columns:1fr}}
 </style></head><body>
@@ -138,6 +170,69 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <div class="kpi"><strong>−4 s.d. −9%</strong><span>penyempitan perairan mulut alur sejak 2025 (citra satelit, relatif terhadap pantai pembanding)</span></div>
 </div>
 <p class="note" style="margin-top:12px">Sumber angka: Kompas (23 Juni 2025) dan analisis citra Sentinel-2 pada tab Data Satelit.</p>
+</div>
+
+<div class="card" id="lokasi">
+<h2>Di mana lokasinya, dan siapa yang terdampak?</h2>
+<p class="note">Pelabuhan Pulau Baai bukan sekadar pelabuhan barang. Pelabuhan ini juga satu-satunya pintu kapal penyeberangan ke Pulau Enggano, pulau terluar Indonesia di Samudra Hindia.</p>
+<div class="lokw">
+<div><svg class="lokmap" viewBox="0 0 540 560" role="img" aria-labelledby="lok-ttl">
+<title id="lok-ttl">Peta skematik letak Kota Bengkulu, Pelabuhan Pulau Baai, dan Pulau Enggano di Samudra Hindia</title>
+<rect width="540" height="560" class="m-sea"/>
+<polygon points="40.0,0.0 56.0,20.0 84.0,56.0 110.0,96.0 150.0,130.0 184.0,156.0 204.0,172.0 210.0,184.0 216.0,198.0 222.0,212.0 250.0,232.0 284.0,258.0 316.0,286.0 340.0,310.0 380.0,344.0 432.0,382.0 470.0,406.0 510.0,430.0 540.0,453.0 540.0,0.0" class="m-land"/>
+<polyline points="40.0,0.0 56.0,20.0 84.0,56.0 110.0,96.0 150.0,130.0 184.0,156.0 204.0,172.0 210.0,184.0 216.0,198.0 222.0,212.0 250.0,232.0 284.0,258.0 316.0,286.0 340.0,310.0 380.0,344.0 432.0,382.0 470.0,406.0 510.0,430.0 540.0,453.0" class="m-coast"/>
+<polygon points="176.0,492.0 184.0,480.0 200.0,474.0 218.0,476.0 232.0,482.0 244.0,490.0 240.0,500.0 226.0,510.0 210.0,520.0 194.0,518.0 180.0,508.0" class="m-land m-coast m-eng"/>
+<text x="310" y="90" class="m-reg" transform="rotate(42 310 90)">PROVINSI BENGKULU</text>
+<text x="410" y="50" class="m-isl">Pulau Sumatra</text>
+<text x="20" y="330" class="m-ocean">Samudra Hindia</text>
+<path d="M218.4,205.0 Q270.0,330.0 242.0,492.0" class="m-route"/>
+<path d="M427.0,383.0 Q350.0,460.0 245.0,494.0" class="m-alt"/>
+<g class="m-rlab" transform="translate(280 330)"><rect x="-4" y="-15" width="164" height="38" rx="6"/><text x="4" y="0"><tspan font-weight="700">Rute feri ±10–12 jam</tspan><tspan x="4" dy="16">±90 mil laut (156–175 km)</tspan></text></g>
+<text x="350" y="444" class="m-small m-alttx">rute alternatif usulan</text>
+<g class="m-pt" data-lok="1"><circle cx="213.0" cy="179.0" r="5" class="m-city"/><text x="223.0" y="175.0" class="m-lab">① Kota Bengkulu</text><title>Kota Bengkulu, ibu kota Provinsi Bengkulu</title></g>
+<g class="m-pt" data-lok="2"><rect x="212.4" y="195.0" width="12" height="12" rx="2" class="m-port" transform="rotate(45 218.4 201.0)"/><text x="206.4" y="219.0" class="m-lab" text-anchor="end">② Pelabuhan Pulau Baai</text><title>Pelabuhan Pulau Baai, ±15 km di selatan pusat kota</title></g>
+<g class="m-pt" data-lok="3"><text x="160.0" y="538.0" class="m-lab">③ Pulau Enggano</text><title>Pulau Enggano, Kecamatan Enggano, Kabupaten Bengkulu Utara</title></g>
+<circle cx="240.0" cy="494.0" r="3.5" class="m-sm"/><text x="248.0" y="506.0" class="m-small">Kahyapu</text>
+<circle cx="220.0" cy="477.0" r="3.5" class="m-sm"/><text x="214.0" y="469.0" class="m-small" text-anchor="end">Malakoni</text>
+<circle cx="427.0" cy="380.0" r="3.5" class="m-sm m-gr"/><text x="419.0" y="396.0" class="m-small" text-anchor="end">Pelabuhan Linau (Kaur)</text>
+<g transform="translate(30 34)" class="m-north"><path d="M0,-18 L7,6 L0,1 L-7,6 Z"/><text y="22" text-anchor="middle">U</text></g>
+<g transform="translate(410 540)" class="m-scale"><rect width="45" height="5"/><rect x="45" width="45" height="5" class="m-scw"/><text y="-5">0</text><text x="45" y="-5" text-anchor="middle">25</text><text x="90" y="-5" text-anchor="middle">50 km</text></g>
+<g class="m-inset"><rect x="4" y="394" width="128" height="140" rx="6" class="m-inbg"/>
+<polygon points="20.9,401.0 35.5,403.6 50.1,416.0 64.7,429.8 73.3,434.1 91.4,444.4 99.1,457.3 106.0,468.5 112.9,476.2 112.0,498.6 100.9,499.5 95.7,495.2 81.1,482.3 69.9,470.2 63.9,456.5 57.9,447.0 50.1,434.1 38.9,423.8 26.9,411.7" class="m-land"/><polygon points="106.0,507.2 111.2,500.3 117.2,500.3 120.6,501.6 120.6,512.4 115.5,512.4 108.6,508.5" class="m-land"/>
+<rect x="71.6" y="473.7" width="23.2" height="24.1" class="m-box"/>
+<text x="68" y="528" class="m-small m-intx" text-anchor="middle">Letak di Sumatra</text></g>
+</svg>
+<p class="note" style="margin:6px 0 0">Peta skematik; posisi dan garis pantai digambar mendekati keadaan sebenarnya, bukan peta resmi. Arahkan kursor atau ketuk nomor untuk menyorot keterangannya.</p></div>
+<ol class="lokl">
+<li data-lok="1"><b>① Kota Bengkulu</b><p>Ibu kota Provinsi Bengkulu di pesisir barat Sumatra yang menghadap langsung ke Samudra Hindia. Kebutuhan pokok, BBM, dan barang untuk Pulau Enggano dikirim dari kota ini.</p><a href="https://www.google.com/maps/search/?api=1&amp;query=-3.795,102.265" target="_blank" rel="noopener noreferrer">Buka di Google Maps ↗</a></li>
+<li data-lok="2" class="p"><b>② Pelabuhan Pulau Baai</b><p>Terletak sekitar 15 km di selatan pusat kota, di Kelurahan Sumber Jaya, Kecamatan Kampung Melayu. Pelabuhan nasional yang terbuka untuk perdagangan luar negeri dan melayani kapal penumpang, BBM, minyak sawit mentah (CPO), batu bara, serta kontainer Tol Laut. Dari sinilah feri ke Enggano berangkat.</p><a href="https://www.google.com/maps/search/?api=1&amp;query=-3.905,102.292" target="_blank" rel="noopener noreferrer">Buka di Google Maps ↗</a></li>
+<li data-lok="3" class="e"><b>③ Pulau Enggano</b><p>Pulau kecil terluar di Samudra Hindia, sekitar 90 mil laut (156–175 km) dari Kota Bengkulu. Secara administratif menjadi Kecamatan Enggano, Kabupaten Bengkulu Utara. Kapal feri berlabuh di Pelabuhan Kahyapu atau Malakoni.</p><a href="https://www.google.com/maps/search/?api=1&amp;query=-5.39,102.24" target="_blank" rel="noopener noreferrer">Buka di Google Maps ↗</a></li>
+</ol>
+</div>
+</div>
+
+<div class="card">
+<h2>Mengenal Pulau Enggano</h2>
+<div class="grid4">
+<div class="mini"><b>Penjaga batas negara</b><p>Termasuk Pulau-Pulau Kecil Terluar (PPKT), yaitu titik dasar garis pangkal wilayah perairan dan ZEE Indonesia, sekaligus daerah 3T (terdepan, terluar, tertinggal).</p></div>
+<div class="mini"><b>400,6 km²</b><p>Luas pulau, dengan panjang pantai sekitar 112 km.</p></div>
+<div class="mini"><b>± 4.000 jiwa</b><p>Penduduk 4.035 jiwa (BPS 2020) di enam desa: Banjar Sari, Meok, Apoho, Malakoni, Kaana, dan Kahyapu.</p></div>
+<div class="mini"><b>Feri 10–12 jam</b><p>Akses utama adalah kapal feri dari Pulau Baai. Pesawat perintis hanya sekitar 40 menit, tetapi kursinya sangat terbatas (pesawat 12 kursi, pada Juni 2025 harus dipesan sekitar satu bulan sebelumnya).</p></div>
+<div class="mini"><b>Kakao, pisang, melinjo</b><p>Komoditas unggulan pertanian Enggano, ditambah hasil laut. Semuanya dijual ke Kota Bengkulu lewat kapal.</p></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Rantai dampak: dari pasir di mulut alur sampai dapur warga Enggano</h2>
+<ol class="chain">
+<li><b>Pasir menutup alur</b>Kapal berukuran besar, termasuk kapal penyeberangan, tidak bisa keluar masuk Pelabuhan Pulau Baai.</li>
+<li><b>Feri berhenti</b>Sejak Maret 2025 pelabuhan berhenti beroperasi, sehingga pelayaran rutin ke Enggano terputus.</li>
+<li><b>Pulau terisolasi</b>Sekitar 4.000 warga terancam krisis pangan karena bahan pokok dari Kota Bengkulu tidak terkirim. Akses pendidikan dan kesehatan ke ibu kota provinsi ikut terganggu.</li>
+<li><b>Ekonomi lumpuh</b>Hasil bumi tidak terangkut. Sewa kapal nelayan mencapai Rp17 juta per perjalanan, sehingga pisang hanya dibeli Rp15.000–20.000 per tandan, padahal harga normalnya Rp50.000–60.000.</li>
+<li class="o"><b>Penanganan darurat</b>Gubernur menyalurkan belasan ton bahan pokok, TNI AL mengirim kapal perang untuk logistik, kapal pengawas KKP mengangkut 28 warga (2 Juli 2025), dan DPRD mengusulkan Pelabuhan Linau di Kaur sebagai jalur alternatif.</li>
+</ol>
+<p class="lokpt"><b>Kaitannya dengan inovasi ini:</b> bila pendangkalan terpantau lebih awal dari citra satelit, pengerukan dapat dijadwalkan sebelum alur tertutup. Dengan begitu, Enggano tidak perlu kembali terputus dari daratan Sumatra.</p>
+<p class="note" style="margin:10px 0 0">Sumber: <a href="https://setkab.go.id/enggano-pesona-nusa-penjaga-indonesia/" target="_blank" rel="noopener noreferrer">Setkab (profil Enggano)</a> · <a href="https://setkab.go.id/arah-kebijakan-pembangunan-pulau-enggano/" target="_blank" rel="noopener noreferrer">Setkab/Bappenas (PPKT, komoditas)</a> · <a href="https://mongabay.co.id/2024/11/24/was-was-perusahaan-sawit-masuk-pulau-enggano/" target="_blank" rel="noopener noreferrer">Mongabay (enam desa)</a> · <a href="https://p2k.stekom.ac.id/ensiklopedia/Pulau_enggano" target="_blank" rel="noopener noreferrer">Ensiklopedia (penduduk BPS 2020, 90 mil laut)</a> · <a href="https://ejournal.mgi.esdm.go.id/index.php/jgk/article/download/101/91" target="_blank" rel="noopener noreferrer">Arifin dkk. 2003 (letak pelabuhan)</a> · <a href="https://repository.its.ac.id/131910/" target="_blank" rel="noopener noreferrer">ITS (alamat pelabuhan)</a> · <a href="https://industri.kontan.co.id/news/menhub-dudy-pergerakan-kapal-di-perairan-pelabuhan-pulau-baai-terpantau-lancar" target="_blank" rel="noopener noreferrer">Kontan (jenis muatan)</a> · <a href="https://www.detik.com/sumbagsel/berita/d-7864944/warga-pulau-enggano-terancam-terisolir-imbas-alur-dangkal-pelabuhan-baai" target="_blank" rel="noopener noreferrer">detikSumbagsel (terisolasi)</a> · <a href="https://www.detik.com/sumbagsel/berita/d-7977870/enggano-terisolir-dprd-desak-gubernur-bengkulu-manfaatkan-pelabuhan-linau" target="_blank" rel="noopener noreferrer">detikSumbagsel (Pelabuhan Linau)</a> · <a href="https://bengkulu.antaranews.com/berita/407585/gubernur-bengkulu-salurkan-belasan-ton-bahan-pokok-untuk-warga-enggano" target="_blank" rel="noopener noreferrer">Antara (bantuan bahan pokok)</a> · <a href="https://perpustakaan.dpr.go.id/epaper/index/popup/id/20132" target="_blank" rel="noopener noreferrer">Kliping Perpustakaan DPR (harga pisang)</a> · <a href="https://www.inews.id/news/nasional/kp-orca-05-kkp-angkut-warga-enggano-ke-bengkulu" target="_blank" rel="noopener noreferrer">iNews (KP Orca 05)</a> · <a href="https://regional.kompas.com/read/2025/06/20/143615978/cerita-pelancong-ke-enggano-banyak-warga-sakit-berdesakan-cari-tiket" target="_blank" rel="noopener noreferrer">Kompas (tiket pesawat)</a></p>
 </div>
 
 <div class="grid2">
@@ -580,5 +675,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=b453da51';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=dda6a628';document.body.appendChild(s)})();
 </script></body></html>

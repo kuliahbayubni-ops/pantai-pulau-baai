@@ -188,6 +188,10 @@ $('#ref-doc').innerHTML=DOCS.map((r,i)=>`<article class="ref"><span class="no">$
 const nMedia=BERITA.length;
 $('#ref-stat').innerHTML=`<div class="kpi"><strong>${SCI.length} artikel ilmiah</strong><span>tentang sedimentasi pelabuhan di Bengkulu</span></div><div class="kpi r"><strong>${nMedia} liputan media</strong><span>artikel, video, dan unggahan</span></div><div class="kpi w"><strong>${DOCS.length} data dan dokumen</strong><span>peraturan, citra satelit, dan curah hujan</span></div>`;
 
+/* ---------- Peta lokasi: sorot pasangan penanda dan keterangan ---------- */
+(function(){const hl=n=>{$$('[data-lok]').forEach(e=>e.classList.toggle('hl',e.dataset.lok===n))};
+$$('[data-lok]').forEach(e=>{e.addEventListener('mouseenter',()=>hl(e.dataset.lok));e.addEventListener('mouseleave',()=>hl(''));e.addEventListener('click',ev=>{if(ev.target.closest('a'))return;hl(e.dataset.lok)})})})();
+
 /* ---------- Galeri ---------- */
 const GAL=[
  {id:'area-studi',t:'Area studi',c:'Kotak area studi Pelabuhan Pulau Baai di Google Earth Engine.'},
