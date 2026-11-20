@@ -523,12 +523,12 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <h3>Yang tidak kami klaim</h3>
 <ul>
 <li>Satelit tidak mengukur kedalaman alur.</li>
-<li>Model tidak meramalkan tanggal pengerukan; tanggal di simulasi adalah ilustrasi.</li>
+<li>Model belum meramalkan tanggal pengerukan secara pasti. Model memberi perkiraan rentang waktu berbasis skenario: alur yang dikeruk sampai 12 m diperkirakan kembali kritis dalam sekitar 780–906 hari (uji berulang 100 kali). Ramalan tanggal yang tervalidasi membutuhkan kalibrasi dengan data batimetri.</li>
 <li>Pasir di sisi timur belum tentu hasil sedimentasi alami.</li>
 <li>Tidak adanya sinyal di sisi barat tidak membuktikan pasir tidak menumpuk di sana.</li>
 </ul>
 <h3>Tindak lanjut</h3>
-<p>Kalibrasi dengan data survei batimetri, menambah data gelombang dan arus nyata, menambah zona pembanding, dan memperluas ke pelabuhan lain.</p>
+<p>Kalibrasi dengan data survei batimetri, menambahkan aturan validasi kedalaman alur saat ini sebelum model dipakai untuk rencana pengerukan, menambah data gelombang dan arus nyata, menambah zona pembanding, dan memperluas ke pelabuhan lain.</p>
 </div>
 </div>
 <div class="card">
@@ -795,5 +795,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=98bbe748';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=9cc21759';document.body.appendChild(s)})();
 </script></body></html>
