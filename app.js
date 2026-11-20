@@ -7,9 +7,13 @@ const sg=v=>(v>0?'+':'')+fmt(v)+'%';
 /* ---------- Tabs (hash) ---------- */
 const TABS=['beranda','referensi','simulasi','data-satelit','tentang','papida'];let simLoaded=false;
 function route(){let t=location.hash.slice(1);if(t==='berita'){t='referensi';history.replaceState(null,'','#referensi')}if(t==='presentasi'||t==='materi'){t='papida';history.replaceState(null,'','#papida')}if(!TABS.includes(t))t='beranda';
-$$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
+$$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));stopMedia();
 $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));
 if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit'){['ch-ews','ch-raw','ch-mon','ch-sea'].forEach(k=>{const e=document.getElementById(k);if(e)e.dataset.fresh='1'});drawAll()}window.scrollTo(0,0)}
+/* Hentikan video di tab yang sedang tidak dibuka */
+function stopMedia(){$$('section.tab:not(.on) iframe').forEach(f=>{const u=f.src||'';
+ if(u.includes('youtube')){try{f.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}),'*')}catch(e){}}
+ else if(u.includes('instagram.com')){f.src=u}})}
 addEventListener('hashchange',route);
 
 /* ---------- Simulasi (iframe) ---------- */
@@ -204,7 +208,7 @@ function drawNews(){$$('#nw-top button').forEach(b=>b.classList.toggle('on',b.da
  $$('#nw-list button.nwt').forEach(t=>t.onclick=()=>{const b=BERITA[+t.dataset.i];
   if(!CAN_EMBED){window.open(b.u,'_blank','noopener');return}
   const f=document.createElement('iframe');f.className=b.yt?'nwv':'nwv igv';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=b.t;
-  f.src=b.yt?`https://www.youtube-nocookie.com/embed/${b.yt}?autoplay=1&rel=0`:`https://www.instagram.com/${b.ig}/embed`;t.replaceWith(f)})}
+  f.src=b.yt?`https://www.youtube-nocookie.com/embed/${b.yt}?autoplay=1&rel=0&enablejsapi=1`:`https://www.instagram.com/${b.ig}/embed`;t.replaceWith(f)})}
 
 /* ---------- Referensi ilmiah dan dokumen ---------- */
 const SCI=[
@@ -375,5 +379,5 @@ go(0)})();
 const PAPIDA_VIDEO='';
 (function(){const box=document.getElementById('pp-video');if(!box)return;
  const m=PAPIDA_VIDEO.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
- if(m){box.innerHTML='<div class="ppv"><iframe src="https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0" title="Video presentasi PASIR" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div><p class="note" style="margin-top:8px"><a href="https://youtu.be/'+m[1]+'" target="_blank" rel="noopener noreferrer">Tonton di YouTube ↗</a></p>'}
+ if(m){box.innerHTML='<div class="ppv"><iframe src="https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0&enablejsapi=1" title="Video presentasi PASIR" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div><p class="note" style="margin-top:8px"><a href="https://youtu.be/'+m[1]+'" target="_blank" rel="noopener noreferrer">Tonton di YouTube ↗</a></p>'}
  else box.innerHTML='<div class="ppempty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 10l5-3v10l-5-3z"/></svg><b>Video presentasi segera hadir</b><span>Video akan tampil di sini setelah diunggah.</span></div>'})();
