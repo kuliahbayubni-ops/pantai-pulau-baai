@@ -5,8 +5,8 @@ const fmt=(v,d=1)=>v==null||isNaN(v)?'–':v.toLocaleString('id-ID',{minimumFrac
 const sg=v=>(v>0?'+':'')+fmt(v)+'%';
 
 /* ---------- Tabs (hash) ---------- */
-const TABS=['beranda','referensi','simulasi','data-satelit','tentang','presentasi'];let simLoaded=false;
-function route(){let t=location.hash.slice(1);if(t==='berita'){t='referensi';history.replaceState(null,'','#referensi')}if(!TABS.includes(t))t='beranda';
+const TABS=['beranda','referensi','simulasi','data-satelit','tentang','papida'];let simLoaded=false;
+function route(){let t=location.hash.slice(1);if(t==='berita'){t='referensi';history.replaceState(null,'','#referensi')}if(t==='presentasi'||t==='materi'){t='papida';history.replaceState(null,'','#papida')}if(!TABS.includes(t))t='beranda';
 $$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
 $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));
 if(t==='simulasi'&&!simLoaded)loadSim();if(t==='data-satelit'){['ch-ews','ch-raw','ch-mon','ch-sea'].forEach(k=>{const e=document.getElementById(k);if(e)e.dataset.fresh='1'});drawAll()}window.scrollTo(0,0)}
@@ -353,7 +353,8 @@ route();
 
 (function(){const h=document.querySelector('header');if(!h)return;let sm=false,tk=false;function upd(){tk=false;const y=window.scrollY||document.documentElement.scrollTop||0;if(!sm&&y>80){sm=true;h.classList.add('sm')}else if(sm&&y<12){sm=false;h.classList.remove('sm')}}addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});upd()})();
 
-addEventListener('hashchange',()=>setTimeout(()=>{const a=document.querySelector('nav a.on'),n=a&&a.parentElement;if(n&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:'smooth'})},50));
+function navCenter(){const a=document.querySelector('nav a.on'),n=a&&a.parentElement;if(n&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:'smooth'})}
+addEventListener('hashchange',()=>setTimeout(navCenter,50));setTimeout(navCenter,300);
 
 /* ---------- Presentasi (tab tersembunyi) ---------- */
 (function(){const el=document.getElementById('pres-data');if(!el)return;let S=[];try{S=JSON.parse(el.textContent)}catch(e){}if(!S.length)return;
@@ -364,7 +365,15 @@ function go(i){k=Math.max(0,Math.min(S.length-1,i));img.src=S[k];img.alt='Slide 
  if(S[k+1]){const p=new Image();p.src=S[k+1]}}
 pv.onclick=()=>go(k-1);nx.onclick=()=>go(k+1);th.onclick=e=>{const b=e.target.closest('button');if(b)go(+b.dataset.i)};
 document.getElementById('pr-fs').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else if(box.requestFullscreen)box.requestFullscreen()};
-addEventListener('keydown',e=>{if(!document.getElementById('t-presentasi').classList.contains('on'))return;if(e.target.closest&&e.target.closest('input,select,textarea'))return;
+addEventListener('keydown',e=>{if(!document.getElementById('t-papida').classList.contains('on'))return;if(e.target.closest&&e.target.closest('input,select,textarea'))return;
  if(e.key==='ArrowRight'||e.key==='PageDown'){go(k+1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='PageUp'){go(k-1);e.preventDefault()}});
 let sx=null;box.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});box.addEventListener('touchend',e=>{if(sx==null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)go(k+(d<0?1:-1));sx=null});
 go(0)})();
+
+/* ---------- Papida: video ---------- */
+/* Tempel tautan YouTube di antara tanda kutip di bawah ini, misalnya 'https://youtu.be/xxxxxxxxxxx'. Kosong = video belum tersedia. */
+const PAPIDA_VIDEO='';
+(function(){const box=document.getElementById('pp-video');if(!box)return;
+ const m=PAPIDA_VIDEO.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
+ if(m){box.innerHTML='<div class="ppv"><iframe src="https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0" title="Video presentasi PASIR" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div><p class="note" style="margin-top:8px"><a href="https://youtu.be/'+m[1]+'" target="_blank" rel="noopener noreferrer">Tonton di YouTube ↗</a></p>'}
+ else box.innerHTML='<div class="ppempty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 10l5-3v10l-5-3z"/></svg><b>Video presentasi segera hadir</b><span>Video akan tampil di sini setelah diunggah.</span></div>'})();
