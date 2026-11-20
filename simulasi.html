@@ -75,6 +75,40 @@ main.pres #ch{max-height:190px}}
 .sdrow{display:flex;flex-direction:column;gap:4px;font-size:14px}.sdrow span{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.sdrow b{font-size:15px}.sdrow button{font-size:13px;padding:4px 10px}
 @container (max-width:620px){.spc{grid-template-columns:1fr}.sps{max-width:300px}}
 @media (max-width:560px){#cvw{display:flex;flex-direction:column}#startp{order:-1;position:static;background:none;backdrop-filter:none;padding:0 0 10px}.spc{box-shadow:none;border:1px solid var(--bd);max-height:none}}
+
+.dzt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 10px}
+.dzb{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n c" "s s";align-items:center;gap:6px 8px;text-align:left;padding:10px 12px;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);font-size:14px}
+.dzb:hover{border-color:var(--ac)}.dzb.on{border-color:var(--ac);box-shadow:inset 0 0 0 1px var(--ac);background:color-mix(in srgb,var(--ac) 9%,var(--card))}
+.dzn{grid-area:n;font-weight:700}.dzc{grid-area:c;display:flex;gap:6px;align-items:center;font-size:13px}.dzs{grid-area:s;width:100%;height:30px;display:block}
+.sp-ln{fill:none;stroke:var(--ac);stroke-width:1.6;stroke-linejoin:round}.sp-th{stroke:var(--wn);stroke-width:1;stroke-dasharray:3 3}
+.stc{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;color:var(--tx);background:color-mix(in srgb,var(--sc) 20%,transparent);white-space:nowrap;vertical-align:middle}
+.stc:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sc)}
+.st-kr{--sc:var(--rd)}.st-sg{--sc:var(--wn)}.st-ok{--sc:var(--ok)}.st-hi{--sc:var(--ac)}.st-na{--sc:var(--mu)}
+.dkp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.dk{background:var(--bg);border-radius:10px;padding:9px 12px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.dk small{font-size:12px;color:var(--mu)}.dk b{font-size:23px;line-height:1.15}.dk b span{font-size:13px;font-weight:400}.dk>span{font-size:12.5px;color:var(--mu)}
+@media(max-width:760px){.dkp{grid-template-columns:repeat(2,minmax(0,1fr))}.dzb{grid-template-columns:1fr;grid-template-areas:"n" "c" "s";padding:8px 9px;font-size:13px}.dzc{flex-wrap:wrap;gap:4px}.dk b{font-size:20px}}
+#dchw{position:relative}#dsv{display:block;width:100%;height:auto;font-family:inherit;overflow:visible}
+#dsv .gl{stroke:var(--bd);stroke-width:1}#dsv .g0{stroke:var(--mu);stroke-width:1;opacity:.7}#dsv .yl{stroke:var(--bd);stroke-width:1}
+#dsv .ax{fill:var(--mu);font-size:12px;font-variant-numeric:tabular-nums}#dsv .ay{font-size:12.5px;font-weight:700}
+#dsv .bkr{fill:var(--rd);opacity:.10}#dsv .bsg{fill:var(--wn);opacity:.13}#dsv .bok{fill:var(--mu);opacity:.10}
+#dsv .bl{font-size:11px;font-weight:700;letter-spacing:.06em;fill:var(--mu)}
+#dsv .thsg{stroke:var(--wn);stroke-width:1.5;stroke-dasharray:6 4}#dsv .thkr{stroke:var(--rd);stroke-width:1.5;stroke-dasharray:6 4}
+#dsv .ev{stroke:var(--mu);stroke-width:1;stroke-dasharray:2 3}#dsv .evc rect{fill:var(--card);stroke:var(--bd)}#dsv .evc text{font-size:12px;fill:var(--tx);font-weight:700}
+#dsv .ar{fill:var(--ac);opacity:.13}#dsv .ln{fill:none;stroke:var(--ac);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+#dsv .ln.an{stroke-dasharray:1;stroke-dashoffset:1;animation:dcdraw .9s ease-out forwards}@keyframes dcdraw{to{stroke-dashoffset:0}}
+#dsv .gap{stroke:var(--mu);stroke-width:1.5;stroke-dasharray:2 4}#dsv .out{fill:none;stroke:var(--mu);stroke-width:2}
+.mk{stroke:var(--card);stroke-width:2}.mk-ok,.mk-hi{fill:var(--ac)}.mk-sg{fill:var(--wn)}.mk-kr{fill:var(--rd)}.mk-na{fill:var(--mu)}
+#dsv .sel{stroke:var(--tx);stroke-width:1;opacity:.35}
+#dsv .vc rect{fill:var(--tx)}#dsv .vc text{fill:var(--card);font-weight:700;font-size:13px}
+#dsv .hit{fill:transparent;cursor:pointer}#dsv .hit:hover{fill:var(--tx);fill-opacity:.05}
+.dtip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 11px;font-size:13px;box-shadow:0 8px 22px rgba(0,0,0,.2);display:none;z-index:2;min-width:160px}
+.dtip small{display:block;color:var(--mu);font-size:12px}.dtip b{display:block;font-size:18px;margin:1px 0 4px}.dtip span:last-child{display:block;margin-top:5px;font-size:12px;color:var(--mu)}
+.dctl{display:flex;gap:14px;align-items:center;margin-top:8px}.dctl label{flex:1;display:flex;gap:10px;align-items:center;font-size:13px;color:var(--mu);margin:0}.dctl input{flex:1}
+#dtx{margin:8px 0 0;font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dlg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--mu);margin:10px 0 4px}.dlg span{display:inline-flex;align-items:center;gap:6px}
+.dlg i{display:inline-block;width:18px;height:10px;border-radius:2px;font-style:normal;line-height:10px;text-align:center}
+.k-ln{height:3px!important;background:var(--ac)}.k-bok{background:color-mix(in srgb,var(--mu) 25%,transparent)}.k-sg{height:0!important;border-top:2px dashed var(--wn)}.k-kr{height:0!important;border-top:2px dashed var(--rd)}.k-ev{width:0!important;height:12px!important;border-left:1.5px dashed var(--mu)}.k-out{width:auto!important;color:var(--mu);font-size:13px}
 </style></head><body><main>
 <h1>Simulasi Pendangkalan Alur Pelabuhan Pulau Baai</h1>
 <p class="sub">Demonstrasi konseptual di atas peta asli Pulau Baai (citra Sentinel-2): pasir dari Samudra Hindia terbawa gelombang dan arus menyusuri pantai, lalu mengendap di sekitar ujung semenanjung (pier barat) dan mulut alur. Arus pasang membawa pasir masuk lebih kuat daripada arus surut membawanya keluar.</p>
@@ -136,11 +170,8 @@ ul.nl{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--mu)}ul.nl li{m
 <div class="card"><style>.tb.on{background:var(--ac);color:var(--bg)}@media(min-width:1000px){main.side>div:nth-of-type(5){grid-column:1/-1;grid-row:7}}</style>
 <b>Data nyata dari satelit: indeks peringatan dini (Sentinel-2, 2019-2026)</b>
 <p class="note" style="margin:4px 0 8px">Selisih luas air tetap tiap zona terhadap pantai pembanding, per kuartal, pola musiman sudah dikoreksi. Nilai negatif = area air menyempit. Geser kuartal atau tekan Putar waktu untuk melihat perjalanannya.</p>
-<div class="btns" style="margin:0 0 8px"><button class="tb on" id="dz1">Mulut alur</button><button class="tb" id="dz2">Sisi timur pier</button><button class="tb" id="dz3">Sisi barat pier</button><button id="dpl">Putar waktu</button></div>
-<canvas id="dcv" width="840" height="300" aria-label="Indeks peringatan dini dari citra satelit"></canvas>
-<label>Kuartal<input type="range" id="dsl" min="0" max="30" value="30"></label>
-<p id="dtx" style="font-weight:700;margin:6px 0 0"></p>
-<ul class="nl"><li>Pita abu-abu: kisaran normal 2019–2022 (sekitar dua simpangan baku).</li><li>Titik jingga: siaga; titik merah: kritis.</li><li>Belah ketupat abu-abu (Kuartal IV 2020): data tidak wajar dan di luar skala; ditampilkan demi transparansi, tidak dipakai dalam analisis.</li><li>Batasan: indikator mengukur luas permukaan air, bukan kedalaman alur; zona pembanding hanya satu; data dirangkum per kuartal.</li><li>Zona timur: citra menunjukkan daratan pasir bertambah sejak 2025. Penyebabnya bisa proses alami atau pemanfaatan pasir hasil pengerukan (Inpres 12/2025) dan belum dapat dipisahkan.</li></ul></div>
+<div class="dzt" role="tablist" aria-label="Pilih zona"><button class="dzb on" id="dz1" role="tab" aria-selected="true"><span class="dzn">Mulut alur</span><span class="dzc"></span><svg class="dzs" aria-hidden="true"></svg></button><button class="dzb" id="dz2" role="tab" aria-selected="false"><span class="dzn">Sisi timur pier</span><span class="dzc"></span><svg class="dzs" aria-hidden="true"></svg></button><button class="dzb" id="dz3" role="tab" aria-selected="false"><span class="dzn">Sisi barat pier</span><span class="dzc"></span><svg class="dzs" aria-hidden="true"></svg></button></div><div class="dkp" id="dkp"></div><div id="dchw"><svg id="dsv" role="img" aria-label="Grafik indeks peringatan dini dari citra satelit per kuartal"></svg><div class="dtip" id="dtip" role="status"></div></div><div class="dctl"><button id="dpl" type="button">▶ Putar waktu</button><label>Kuartal<input type="range" id="dsl" min="0" max="30" value="30"></label></div><p id="dtx"></p><div class="dlg"><span><i class="k-ln"></i>Selisih luas air zona</span><span><i class="k-bok"></i>Kisaran normal 2019–2022</span><span><i class="k-sg"></i>Ambang siaga</span><span><i class="k-kr"></i>Ambang kritis</span><span><i class="k-ev"></i>Peristiwa</span><span><i class="k-out">◇</i>Data tidak wajar</span></div>
+<ul class="nl"><li>Latar abu-abu: kisaran normal 2019–2022 (sekitar dua simpangan baku). Latar jingga: wilayah siaga. Latar merah: wilayah kritis.</li><li>Warna titik mengikuti status kuartal itu: biru normal, jingga siaga, merah kritis. Arahkan kursor atau ketuk titik untuk melihat angkanya, klik untuk memilih kuartal.</li><li>Belah ketupat abu-abu (Kuartal IV 2020): data tidak wajar dan di luar skala; ditampilkan demi transparansi, tidak dipakai dalam analisis.</li><li>Batasan: indikator mengukur luas permukaan air, bukan kedalaman alur; zona pembanding hanya satu; data dirangkum per kuartal.</li><li>Zona timur: citra menunjukkan daratan pasir bertambah sejak 2025. Penyebabnya bisa proses alami atau pemanfaatan pasir hasil pengerukan (Inpres 12/2025) dan belum dapat dipisahkan.</li></ul></div>
 
 <script>const W=120,H=89,S=7,$=id=>document.getElementById(id);
 const cv=$('cv'),cx=cv.getContext('2d'),ch=$('ch'),gx=ch.getContext('2d');
@@ -354,24 +385,61 @@ barat:[1.0,0.9,0.7,0.0,-0.4,0.2,-0.7,-85.1,0.0,-0.2,0.8,-0.5,-0.7,-0.9,-0.8,0.6,
 const TH={mulut:{sg:-3,kr:-6},timur:{sg:-5.8,kr:-11.6},barat:{sg:-1.4,kr:-2.8}};
 let dz='mulut',dq=30,dtm=null;
 function ql(i){return 'Kuartal '+['I','II','III','IV'][i%4]+' '+(2019+Math.floor(i/4))}
-function dstat(v,t){if(v===null)return['data kuartal ini dibuang (tidak wajar)','var(--mu)'];if(v<=t.kr)return['KRITIS (di bawah '+t.kr+'%)','var(--rd)'];if(v<=t.sg)return['SIAGA (di bawah '+t.sg+'%)','var(--wn)'];if(v>-t.sg)return['di atas kisaran normal (area air lebih luas)','var(--ac)'];return['normal','var(--ok)']}
-const OUT=[7];
-function dshow(){const v=DD[dz][dq],s=OUT.includes(dq)?['TIDAK WAJAR: di luar skala grafik. Diduga sebagian besar piksel zona tertutup filter awan pada kuartal ini (dugaan, belum diverifikasi). Tidak dipakai dalam analisis.','var(--mu)']:dstat(v,TH[dz]),e=$('dtx');e.textContent=ql(dq)+': '+(v===null?'-':'selisih '+v.toFixed(1)+'% terhadap pantai pembanding')+'. Status: '+s[0]+'.';e.style.color=s[1];$('dsl').value=dq;drawDC()}
-function drawDC(){const g=$('dcv').getContext('2d'),w=840,h=300,pl=46,pr=12,pt=26,pb=30,t=TH[dz],v=DD[dz],s=getComputedStyle(document.documentElement),tx=s.getPropertyValue('--tx'),mu=s.getPropertyValue('--mu'),ac=s.getPropertyValue('--ac'),rd=s.getPropertyValue('--rd'),wn=s.getPropertyValue('--wn');
-const y0=-14,y1=12,X=i=>pl+i/31*(w-pl-pr),Y=a=>pt+(y1-a)/(y1-y0)*(h-pt-pb);
-g.clearRect(0,0,w,h);g.font='12px Trebuchet MS,sans-serif';
-g.fillStyle='rgba(128,128,128,.16)';g.fillRect(pl,Y(-t.sg),w-pl-pr,Y(t.sg)-Y(-t.sg));
-g.strokeStyle=mu;g.globalAlpha=.3;g.lineWidth=1;for(let a=-12;a<=12;a+=4){g.beginPath();g.moveTo(pl,Y(a));g.lineTo(w-pr,Y(a));g.stroke()}g.globalAlpha=1;
-g.fillStyle=mu;for(let a=-12;a<=12;a+=4)g.fillText(a+'%',8,Y(a)+4);for(let i=0;i<31;i+=4)g.fillText(2019+i/4,X(i)-10,h-8);
-g.setLineDash([6,4]);g.lineWidth=1.5;g.strokeStyle=wn;g.beginPath();g.moveTo(pl,Y(t.sg));g.lineTo(w-pr,Y(t.sg));g.stroke();g.fillStyle=wn;g.fillText('siaga',pl+4,Y(t.sg)-4);
-g.strokeStyle=rd;g.beginPath();g.moveTo(pl,Y(t.kr));g.lineTo(w-pr,Y(t.kr));g.stroke();g.fillStyle=rd;g.fillText('kritis',pl+4,Y(t.kr)-4);
-g.strokeStyle=mu;g.lineWidth=1;g.setLineDash([2,3]);g.fillStyle=mu;[[24+2.5/3,'Mar 2025: masalah dilaporkan',1],[24+6.5/3,'Jul 2025: berangsur normal',0]].forEach(e=>{g.beginPath();g.moveTo(X(e[0]),pt-4);g.lineTo(X(e[0]),h-pb);g.stroke();g.textAlign=e[2]?'right':'left';g.fillText(e[1],X(e[0])+(e[2]?-4:4),pt-8)});g.textAlign='left';
-g.setLineDash([]);g.strokeStyle=tx;g.globalAlpha=.5;g.lineWidth=1.8;g.beginPath();let on=false;v.forEach((a,i)=>{if(a===null||OUT.includes(i)){on=false;return}on?g.lineTo(X(i+.5),Y(a)):g.moveTo(X(i+.5),Y(a));on=true});g.stroke();g.globalAlpha=1;
-v.forEach((a,i)=>{if(a===null)return;if(OUT.includes(i)){const px=X(i+.5),py=Y(y0+1.5);g.strokeStyle=mu;g.lineWidth=2;g.setLineDash([]);g.beginPath();g.moveTo(px,py-7);g.lineTo(px+7,py);g.lineTo(px,py+7);g.lineTo(px-7,py);g.closePath();g.stroke();g.fillStyle=mu;g.fillText('Kuartal IV 2020: '+a.toFixed(1)+'% (tidak wajar, di luar skala)',px+12,py-8);return}g.fillStyle=a<=t.kr?rd:a<=t.sg?wn:ac;g.beginPath();g.arc(X(i+.5),Y(a),i===dq?6:3.5,0,7);g.fill()});
-g.strokeStyle=tx;g.lineWidth=1;g.globalAlpha=.6;g.beginPath();g.moveTo(X(dq+.5),pt);g.lineTo(X(dq+.5),h-pb);g.stroke();g.globalAlpha=1}
-['dz1','dz2','dz3'].forEach((id,k)=>$(id).onclick=()=>{dz=['mulut','timur','barat'][k];['dz1','dz2','dz3'].forEach((j,m)=>$(j).classList.toggle('on',m===k));dshow()});
+function dstat(v,t){if(v===null)return['data kuartal ini dibuang (tidak wajar)','na'];if(v<=t.kr)return['KRITIS (di bawah '+fth(t.kr)+')','kr'];if(v<=t.sg)return['SIAGA (di bawah '+fth(t.sg)+')','sg'];if(v>-t.sg)return['di atas kisaran normal (area air lebih luas)','hi'];return['normal','ok']}
+const OUT=[7],STL={kr:'Kritis',sg:'Siaga',ok:'Normal',hi:'Di atas normal',na:'Dibuang'};
+const fx=v=>(v<0?'−':v>0?'+':'±')+Math.abs(v).toFixed(1).replace('.',',')+'%';
+const fth=v=>'−'+Math.abs(v).toString().replace('.',',')+'%';
+const chip=k=>`<span class="stc st-${k}">${STL[k]}</span>`;
+function stOf(z,i){return OUT.includes(i)?'na':dstat(DD[z][i],TH[z])[1]}
+const ZK=['mulut','timur','barat'];
+function sparks(){ZK.forEach((z,k)=>{const b=$('dz'+(k+1)),sv=b.querySelector('.dzs'),w=sv.clientWidth||160,h=30,v=DD[z],ok=v.map((a,i)=>OUT.includes(i)?null:a).filter(a=>a!==null),lo=Math.min(...ok,TH[z].kr),hi=Math.max(...ok),X=i=>2+i/30*(w-4),Y=a=>3+(hi-a)/(hi-lo||1)*(h-6);
+ let d='',on=false;v.forEach((a,i)=>{if(OUT.includes(i)){on=false;return}d+=(on?'L':'M')+X(i).toFixed(1)+','+Y(a).toFixed(1);on=true});
+ const s=stOf(z,dq);sv.setAttribute('viewBox',`0 0 ${w} ${h}`);
+ sv.innerHTML=`<line x1="0" x2="${w}" y1="${Y(TH[z].sg)}" y2="${Y(TH[z].sg)}" class="sp-th"/><path d="${d}" class="sp-ln"/>`+(OUT.includes(dq)?'':`<circle cx="${X(dq)}" cy="${Y(v[dq])}" r="3.5" class="mk mk-${s}"/>`);
+ b.querySelector('.dzc').innerHTML=(OUT.includes(dq)?'':'<b>'+fx(v[dq])+'</b> ')+chip(s);
+ b.classList.toggle('on',z===dz);b.setAttribute('aria-selected',z===dz)})}
+function kpis(){const v=DD[dz],t=TH[dz],idx=v.map((a,i)=>i).filter(i=>!OUT.includes(i)),mn=idx.reduce((m,i)=>v[i]<v[m]?i:m,idx[0]),nsg=idx.filter(i=>v[i]<=t.sg&&v[i]>t.kr).length,nkr=idx.filter(i=>v[i]<=t.kr).length,s=stOf(dz,dq);
+ const ref=dq-4;const ch=(ref>=0&&!OUT.includes(ref)&&!OUT.includes(dq))?v[dq]-v[ref]:null;
+ $('dkp').innerHTML=`<div class="dk"><small>${ql(dq)}</small><b>${OUT.includes(dq)?'–':fx(v[dq])}</b>${chip(s)}</div>`+
+ `<div class="dk"><small>Titik terendah 2019–2026</small><b>${fx(v[mn])}</b><span>${ql(mn)}</span></div>`+
+ `<div class="dk"><small>Kuartal di bawah ambang</small><b>${nsg+nkr} <span>dari ${idx.length}</span></b><span>${nsg} siaga · ${nkr} kritis</span></div>`+
+ `<div class="dk"><small>Perubahan setahun</small><b>${ch===null?'–':fx(ch).replace('%',' poin')}</b><span>${ch===null?'data pembanding tidak ada':'dibanding '+ql(dq-4)}</span></div>`}
+function dshow(){const v=DD[dz][dq],s=OUT.includes(dq)?['TIDAK WAJAR: di luar skala grafik. Diduga sebagian besar piksel zona tertutup filter awan pada kuartal ini (dugaan, belum diverifikasi). Tidak dipakai dalam analisis.','na']:dstat(v,TH[dz]);
+ $('dtx').innerHTML=chip(s[1])+' <span>'+ql(dq)+': '+(OUT.includes(dq)?'':'selisih '+fx(v)+' terhadap pantai pembanding. Status: ')+s[0].replace(/\.$/,'')+'.</span>';$('dsl').value=dq;sparks();kpis();drawDC()}
+let dAnim=true;
+function drawDC(){const box=$('dchw'),W0=Math.max(320,Math.round(box.clientWidth||840)),nar=W0<620,h=nar?280:350,ml=nar?42:54,mr=nar?10:18,mt=nar?58:52,mb=30,t=TH[dz],v=DD[dz],sv=$('dsv');
+ const ok=v.filter((a,i)=>!OUT.includes(i));let lo=Math.min(...ok,t.kr)-1.5,hi=Math.max(...ok,-t.sg)+1.5;const stp=(hi-lo)>18?4:2;lo=Math.floor(lo/stp)*stp;hi=Math.ceil(hi/stp)*stp;
+ const L=ml,Rr=W0-mr,pw=Rr-L,B=h-mb,Xq=q=>L+q/31*pw,X=i=>Xq(i+.5),Y=a=>mt+(hi-a)/(hi-lo)*(B-mt),yc=a=>Math.max(mt,Math.min(B,Y(a))),f1=n=>n.toFixed(1);
+ let s='';
+ s+=`<rect x="${L}" y="${f1(yc(t.kr))}" width="${pw}" height="${f1(B-yc(t.kr))}" class="bkr"/><rect x="${L}" y="${f1(yc(t.sg))}" width="${pw}" height="${f1(yc(t.kr)-yc(t.sg))}" class="bsg"/><rect x="${L}" y="${f1(yc(-t.sg))}" width="${pw}" height="${f1(yc(t.sg)-yc(-t.sg))}" class="bok"/>`;
+ for(let a=lo;a<=hi;a+=stp)s+=`<line x1="${L}" x2="${Rr}" y1="${f1(Y(a))}" y2="${f1(Y(a))}" class="${a===0?'g0':'gl'}"/><text x="${L-8}" y="${f1(Y(a)+4)}" class="ax" text-anchor="end">${a===0?'0%':fx(a).replace(',0','')}</text>`;
+ for(let y=0;y<8;y++){const x0=Xq(y*4),x1=Xq(Math.min(31,y*4+4));if(y)s+=`<line x1="${f1(x0)}" x2="${f1(x0)}" y1="${mt}" y2="${B}" class="yl"/>`;s+=`<text x="${f1((x0+x1)/2)}" y="${h-9}" class="ax ay" text-anchor="middle">${nar?"’"+(19+y):2019+y}</text>`}
+ s+=`<line x1="${L}" x2="${Rr}" y1="${f1(Y(t.sg))}" y2="${f1(Y(t.sg))}" class="thsg"/><line x1="${L}" x2="${Rr}" y1="${f1(Y(t.kr))}" y2="${f1(Y(t.kr))}" class="thkr"/>`;
+ const bh1=yc(t.sg)-yc(-t.sg),bh2=yc(t.kr)-yc(t.sg),bh3=B-yc(t.kr);
+ if(bh1>16)s+=`<text x="${L+8}" y="${f1(yc(-t.sg)+14)}" class="bl">NORMAL</text>`;
+ if(bh2>14)s+=`<text x="${L+8}" y="${f1(yc(t.sg)+(bh2>26?15:bh2/2+4))}" class="bl">SIAGA ≤ ${fth(t.sg)}</text>`;
+ if(bh3>14)s+=`<text x="${L+8}" y="${f1(yc(t.kr)+15)}" class="bl">KRITIS ≤ ${fth(t.kr)}</text>`;
+ const EV=[[24.95,nar?'Mar 2025: tertutup':'27 Mar 2025: alur tertutup pasir',1],[26.17,nar?'Jul 2025: pulih':'Jul 2025: berangsur normal',2]];
+ EV.forEach(([q,lb,row])=>{const x=Xq(q),tw=lb.length*6.6+16,cy=row===1?6:26;let x0=x-tw/2;x0=Math.max(L,Math.min(Rr-tw,x0));
+  s+=`<line x1="${f1(x)}" x2="${f1(x)}" y1="${cy+18}" y2="${B}" class="ev"/><g class="evc"><rect x="${f1(x0)}" y="${cy}" width="${f1(tw)}" height="19" rx="9.5"/><text x="${f1(x0+tw/2)}" y="${cy+13.5}" text-anchor="middle">${lb}</text></g>`});
+ const segs=[];let cur=[];v.forEach((a,i)=>{if(OUT.includes(i)){if(cur.length)segs.push(cur);cur=[];return}cur.push(i)});if(cur.length)segs.push(cur);
+ const z0=yc(0);segs.forEach(sg=>{s+=`<path d="M${f1(X(sg[0]))},${f1(z0)} `+sg.map(i=>`L${f1(X(i))},${f1(Y(v[i]))}`).join(' ')+` L${f1(X(sg[sg.length-1]))},${f1(z0)}Z" class="ar"/>`});
+ OUT.forEach(i=>{if(i>0&&i<30)s+=`<line x1="${f1(X(i-1))}" y1="${f1(Y(v[i-1]))}" x2="${f1(X(i+1))}" y2="${f1(Y(v[i+1]))}" class="gap"/>`});
+ segs.forEach(sg=>{s+=`<path d="${sg.map((i,k)=>(k?'L':'M')+f1(X(i))+','+f1(Y(v[i]))).join(' ')}" class="ln${dAnim?' an':''}" pathLength="1"/>`});
+ s+=`<line x1="${f1(X(dq))}" x2="${f1(X(dq))}" y1="${mt}" y2="${B}" class="sel"/>`;
+ v.forEach((a,i)=>{if(OUT.includes(i)){const px=X(i),py=B-12;s+=`<path d="M${f1(px)},${f1(py-7)} l7,7 l-7,7 l-7,-7z" class="out"/><text x="${f1(px+12)}" y="${f1(py+4)}" class="ax">${nar?'IV 2020: dibuang':'IV 2020: '+fx(a)+' (tidak wajar, dibuang)'}</text>`;return}
+  s+=`<circle cx="${f1(X(i))}" cy="${f1(Y(a))}" r="${i===dq?7:4.5}" class="mk mk-${stOf(dz,i)}"/>`});
+ if(!OUT.includes(dq)){const a=v[dq],px=X(dq),py=Y(a),lb=fx(a),tw=lb.length*7.6+14,up=py-mt>34;let x0=Math.max(L,Math.min(Rr-tw,px-tw/2));s+=`<g class="vc"><rect x="${f1(x0)}" y="${f1(up?py-34:py+12)}" width="${f1(tw)}" height="22" rx="6"/><text x="${f1(x0+tw/2)}" y="${f1(up?py-18.5:py+27.5)}" text-anchor="middle">${lb}</text></g>`}
+ for(let i=0;i<31;i++)s+=`<rect x="${f1(Xq(i))}" y="${mt}" width="${f1(pw/31)}" height="${B-mt}" class="hit" data-i="${i}"/>`;
+ sv.setAttribute('viewBox',`0 0 ${W0} ${h}`);sv.setAttribute('width',W0);sv.setAttribute('height',h);sv.innerHTML=s;dAnim=false;
+ const tip=$('dtip');sv.querySelectorAll('.hit').forEach(r=>{const i=+r.dataset.i;
+  r.addEventListener('mouseenter',()=>{const a=v[i],k=stOf(dz,i);tip.innerHTML=`<small>${ql(i)}</small><b>${OUT.includes(i)?fx(a)+' (dibuang)':fx(a)}</b>${chip(k)}<span>siaga ≤ ${fth(t.sg)} · kritis ≤ ${fth(t.kr)}</span>`;tip.style.display='block';const tx=X(i),tw=tip.offsetWidth,ty=OUT.includes(i)?B-90:Y(a);tip.style.left=Math.max(0,Math.min(W0-tw,tx+(tx>W0/2?-tw-14:14)))+'px';tip.style.top=Math.max(0,Math.min(h-tip.offsetHeight,ty-40))+'px'});
+  r.addEventListener('mouseleave',()=>tip.style.display='none');
+  r.addEventListener('click',()=>{dq=i;tip.style.display='none';dshow()})})}
+['dz1','dz2','dz3'].forEach((id,k)=>$(id).onclick=()=>{dz=ZK[k];dAnim=true;dshow()});
 $('dsl').addEventListener('input',e=>{dq=+e.target.value;dshow()});
-$('dpl').onclick=()=>{if(dtm){clearInterval(dtm);dtm=null;$('dpl').textContent='Putar waktu';return}if(dq>=30)dq=0;$('dpl').textContent='Jeda';dshow();dtm=setInterval(()=>{if(dq>=30){clearInterval(dtm);dtm=null;$('dpl').textContent='Putar waktu';return}dq++;dshow()},600)};
+$('dpl').onclick=()=>{if(dtm){clearInterval(dtm);dtm=null;$('dpl').textContent='▶ Putar waktu';return}if(dq>=30)dq=0;$('dpl').textContent='⏸ Jeda';dshow();dtm=setInterval(()=>{if(dq>=30){clearInterval(dtm);dtm=null;$('dpl').textContent='▶ Putar waktu';return}dq++;dshow()},650)};
+{let rw=0;new ResizeObserver(()=>{const w=$('dchw').clientWidth;if(Math.abs(w-rw)>2){rw=w;drawDC();sparks()}}).observe($('dchw'))}
 dshow();
 function setView(m){const mn=document.querySelector('main');mn.classList.toggle('side',m===1);mn.classList.toggle('pres',m===2);['tv1','tv2','tv3'].forEach((id,i)=>$(id).classList.toggle('on',i===m))}
 $('tv1').onclick=()=>setView(0);$('tv2').onclick=()=>setView(1);$('tv3').onclick=()=>setView(2);setView(innerWidth>=1000?2:0);
