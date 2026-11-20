@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PASIR: Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai</title>
+<title>PASIR: Pemantauan Alur dan Simulasi Interaktif Risiko Pendangkalan Pelabuhan Pulau Baai</title>
 <style>
 :root{--sea:#cfe4ec;--land:#f1e3c4;--land2:#e2e3d8;--bg:#eef3f4;--card:#fff;--tx:#14262e;--mu:#56696f;--ac:#0b6e8a;--ac2:#e3f0f3;--bd:#cfdadd;--rd:#c0392b;--ok:#1f8a5b;--wn:#b9770e;--sand:#c9a46a;
 --z1:#0b6e8a;--z2:#c0392b;--z3:#7a5aa6;--z4:#6b7d83;color-scheme:light}
@@ -15,7 +15,8 @@ header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px
 .hd{max-width:1240px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
 .brand{font:700 16px/1.2 Georgia,serif;margin-right:auto}.bn{display:inline-block;font:800 13px/1 "Trebuchet MS",sans-serif;letter-spacing:.12em;background:var(--ac);color:var(--bg);padding:4px 7px;border-radius:6px;margin-right:6px;vertical-align:2px}
 .kick{display:inline-flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:13.5px;font-weight:700;color:var(--ac);margin-bottom:8px}.kick b{letter-spacing:.14em;background:var(--ac);color:var(--bg);padding:3px 8px;border-radius:6px}
-.pasir{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 12px}.pasir div{background:var(--bg);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--mu)}.pasir b{display:block;color:var(--tx);font-size:15.5px}.pasir i{font-style:normal;font-weight:800;color:var(--ac)}
+.pasir{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 12px}.pasir div{background:var(--bg);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--mu)}.pasir b{display:block;color:var(--tx);font-size:15.5px}.pasir i{font-style:normal;font-weight:800;color:var(--ac);margin-right:4px}
+.hsub{font:italic 20px/1.4 Georgia,serif;color:var(--mu);margin:-4px 0 12px;max-width:860px}
 @media(max-width:640px){.pasir{grid-template-columns:1fr}}.brand small{display:block;font:12px "Trebuchet MS",sans-serif;color:var(--mu)}
 nav{display:flex;flex-wrap:wrap;gap:4px}
 nav a{padding:7px 13px;border-radius:8px;text-decoration:none;color:var(--mu);font-weight:600;font-size:14.5px}
@@ -162,7 +163,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 @media(max-width:640px){h1{font-size:24px}.pair{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="hd">
-<div class="brand"><span class="bn">PASIR</span> Pemantauan Pendangkalan Alur Pelabuhan Pulau Baai<small>Pantau Alur, Simulasikan, Ingatkan sebelum Rawan · Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
+<div class="brand"><span class="bn">PASIR</span> Pemantauan Alur dan Simulasi Interaktif Risiko Pendangkalan Pelabuhan Pulau Baai<small>Inovasi Daerah Bengkulu · Putra dan Putri Politeknik Statistika STIS</small></div>
 <nav aria-label="Menu utama"><a href="#beranda" data-t="beranda">Beranda</a><a href="#referensi" data-t="referensi">Referensi</a><a href="#simulasi" data-t="simulasi">Simulasi</a><a href="#data-satelit" data-t="data-satelit">Data Satelit</a><a href="#tentang" data-t="tentang">Tentang</a></nav>
 </div></header>
 <main>
@@ -170,8 +171,9 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <!-- ================= BERANDA ================= -->
 <section class="tab" id="t-beranda">
 <div class="card hero">
-<div class="kick"><b>PASIR</b><span>Pantau Alur, Simulasikan, Ingatkan sebelum Rawan</span></div>
-<h1>Ketika pasir menutup gerbang laut Bengkulu</h1>
+<div class="kick"><b>PASIR</b><span>Pemantauan Alur dan Simulasi Interaktif Risiko Pendangkalan Pelabuhan Pulau Baai</span></div>
+<h1>Ketika Pasir Menutup Gerbang Laut Bengkulu</h1>
+<p class="hsub">Simulasi dan pemantauan citra satelit untuk peringatan dini pendangkalan alur Pelabuhan Pulau Baai</p>
 <p class="lead">Pelabuhan Pulau Baai adalah pelabuhan utama Provinsi Bengkulu. Pada akhir Maret 2025, alur masuknya tertutup total oleh endapan pasir. Inovasi ini memadukan <b>simulasi konseptual</b> untuk menjelaskan proses pengendapan dan <b>pemantauan citra satelit</b> untuk melihat jejak perubahannya dari luar angkasa.</p>
 <div class="kpis">
 <div class="kpi r"><strong>27 Mar 2025</strong><span>alur terputus, tertutup total oleh pasir</span></div>
@@ -281,7 +283,8 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 
 <div class="card">
 <h2>Inovasi kami: PASIR</h2>
-<div class="pasir"><div><b><i>P</i>antau <i>A</i>lur</b>Citra satelit Sentinel-2 memantau perubahan luas air di sekitar mulut alur setiap kuartal.</div><div><b><i>S</i>imulasikan</b>Simulasi konseptual menunjukkan bagaimana pasir mengendap dan kapan alur menjadi kritis.</div><div><b><i>I</i>ngatkan sebelum <i>R</i>awan</b>Ambang siaga dan kritis memberi peringatan dini agar pengerukan dijadwalkan sebelum alur tertutup.</div></div>
+<p class="note" style="margin:0 0 10px">Pemantauan Alur dan Simulasi Interaktif Risiko Pendangkalan Pelabuhan Pulau Baai. Cara kerjanya terdiri atas tiga langkah:</p>
+<div class="pasir"><div><b><i>1</i> Pantau alur</b>Citra satelit Sentinel-2 memantau perubahan luas air di sekitar mulut alur setiap kuartal.</div><div><b><i>2</i> Simulasikan</b>Simulasi konseptual menunjukkan bagaimana pasir mengendap dan kapan alur menjadi kritis.</div><div><b><i>3</i> Ingatkan sebelum rawan</b>Ambang siaga dan kritis memberi peringatan dini agar pengerukan dijadwalkan sebelum alur tertutup.</div></div>
 <div class="grid2">
 <div class="mini"><b>Simulasi konseptual</b><p>Butir pasir bergerak mengikuti arus, pasang surut, dan kalender musim Bengkulu. Kapal keluar masuk selama alur cukup dalam, tertahan saat alur kritis, lalu kapal keruk membuka kembali alur.</p><a class="go" href="#simulasi">Coba simulasi →</a></div>
 <div class="mini"><b>Pemantauan citra satelit</b><p>Citra Sentinel-2 periode 2019–2026 diolah di Google Earth Engine. Luas perairan di tiga zona sekitar mulut alur dibandingkan dengan pantai pembanding, setelah pola musimannya dikoreksi.</p><a class="go" href="#data-satelit">Lihat data →</a></div>
