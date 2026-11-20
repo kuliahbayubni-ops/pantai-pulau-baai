@@ -138,6 +138,7 @@ main.pres #ch{max-height:190px}}
 .mcdt{margin-top:10px;font-size:14px}.mcdt summary{cursor:pointer;font-weight:700}.mctw{max-height:260px;overflow:auto;margin:8px 0}
 .mcfd{max-height:none}.mcfdn{font-size:13px;color:var(--mu);margin:6px 0 0;line-height:1.5}.mcfdt td{font-weight:700;border-top:2px solid var(--bd)}.mcfd td:nth-child(3),.mcfd th:nth-child(3){text-align:left}#mcfdcsv{margin-bottom:6px}
 .mcsk{margin-top:10px;padding:10px 12px;border-left:4px solid var(--wn);background:var(--bg);border-radius:8px}.mcsk ol{margin:6px 0 0;padding-left:20px}.mcsk li{margin:4px 0;line-height:1.5}
+#mcsv .mcpoly{fill:none;stroke:var(--tx);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;opacity:.9}#mcsv .mcpd{fill:var(--tx);stroke:var(--card);stroke-width:1.5}.swl{display:inline-block;width:22px;height:0;border-top:2.5px solid var(--tx);vertical-align:middle;margin:0 5px 0 10px}
 .mctw table{width:100%;border-collapse:collapse;font-size:13px}.mctw th,.mctw td{text-align:right;padding:4px 8px;border-bottom:1px solid var(--bd)}.mctw th:first-child,.mctw td:first-child{text-align:left}
 </style></head><body><main>
 <h1>Simulasi Pendangkalan Alur Pelabuhan Pulau Baai</h1>
@@ -553,7 +554,7 @@ function mcShow(){if(!MCR)return;const{res,V,thr}=MCR,ok=res.filter(r=>r.d!==nul
  const early=Math.max(0,R0(q10)-30);
  let h='<div class="mckpi">'+tiles.map(t=>`<div><span>${t[0]}</span><strong>${t[1]}</strong><small>${t[2]}</small></div>`).join('')+'</div>';
  h+='<div id="mchw"><svg id="mcsv" role="img" aria-label="Sebaran tanggal alur mencapai ambang kritis dari semua ulangan"></svg></div>';
- h+='<p class="note mclg"><span id="mccap"></span><span class="sw sw-e"></span>kritis lebih awal dari persentil ke-10 <span class="sw sw-m"></span>80% ulangan di tengah <span class="sw sw-l"></span>lebih lambat dari persentil ke-90 <span class="tri">▲</span> simulasi utama</p>';
+ h+='<p class="note mclg"><span id="mccap"></span><span class="sw sw-e"></span>kritis lebih awal dari persentil ke-10 <span class="sw sw-m"></span>80% ulangan di tengah <span class="sw sw-l"></span>lebih lambat dari persentil ke-90 <span class="tri">▲</span> simulasi utama <span class="swl"></span>poligon frekuensi (garis yang menghubungkan titik tengah puncak setiap batang)</p>';
  h+=`<div class="mcrec"><b>Kesimpulan untuk jadwal pengerukan</b><ul>
 <li>Dari ${res.length} ulangan${MCR.cancelled?' (dibatalkan sebelum selesai)':''}, ${ok.length} mencapai ambang kritis ${String(thr).replace('.',',')} m${nn?'; '+nn+' ulangan belum kritis dalam 10 tahun':''}.</li>
 <li>Tanggal kritis tersebar dari <b>${F(mn)}</b> sampai <b>${F(mx)}</b>, selisih ${mx-mn} hari. Rentang 80% ulangan di tengah (persentil 10 sampai 90): <b>${F(q10)}</b> sampai <b>${F(q90)}</b>, selebar ${R0(q90-q10)} hari.</li>
@@ -586,6 +587,7 @@ function mcHist(ok,q10,q50,q90,main){const sv=$('mcsv');if(!sv)return;const W0=M
  let s='<rect id="mchl" class="mchl" x="0" y="'+mt+'" width="0" height="'+(h-mb-mt)+'" visibility="hidden"/>';const ys=cm<=5?1:cm<=12?2:5;
  for(let c=0;c<=cm;c+=ys)s+=`<line x1="${ml}" x2="${W0-mr}" y1="${Y(c)}" y2="${Y(c)}" class="mcg"/><text x="${ml-6}" y="${Y(c)+4}" text-anchor="end" class="mcax">${c}</text>`;
  cnt.forEach((c,i)=>{if(!c)return;const x0=X(b0+i*bw)+1,x1=X(b0+(i+1)*bw)-1;const mid=b0+i*bw+bw/2;const st=mid<q10?'e':mid<=q90?'m':'l';s+=`<rect x="${x0}" y="${Y(c)}" width="${Math.max(1,x1-x0)}" height="${h-mb-Y(c)}" rx="2" class="mcb mcb-${st}"/>`});
+ {const P=[[X(b0),Y(0)]].concat(cnt.map((c,i)=>[X(b0+i*bw+bw/2),Y(c)]),[[X(b0+nb*bw),Y(0)]]);s+=`<polyline points="${P.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" class="mcpoly"/>`+cnt.map((c,i)=>`<circle cx="${X(b0+i*bw+bw/2).toFixed(1)}" cy="${Y(c).toFixed(1)}" r="3.2" class="mcpd"/>`).join('')}
  const lab=(d,t,cl,row)=>{const x=X(d);return `<line x1="${x}" x2="${x}" y1="${mt-4}" y2="${h-mb}" class="mcl ${cl}"/><text x="${x}" y="${row?mt-8:mt-20}" text-anchor="middle" class="mclt">${t}</text>`};
  s+=lab(q10,'P10 '+fmt(Math.round(q10),1),'mcl10',0)+lab(q50,'Median','mcl50',1)+lab(q90,'P90 '+fmt(Math.round(q90),1),'mcl90',0);
  if(main!==null){const x=X(main);s+=`<path d="M${x-7},${h-mb+14} l7,-10 l7,10z" class="mcmain"><title>Simulasi utama: ${fmt(main)}</title></path>`}
