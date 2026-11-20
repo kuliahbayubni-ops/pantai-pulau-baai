@@ -147,6 +147,12 @@ ul{margin:0 0 10px;padding-left:20px}li{margin-bottom:4px}
 .chain li.o:before{background:var(--ok)}
 .chain b{display:block;color:var(--tx);font-size:15px;margin-bottom:2px}
 @media(max-width:560px){.m-lab{font-size:17px}.m-small{font-size:14px}.m-rlab text{font-size:13.5px}.m-ocean{font-size:21px}}
+.srcs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}.srcs .note{margin-right:4px}
+.srcs a{font-size:12.5px;padding:3px 10px;border-radius:999px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);text-decoration:none}
+.srcs a:hover{border-color:var(--ac);color:var(--ac)}.srcs a.all{border-color:var(--ac);color:var(--ac);font-weight:700}
+.tpc{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--ac2);color:var(--ac)}.tpc.tp-enggano{color:var(--wn)}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--wn);background:var(--ac2)}100%{box-shadow:0 0 0 3px transparent}}
+.flash{animation:flash 2.6s ease-out;border-radius:10px}
 .lokpt{border-left:4px solid var(--ac);background:var(--ac2);padding:10px 14px;border-radius:6px;margin-top:14px}
 footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:var(--mu)}
 @media(max-width:640px){h1{font-size:24px}.pair{grid-template-columns:1fr}}
@@ -216,7 +222,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <div class="grid4">
 <div class="mini"><b>Penjaga batas negara</b><p>Termasuk Pulau-Pulau Kecil Terluar (PPKT), yaitu titik dasar garis pangkal wilayah perairan dan ZEE Indonesia, sekaligus daerah 3T (terdepan, terluar, tertinggal).</p></div>
 <div class="mini"><b>400,6 km²</b><p>Luas pulau, dengan panjang pantai sekitar 112 km.</p></div>
-<div class="mini"><b>± 4.000 jiwa</b><p>Penduduk 4.035 jiwa (BPS 2020) di enam desa: Banjar Sari, Meok, Apoho, Malakoni, Kaana, dan Kahyapu.</p></div>
+<div class="mini"><b>± 4.000 jiwa</b><p>Tersebar di enam desa: Banjar Sari, Meok, Apoho, Malakoni, Kaana, dan Kahyapu. Data rinci per desa tersedia di publikasi BPS Kecamatan Enggano Dalam Angka.</p></div>
 <div class="mini"><b>Feri 10–12 jam</b><p>Akses utama adalah kapal feri dari Pulau Baai. Pesawat perintis hanya sekitar 40 menit, tetapi kursinya sangat terbatas (pesawat 12 kursi, pada Juni 2025 harus dipesan sekitar satu bulan sebelumnya).</p></div>
 <div class="mini"><b>Kakao, pisang, melinjo</b><p>Komoditas unggulan pertanian Enggano, ditambah hasil laut. Semuanya dijual ke Kota Bengkulu lewat kapal.</p></div>
 </div>
@@ -229,10 +235,10 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <li><b>Feri berhenti</b>Sejak Maret 2025 pelabuhan berhenti beroperasi, sehingga pelayaran rutin ke Enggano terputus.</li>
 <li><b>Pulau terisolasi</b>Sekitar 4.000 warga terancam krisis pangan karena bahan pokok dari Kota Bengkulu tidak terkirim. Akses pendidikan dan kesehatan ke ibu kota provinsi ikut terganggu.</li>
 <li><b>Ekonomi lumpuh</b>Hasil bumi tidak terangkut. Sewa kapal nelayan mencapai Rp17 juta per perjalanan, sehingga pisang hanya dibeli Rp15.000–20.000 per tandan, padahal harga normalnya Rp50.000–60.000.</li>
-<li class="o"><b>Penanganan darurat</b>Gubernur menyalurkan belasan ton bahan pokok, TNI AL mengirim kapal perang untuk logistik, kapal pengawas KKP mengangkut 28 warga (2 Juli 2025), dan DPRD mengusulkan Pelabuhan Linau di Kaur sebagai jalur alternatif.</li>
+<li class="o"><b>Penanganan darurat</b>Gubernur mengirim 16 ton beras dan bahan pokok lain dengan kapal kecil (April 2025), kapal pengawas KKP mengangkut 28 warga (2 Juli 2025), DPRD mengusulkan Pelabuhan Linau di Kaur sebagai jalur alternatif, dan Presiden menerbitkan Inpres Nomor 12 Tahun 2025 yang juga mencakup percepatan pembangunan Enggano.</li>
 </ol>
 <p class="lokpt"><b>Kaitannya dengan inovasi ini:</b> bila pendangkalan terpantau lebih awal dari citra satelit, pengerukan dapat dijadwalkan sebelum alur tertutup. Dengan begitu, Enggano tidak perlu kembali terputus dari daratan Sumatra.</p>
-<p class="note" style="margin:10px 0 0">Sumber: <a href="https://setkab.go.id/enggano-pesona-nusa-penjaga-indonesia/" target="_blank" rel="noopener noreferrer">Setkab (profil Enggano)</a> · <a href="https://setkab.go.id/arah-kebijakan-pembangunan-pulau-enggano/" target="_blank" rel="noopener noreferrer">Setkab/Bappenas (PPKT, komoditas)</a> · <a href="https://mongabay.co.id/2024/11/24/was-was-perusahaan-sawit-masuk-pulau-enggano/" target="_blank" rel="noopener noreferrer">Mongabay (enam desa)</a> · <a href="https://p2k.stekom.ac.id/ensiklopedia/Pulau_enggano" target="_blank" rel="noopener noreferrer">Ensiklopedia (penduduk BPS 2020, 90 mil laut)</a> · <a href="https://ejournal.mgi.esdm.go.id/index.php/jgk/article/download/101/91" target="_blank" rel="noopener noreferrer">Arifin dkk. 2003 (letak pelabuhan)</a> · <a href="https://repository.its.ac.id/131910/" target="_blank" rel="noopener noreferrer">ITS (alamat pelabuhan)</a> · <a href="https://industri.kontan.co.id/news/menhub-dudy-pergerakan-kapal-di-perairan-pelabuhan-pulau-baai-terpantau-lancar" target="_blank" rel="noopener noreferrer">Kontan (jenis muatan)</a> · <a href="https://www.detik.com/sumbagsel/berita/d-7864944/warga-pulau-enggano-terancam-terisolir-imbas-alur-dangkal-pelabuhan-baai" target="_blank" rel="noopener noreferrer">detikSumbagsel (terisolasi)</a> · <a href="https://www.detik.com/sumbagsel/berita/d-7977870/enggano-terisolir-dprd-desak-gubernur-bengkulu-manfaatkan-pelabuhan-linau" target="_blank" rel="noopener noreferrer">detikSumbagsel (Pelabuhan Linau)</a> · <a href="https://bengkulu.antaranews.com/berita/407585/gubernur-bengkulu-salurkan-belasan-ton-bahan-pokok-untuk-warga-enggano" target="_blank" rel="noopener noreferrer">Antara (bantuan bahan pokok)</a> · <a href="https://perpustakaan.dpr.go.id/epaper/index/popup/id/20132" target="_blank" rel="noopener noreferrer">Kliping Perpustakaan DPR (harga pisang)</a> · <a href="https://www.inews.id/news/nasional/kp-orca-05-kkp-angkut-warga-enggano-ke-bengkulu" target="_blank" rel="noopener noreferrer">iNews (KP Orca 05)</a> · <a href="https://regional.kompas.com/read/2025/06/20/143615978/cerita-pelancong-ke-enggano-banyak-warga-sakit-berdesakan-cari-tiket" target="_blank" rel="noopener noreferrer">Kompas (tiket pesawat)</a></p>
+<div class="srcs"><span class="note">Sumber (15), klik untuk melihat di tab Referensi:</span><a href="#referensi" data-go="ref-doc-setkab-profil">Setkab: profil Enggano</a><a href="#referensi" data-go="ref-doc-setkab-bappenas">Setkab/Bappenas: status PPKT dan komoditas</a><a href="#referensi" data-go="ref-doc-bps-enggano">BPS: Kecamatan Enggano Dalam Angka</a><a href="#referensi" data-go="ref-nw-mongabay-2024">Mongabay: enam desa</a><a href="#referensi" data-go="ref-sci-arifin2003">Arifin dkk. (2003): letak pelabuhan</a><a href="#referensi" data-go="ref-sci-ariansyah2026">Ariansyah (2026): alamat pelabuhan</a><a href="#referensi" data-go="ref-nw-kontan-menhub">Kontan: jenis muatan</a><a href="#referensi" data-go="ref-nw-detik-terisolir">detikSumbagsel: warga terisolasi</a><a href="#referensi" data-go="ref-nw-antara-bantuan">Antara: bantuan bahan pokok</a><a href="#referensi" data-go="ref-nw-kompas-kliping">Kompas: harga pisang dan sewa kapal</a><a href="#referensi" data-go="ref-nw-detik-linau">detikSumbagsel: Pelabuhan Linau</a><a href="#referensi" data-go="ref-nw-inews-orca">iNews: KP Orca 05</a><a href="#referensi" data-go="ref-nw-bisnis-dasco">Bisnis.com: jarak 90 mil laut</a><a href="#referensi" data-go="ref-nw-kompas-tiket">Kompas: tiket pesawat perintis</a><a href="#referensi" data-go="ref-doc-inpres12">Inpres Nomor 12 Tahun 2025</a><a href="#referensi" class="all">Semua referensi →</a></div>
 </div>
 
 <div class="grid2">
@@ -287,7 +293,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:v
 <div class="card">
 <h2>Berita dan liputan media</h2>
 <p class="note" style="margin-bottom:12px">Liputan yang menunjukkan bahwa pendangkalan alur Pulau Baai berdampak langsung pada masyarakat Pulau Enggano, pasokan BBM, dan perekonomian Bengkulu.</p>
-<div class="nwbar"><div class="btns" id="nw-cat" style="margin:0"></div><div class="btns" id="nw-ord" style="margin:0"><button data-o="asc" class="on">Terlama dulu</button><button data-o="desc">Terbaru dulu</button></div></div>
+<div class="nwbar"><div><div class="btns" id="nw-top" style="margin:0 0 6px"></div><div class="btns" id="nw-cat" style="margin:0"></div></div><div class="btns" id="nw-ord" style="margin:0"><button data-o="asc" class="on">Terlama dulu</button><button data-o="desc">Terbaru dulu</button></div></div>
 <div class="nwg" id="nw-list"></div>
 <p class="note" style="margin-top:12px">Ringkasan ditulis ulang dengan kata-kata sendiri dan bukan kutipan artikel. Gambar pratinjau dan video ditampilkan langsung dari situs sumbernya.</p>
 </div>
@@ -675,5 +681,5 @@ KONTROL,2026-07,37,0.7210727362494143,176.2230782297635,0.9845673330582848</scri
 (async()=>{const get=async(p,id)=>{try{const r=await fetch(p,{cache:'no-cache'});if(r.ok)return await r.text()}catch(e){}return document.getElementById(id).textContent};
  const z=await get('data/pulau_baai_zona_kuartalan.csv','csv-zona'),b=await get('data/pulau_baai_bulanan.csv','csv-bulanan');
  document.getElementById('csv-zona').textContent=z;document.getElementById('csv-bulanan').textContent=b;
- const s=document.createElement('script');s.src='app.js?v=dda6a628';document.body.appendChild(s)})();
+ const s=document.createElement('script');s.src='app.js?v=e95e2f97';document.body.appendChild(s)})();
 </script></body></html>
