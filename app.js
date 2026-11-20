@@ -348,3 +348,5 @@ function drawAll(){drawEWS();drawRaw();drawMon();drawTbl()}
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(location.hash==='#data-satelit')drawAll()});
 drawNews();
 route();
+
+(function(){try{if(!document.fonts||!document.fonts.load)return;document.fonts.load('20px "Noto Sans Rejang"','\uA936\uA93C').then(function(f){if(f&&f.length)document.documentElement.classList.add('aks-ok')}).catch(function(){})}catch(e){}})();
